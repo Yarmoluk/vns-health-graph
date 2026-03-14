@@ -1,0 +1,46 @@
+{
+  "edges": [
+    {"source": "vns-health", "target": "vns-health-plans", "relationship": "OPERATES", "properties": {"role": "health plan division"}},
+    {"source": "vns-health", "target": "vns-home-care", "relationship": "OPERATES", "properties": {"role": "home care division"}},
+    {"source": "vns-health", "target": "vns-hospice", "relationship": "OPERATES", "properties": {"role": "hospice division"}},
+    {"source": "vns-health", "target": "vns-behavioral-health", "relationship": "OPERATES", "properties": {"role": "behavioral health division"}},
+    {"source": "vns-health", "target": "vns-research", "relationship": "OPERATES", "properties": {"role": "research division"}},
+
+    {"source": "vns-health-plans", "target": "plan-easycare", "relationship": "ADMINISTERS", "properties": {}},
+    {"source": "vns-health-plans", "target": "plan-easycare-plus", "relationship": "ADMINISTERS", "properties": {}},
+    {"source": "vns-health-plans", "target": "plan-total", "relationship": "ADMINISTERS", "properties": {}},
+    {"source": "vns-health-plans", "target": "plan-mltc", "relationship": "ADMINISTERS", "properties": {}},
+    {"source": "vns-health-plans", "target": "plan-selecthealth", "relationship": "ADMINISTERS", "properties": {}},
+
+    {"source": "stakeholder-providers", "target": "sys-availity", "relationship": "SUBMITS_CLAIMS_VIA", "properties": {"method": "EDI electronic"}},
+    {"source": "stakeholder-providers", "target": "sys-evicore", "relationship": "SUBMITS_AUTH_VIA", "properties": {"managed_by": "eviCore by Evernorth"}},
+    {"source": "stakeholder-providers", "target": "sys-provider-portal", "relationship": "ACCESSES", "properties": {"for": "auth status, claims status, eligibility"}},
+    {"source": "stakeholder-members", "target": "sys-member-portal", "relationship": "ACCESSES", "properties": {"for": "benefits, care coordination"}},
+
+    {"source": "sys-varis", "target": "stakeholder-providers", "relationship": "AUDITS", "properties": {"type": "post-payment clinical validation"}},
+    {"source": "sys-varis", "target": "proc-post-payment-review", "relationship": "EXECUTES", "properties": {}},
+    {"source": "sys-availity", "target": "proc-claims-submission", "relationship": "ENABLES", "properties": {}},
+    {"source": "sys-evicore", "target": "proc-prior-auth", "relationship": "MANAGES", "properties": {}},
+    {"source": "sys-medimpact", "target": "proc-claims-submission", "relationship": "HANDLES", "properties": {"scope": "Part D vaccine claims only"}},
+
+    {"source": "proc-claims-submission", "target": "proc-claim-disputes", "relationship": "ESCALATES_TO", "properties": {"trigger": "coding errors, underpayments, duplicate denials"}},
+    {"source": "proc-claim-disputes", "target": "proc-appeals", "relationship": "ESCALATES_TO", "properties": {"trigger": "coverage denial requiring clinical review"}},
+    {"source": "proc-claims-submission", "target": "proc-corrected-claims", "relationship": "TRIGGERS", "properties": {"trigger": "original claim error detected"}},
+    {"source": "proc-claims-submission", "target": "proc-post-payment-review", "relationship": "SUBJECT_TO", "properties": {"vendor": "Varis"}},
+
+    {"source": "stakeholder-regulators", "target": "proc-provider-directory-maintenance", "relationship": "MANDATES", "properties": {"requirement": "90-day verification, 30-day updates"}},
+    {"source": "stakeholder-regulators", "target": "proc-quality-measurement", "relationship": "EVALUATES_VIA", "properties": {"output": "star ratings"}},
+    {"source": "stakeholder-regulators", "target": "vns-health-plans", "relationship": "OVERSEES", "properties": {}},
+
+    {"source": "proc-quality-measurement", "target": "metric-star-ratings", "relationship": "PRODUCES", "properties": {}},
+    {"source": "proc-quality-measurement", "target": "metric-quality-measures", "relationship": "TRACKS", "properties": {"count": 100}},
+    {"source": "metric-enrollment-growth", "target": "metric-geographic-coverage", "relationship": "DEPENDS_ON", "properties": {"reason": "expansion requires network adequacy in new counties"}},
+
+    {"source": "plan-total", "target": "metric-geographic-coverage", "relationship": "EXPANDING_INTO", "properties": {"target": "25 additional NY counties"}},
+    {"source": "plan-easycare-plus", "target": "metric-enrollment-growth", "relationship": "DRIVES", "properties": {"growth": "60% — fastest growing"}},
+
+    {"source": "leader-gursoy-brickner", "target": "proc-quality-measurement", "relationship": "LEADS", "properties": {}},
+    {"source": "stakeholder-employees", "target": "stakeholder-members", "relationship": "DELIVERS_CARE_TO", "properties": {"daily_touchpoints": 73000}},
+    {"source": "stakeholder-employees", "target": "stakeholder-providers", "relationship": "COORDINATES_WITH", "properties": {"via": "care management"}}
+  ]
+}

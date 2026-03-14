@@ -1,0 +1,60 @@
+{
+  "nodes": [
+    {
+      "id": "metric-enrollment-growth",
+      "type": "metric",
+      "label": "Enrollment Growth (2024)",
+      "properties": {
+        "easycare_growth": "34%",
+        "easycare_plus_growth": "60%",
+        "total_plan_growth": "25%",
+        "new_enrollees_added": 15000,
+        "recognized_as": "among country's fastest growing MA plans for 2025"
+      }
+    },
+    {
+      "id": "metric-star-ratings",
+      "type": "metric",
+      "label": "Quality Star Ratings",
+      "properties": {
+        "medicare_advantage_cms": 4.5,
+        "medicare_advantage_ranking": "highest in NYC and Long Island",
+        "mltc_nysdoh": 5.0,
+        "mltc_ranking": "highest rated MLTC in New York State",
+        "map_nysdoh": 5.0,
+        "map_consecutive_years": 2,
+        "easycare_individual_cms": 3.5
+      }
+    },
+    {
+      "id": "metric-quality-measures",
+      "type": "metric",
+      "label": "Quality Measures Portfolio",
+      "properties": {
+        "total_measures": 100,
+        "categories": 3,
+        "reporting_cadence": "monthly",
+        "selecthealth_viral_load": "significantly exceeds statewide average"
+      }
+    },
+    {
+      "id": "metric-charitable-care",
+      "type": "metric",
+      "label": "Community Investment",
+      "properties": {
+        "charitable_care_2024": "$69M",
+        "description": "charitable care and community programs"
+      }
+    },
+    {
+      "id": "metric-geographic-coverage",
+      "type": "metric",
+      "label": "Geographic Coverage",
+      "properties": {
+        "current_counties": 13,
+        "expansion_target": "25 additional counties",
+        "expansion_basis": "counties where MLTC is already offered"
+      }
+    }
+  ]
+}

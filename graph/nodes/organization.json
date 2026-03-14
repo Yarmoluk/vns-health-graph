@@ -1,0 +1,67 @@
+{
+  "nodes": [
+    {
+      "id": "vns-health",
+      "type": "organization",
+      "label": "VNS Health",
+      "properties": {
+        "legal_name": "VNS Health (formerly Visiting Nurse Service of New York)",
+        "founded": "1893",
+        "heritage_years": 130,
+        "headquarters": "New York, NY",
+        "website": "vnshealth.org",
+        "daily_patients_members": 73000,
+        "languages_supported": 50,
+        "charitable_care_investment_2024": "$69M",
+        "accreditations": ["CHAP", "Age-Friendly Care"],
+        "medicare_star_rating": 4.5,
+        "mltc_star_rating": 5.0
+      }
+    },
+    {
+      "id": "vns-health-plans",
+      "type": "organization_unit",
+      "label": "VNS Health Plans",
+      "properties": {
+        "website": "vnshealthplans.org",
+        "total_members": 33000,
+        "plan_count": 5
+      }
+    },
+    {
+      "id": "vns-home-care",
+      "type": "organization_unit",
+      "label": "VNS Health Home Care",
+      "properties": {
+        "services": ["nursing", "rehabilitation_therapy", "home_health_aides", "wound_care", "post_surgical_care"],
+        "specialty_programs": ["dementia_care", "geriatric_care_management", "fall_prevention", "gender_affirmation", "veteran_services"]
+      }
+    },
+    {
+      "id": "vns-hospice",
+      "type": "organization_unit",
+      "label": "VNS Health Hospice Care",
+      "properties": {
+        "programs": ["advanced_heart_disease", "dementia", "cancer", "COPD"],
+        "support_services": ["emotional_support", "grief_counseling"]
+      }
+    },
+    {
+      "id": "vns-behavioral-health",
+      "type": "organization_unit",
+      "label": "VNS Health Behavioral Health",
+      "properties": {
+        "services": ["mental_health_treatment", "substance_use_treatment", "youth_services", "crisis_intervention", "care_management"],
+        "delivery_model": "home_and_community_based"
+      }
+    },
+    {
+      "id": "vns-research",
+      "type": "organization_unit",
+      "label": "Center for Home Care Policy & Research",
+      "properties": {
+        "focus": "equitable_community_based_care_research"
+      }
+    }
+  ]
+}

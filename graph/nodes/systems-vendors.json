@@ -1,0 +1,76 @@
+{
+  "nodes": [
+    {
+      "id": "sys-availity",
+      "type": "vendor_system",
+      "label": "Availity",
+      "properties": {
+        "function": "EDI claims submission and electronic remittance",
+        "role": "preferred_edi_vendor",
+        "cost_to_provider": "free",
+        "capabilities": ["electronic_claims", "EFT_enrollment", "remittance_advice"]
+      }
+    },
+    {
+      "id": "sys-evicore",
+      "type": "vendor_system",
+      "label": "eviCore by Evernorth",
+      "properties": {
+        "function": "prior authorization management",
+        "programs_managed": ["chiropractic", "clinical_services"],
+        "parent_company": "Evernorth (Cigna)"
+      }
+    },
+    {
+      "id": "sys-varis",
+      "type": "vendor_system",
+      "label": "Varis",
+      "properties": {
+        "function": "post-payment clinical validation",
+        "capabilities": ["DRG_readmission_review", "clinical_validation", "overpayment_recovery"],
+        "record_request_deadline_days": 30,
+        "penalty": "full_claim_reclamation_on_nonresponse"
+      }
+    },
+    {
+      "id": "sys-medimpact",
+      "type": "vendor_system",
+      "label": "MedImpact Healthcare Systems",
+      "properties": {
+        "function": "Part D vaccine claims processing",
+        "scope": "pharmacy_benefit_management"
+      }
+    },
+    {
+      "id": "sys-provider-portal",
+      "type": "internal_system",
+      "label": "VNS Health Provider Portal",
+      "properties": {
+        "access": "24/7",
+        "capabilities": ["authorization_status", "claims_status", "auth_submission", "eligibility_verification"],
+        "gateway_url": "vnshealthplans.org/provider-portal/"
+      }
+    },
+    {
+      "id": "sys-member-portal",
+      "type": "internal_system",
+      "label": "VNS Health Member Portal",
+      "properties": {
+        "function": "online member self-service",
+        "launch_status": "recently_launched",
+        "capabilities": ["benefits_access", "care_coordination", "plan_information"]
+      }
+    },
+    {
+      "id": "sys-provider-search",
+      "type": "internal_system",
+      "label": "Provider Directory Search",
+      "properties": {
+        "url": "providersearch.vnshealthplans.org",
+        "cms_requirement": "verify_provider_info_every_90_days",
+        "update_requirement": "within_30_days_of_change",
+        "compliance_risk": "directory_suppression_on_medicare_plan_finder"
+      }
+    }
+  ]
+}

@@ -1,0 +1,70 @@
+{
+  "nodes": [
+    {
+      "id": "stakeholder-members",
+      "type": "stakeholder_group",
+      "label": "Plan Members",
+      "properties": {
+        "total_daily_served": 73000,
+        "plan_members": 33000,
+        "segments": [
+          "medicare_beneficiaries",
+          "dual_eligible",
+          "medicaid_ltc",
+          "hiv_positive",
+          "homeless",
+          "veterans"
+        ],
+        "languages_served": "50+",
+        "engagement_challenge": "newer plan populations have different needs than legacy MLTC members"
+      }
+    },
+    {
+      "id": "stakeholder-providers",
+      "type": "stakeholder_group",
+      "label": "Network Providers",
+      "properties": {
+        "types": ["primary_care_physicians", "specialists", "home_health_agencies", "LHCSAs", "SNFs", "ancillary_providers"],
+        "portal_access": "24/7 via provider portal",
+        "support_phone": "1-866-783-0222",
+        "support_hours": "Monday-Friday 8am-5pm",
+        "pain_points": ["claims_complexity", "multi_vendor_auth", "post_payment_recoupment_risk", "corrected_claim_process"]
+      }
+    },
+    {
+      "id": "stakeholder-employees",
+      "type": "stakeholder_group",
+      "label": "VNS Health Workforce",
+      "properties": {
+        "roles": ["nurses", "pharmacists", "social_workers", "care_managers", "home_health_aides"],
+        "recognition": "named among NYC best places to work",
+        "differentiator": "50+ language capability",
+        "risk": "burnout from 73K daily patient touchpoints"
+      }
+    },
+    {
+      "id": "stakeholder-regulators",
+      "type": "stakeholder_group",
+      "label": "Regulatory Bodies",
+      "properties": {
+        "entities": ["CMS", "NYSDOH", "NYS_compliance"],
+        "key_requirements": [
+          "provider_directory_90_day_verification",
+          "annual_attestation",
+          "transparency_in_coverage",
+          "network_adequacy_standards"
+        ]
+      }
+    },
+    {
+      "id": "leader-gursoy-brickner",
+      "type": "leader",
+      "label": "Mihriban Gursoy Brickner",
+      "properties": {
+        "title": "SVP Quality & Clinical Operations",
+        "focus": "data-driven quality improvement",
+        "quote": "Data helps us prioritize our initiatives and make decisions"
+      }
+    }
+  ]
+}

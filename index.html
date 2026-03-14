@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VNS Health — Intelligent Knowledge Graph</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0a0e1a; color: #e0e0e0; font-family: 'Inter', -apple-system, sans-serif; overflow: hidden; }
+
+  #graph-container { width: 100vw; height: 100vh; position: relative; }
+
+  svg { width: 100%; height: 100%; }
+
+  .node circle { stroke-width: 2; cursor: pointer; transition: r 0.2s; }
+  .node circle:hover { filter: brightness(1.3); }
+  .node text { fill: #c0c0c0; font-size: 11px; pointer-events: none; text-anchor: middle; }
+
+  .link { stroke-opacity: 0.4; }
+  .link:hover { stroke-opacity: 0.8; }
+
+  .tooltip {
+    position: absolute; background: #1a1f2e; border: 1px solid #2a3a5a;
+    border-radius: 8px; padding: 12px 16px; font-size: 13px;
+    max-width: 320px; pointer-events: none; display: none; z-index: 100;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+  }
+  .tooltip h3 { color: #fff; margin-bottom: 6px; font-size: 14px; }
+  .tooltip .type { color: #888; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+  .tooltip .detail { color: #aaa; font-size: 12px; line-height: 1.5; }
+
+  #header {
+    position: absolute; top: 20px; left: 20px; z-index: 50;
+  }
+  #header h1 { font-size: 22px; color: #fff; font-weight: 700; }
+  #header p { font-size: 13px; color: #666; margin-top: 4px; }
+
+  #legend {
+    position: absolute; bottom: 20px; left: 20px; z-index: 50;
+    background: rgba(26,31,46,0.9); border: 1px solid #2a3a5a;
+    border-radius: 8px; padding: 16px;
+  }
+  #legend h4 { color: #888; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+  .legend-item { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; font-size: 12px; }
+  .legend-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+
+  #domain-panel {
+    position: absolute; top: 20px; right: 20px; z-index: 50;
+    background: rgba(26,31,46,0.95); border: 1px solid #2a3a5a;
+    border-radius: 8px; padding: 16px; width: 280px;
+  }
+  #domain-panel h4 { color: #888; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+  .domain-btn {
+    display: block; width: 100%; text-align: left; background: transparent;
+    border: 1px solid #2a3a5a; color: #c0c0c0; padding: 8px 12px;
+    border-radius: 6px; margin-bottom: 6px; cursor: pointer; font-size: 12px;
+    transition: all 0.2s;
+  }
+  .domain-btn:hover { background: #1e2740; border-color: #4a6a9a; color: #fff; }
+  .domain-btn.active { background: #1e2740; border-color: #5a8ade; color: #fff; }
+
+  #stats {
+    position: absolute; bottom: 20px; right: 20px; z-index: 50;
+    background: rgba(26,31,46,0.9); border: 1px solid #2a3a5a;
+    border-radius: 8px; padding: 16px; text-align: right;
+  }
+  #stats .stat { margin-bottom: 4px; }
+  #stats .stat-num { font-size: 20px; font-weight: 700; color: #5a8ade; }
+  #stats .stat-label { font-size: 11px; color: #666; text-transform: uppercase; letter-spacing: 1px; }
+
+  #brand {
+    position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%);
+    z-index: 50; font-size: 11px; color: #444;
+  }
+  #brand a { color: #5a8ade; text-decoration: none; }
+</style>
+</head>
+<body>
+
+<div id="graph-container">
+  <div id="header">
+    <h1>VNS Health — Knowledge Graph</h1>
+    <p>6 strategic domains &middot; 33 entities &middot; 30 relationships</p>
+  </div>
+
+  <div id="legend">
+    <h4>Entity Types</h4>
+    <div class="legend-item"><div class="legend-dot" style="background:#5a8ade"></div> Organization</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#4ecdc4"></div> Health Plan</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#ff6b6b"></div> Vendor System</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#ffd93d"></div> Process</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#95e77e"></div> Metric</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#c77dff"></div> Stakeholder</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#ff9f43"></div> Leader</div>
+  </div>
+
+  <div id="domain-panel">
+    <h4>Strategic Domains</h4>
+    <button class="domain-btn active" data-domain="all">All Domains</button>
+    <button class="domain-btn" data-domain="growth">Growth Strategy</button>
+    <button class="domain-btn" data-domain="data-quality">Data Quality</button>
+    <button class="domain-btn" data-domain="provider">Provider Experience</button>
+    <button class="domain-btn" data-domain="member">Member Experience</button>
+    <button class="domain-btn" data-domain="employee">Employee Experience</button>
+    <button class="domain-btn" data-domain="claims">Claims & Authorization</button>
+  </div>
+
+  <div id="stats">
+    <div class="stat"><div class="stat-num">73K+</div><div class="stat-label">Daily Members Served</div></div>
+    <div class="stat"><div class="stat-num">5</div><div class="stat-label">Health Plans</div></div>
+    <div class="stat"><div class="stat-num">4.5★</div><div class="stat-label">Medicare Advantage</div></div>
+    <div class="stat"><div class="stat-num">60%</div><div class="stat-label">D-SNP Growth (2024)</div></div>
+  </div>
+
+  <div id="brand">Built with <a href="https://graphifymd.com">Graphify.md</a></div>
+
+  <div class="tooltip" id="tooltip"></div>
+</div>
+
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script>
+const colorMap = {
+  organization: '#5a8ade', organization_unit: '#5a8ade',
+  health_plan: '#4ecdc4',
+  vendor_system: '#ff6b6b', internal_system: '#ff6b6b',
+  process: '#ffd93d',
+  metric: '#95e77e',
+  stakeholder_group: '#c77dff',
+  leader: '#ff9f43'
+};
+
+const sizeMap = {
+  organization: 28, organization_unit: 16,
+  health_plan: 18,
+  vendor_system: 14, internal_system: 14,
+  process: 12,
+  metric: 14,
+  stakeholder_group: 20,
+  leader: 12
+};
+
+const domainMap = {
+  'growth': ['vns-health', 'vns-health-plans', 'plan-easycare', 'plan-easycare-plus', 'plan-total', 'plan-mltc', 'plan-selecthealth', 'metric-enrollment-growth', 'metric-geographic-coverage', 'metric-star-ratings'],
+  'data-quality': ['vns-health', 'vns-health-plans', 'sys-provider-search', 'proc-provider-directory-maintenance', 'proc-quality-measurement', 'metric-quality-measures', 'metric-star-ratings', 'stakeholder-regulators', 'leader-gursoy-brickner'],
+  'provider': ['stakeholder-providers', 'sys-availity', 'sys-evicore', 'sys-varis', 'sys-provider-portal', 'proc-claims-submission', 'proc-claim-disputes', 'proc-appeals', 'proc-prior-auth', 'proc-credentialing', 'proc-post-payment-review', 'proc-corrected-claims'],
+  'member': ['stakeholder-members', 'sys-member-portal', 'plan-easycare', 'plan-easycare-plus', 'plan-total', 'plan-mltc', 'plan-selecthealth', 'metric-star-ratings', 'stakeholder-employees'],
+  'employee': ['stakeholder-employees', 'stakeholder-members', 'stakeholder-providers', 'vns-health', 'vns-home-care', 'vns-hospice', 'vns-behavioral-health'],
+  'claims': ['proc-claims-submission', 'proc-claim-disputes', 'proc-appeals', 'proc-prior-auth', 'proc-corrected-claims', 'proc-post-payment-review', 'sys-availity', 'sys-evicore', 'sys-varis', 'sys-medimpact', 'sys-provider-portal', 'stakeholder-providers']
+};
+
+const nodes = [
+  {id:'vns-health', label:'VNS Health', type:'organization', detail:'130+ years, 73K daily patients, 50+ languages'},
+  {id:'vns-health-plans', label:'VNS Health Plans', type:'organization_unit', detail:'5 health plans, 33K members'},
+  {id:'vns-home-care', label:'Home Care', type:'organization_unit', detail:'Nursing, rehab, wound care, dementia care'},
+  {id:'vns-hospice', label:'Hospice Care', type:'organization_unit', detail:'Heart disease, dementia, cancer, COPD'},
+  {id:'vns-behavioral-health', label:'Behavioral Health', type:'organization_unit', detail:'Mental health, substance use, crisis intervention'},
+  {id:'vns-research', label:'Research Center', type:'organization_unit', detail:'Center for Home Care Policy & Research'},
+  {id:'plan-easycare', label:'EasyCare (HMO)', type:'health_plan', detail:'Medicare Advantage, 3.5★, 34% growth, $25/mo'},
+  {id:'plan-easycare-plus', label:'EasyCare Plus (D-SNP)', type:'health_plan', detail:'Dual-Eligible SNP, 37K enrolled, 60% growth'},
+  {id:'plan-total', label:'VNS Health Total', type:'health_plan', detail:'Integrated MAP, 5★ NYS, expanding to 25 counties'},
+  {id:'plan-mltc', label:'MLTC Plan', type:'health_plan', detail:'Highest-rated MLTC in New York State'},
+  {id:'plan-selecthealth', label:'SelectHealth', type:'health_plan', detail:'Medicaid SNP for HIV+ and homeless populations'},
+  {id:'sys-availity', label:'Availity', type:'vendor_system', detail:'Preferred EDI vendor — claims submission & remittance'},
+  {id:'sys-evicore', label:'eviCore', type:'vendor_system', detail:'Prior auth management (Evernorth/Cigna)'},
+  {id:'sys-varis', label:'Varis', type:'vendor_system', detail:'Post-payment clinical validation & DRG review'},
+  {id:'sys-medimpact', label:'MedImpact', type:'vendor_system', detail:'Part D vaccine claims processing'},
+  {id:'sys-provider-portal', label:'Provider Portal', type:'internal_system', detail:'24/7 auth status, claims status, eligibility'},
+  {id:'sys-member-portal', label:'Member Portal', type:'internal_system', detail:'Recently launched — benefits & care coordination'},
+  {id:'sys-provider-search', label:'Provider Directory', type:'internal_system', detail:'CMS: verify every 90 days, update within 30'},
+  {id:'proc-claims-submission', label:'Claims Submission', type:'process', detail:'90-day filing, cross-year billing rule'},
+  {id:'proc-claim-disputes', label:'Claim Disputes', type:'process', detail:'Coding errors, underpayments, duplicate denials'},
+  {id:'proc-appeals', label:'Coverage Appeals', type:'process', detail:'Clinical review, 60-120 day decisions'},
+  {id:'proc-prior-auth', label:'Prior Authorization', type:'process', detail:'eviCore managed, 1-day SLA for inpatient→home'},
+  {id:'proc-credentialing', label:'Credentialing', type:'process', detail:'Provider network enrollment'},
+  {id:'proc-post-payment-review', label:'Post-Payment Review', type:'process', detail:'Varis audit — 30 days or full reclamation'},
+  {id:'proc-corrected-claims', label:'Corrected Claims', type:'process', detail:'UB-04/CMS-1500 code 7 replacement'},
+  {id:'proc-quality-measurement', label:'Quality Measurement', type:'process', detail:'100 measures, monthly, 3 categories'},
+  {id:'proc-provider-directory-maintenance', label:'Directory Maintenance', type:'process', detail:'CMS 90-day verification cycle'},
+  {id:'metric-enrollment-growth', label:'Enrollment Growth', type:'metric', detail:'34-60% across plans, 15K new enrollees'},
+  {id:'metric-star-ratings', label:'Star Ratings', type:'metric', detail:'4.5★ MA (highest NYC), 5★ MLTC/MAP'},
+  {id:'metric-quality-measures', label:'Quality Measures', type:'metric', detail:'100 measures across 3 categories'},
+  {id:'metric-geographic-coverage', label:'Geographic Coverage', type:'metric', detail:'13 counties → expanding to 25 more'},
+  {id:'stakeholder-members', label:'Plan Members', type:'stakeholder_group', detail:'73K daily, 33K plan members, 50+ languages'},
+  {id:'stakeholder-providers', label:'Network Providers', type:'stakeholder_group', detail:'PCPs, specialists, HHAs, LHCSAs, SNFs'},
+  {id:'stakeholder-employees', label:'VNS Workforce', type:'stakeholder_group', detail:'Nurses, care managers, HHAs — NYC best workplace'},
+  {id:'stakeholder-regulators', label:'Regulators', type:'stakeholder_group', detail:'CMS, NYSDOH — directory & quality oversight'},
+  {id:'leader-gursoy-brickner', label:'M. Gursoy Brickner', type:'leader', detail:'SVP Quality & Clinical Ops — data-driven quality'}
+];
+
+const links = [
+  {source:'vns-health', target:'vns-health-plans', label:'OPERATES'},
+  {source:'vns-health', target:'vns-home-care', label:'OPERATES'},
+  {source:'vns-health', target:'vns-hospice', label:'OPERATES'},
+  {source:'vns-health', target:'vns-behavioral-health', label:'OPERATES'},
+  {source:'vns-health', target:'vns-research', label:'OPERATES'},
+  {source:'vns-health-plans', target:'plan-easycare', label:'ADMINISTERS'},
+  {source:'vns-health-plans', target:'plan-easycare-plus', label:'ADMINISTERS'},
+  {source:'vns-health-plans', target:'plan-total', label:'ADMINISTERS'},
+  {source:'vns-health-plans', target:'plan-mltc', label:'ADMINISTERS'},
+  {source:'vns-health-plans', target:'plan-selecthealth', label:'ADMINISTERS'},
+  {source:'stakeholder-providers', target:'sys-availity', label:'SUBMITS_CLAIMS'},
+  {source:'stakeholder-providers', target:'sys-evicore', label:'SUBMITS_AUTH'},
+  {source:'stakeholder-providers', target:'sys-provider-portal', label:'ACCESSES'},
+  {source:'stakeholder-members', target:'sys-member-portal', label:'ACCESSES'},
+  {source:'sys-varis', target:'stakeholder-providers', label:'AUDITS'},
+  {source:'sys-varis', target:'proc-post-payment-review', label:'EXECUTES'},
+  {source:'sys-availity', target:'proc-claims-submission', label:'ENABLES'},
+  {source:'sys-evicore', target:'proc-prior-auth', label:'MANAGES'},
+  {source:'proc-claims-submission', target:'proc-claim-disputes', label:'ESCALATES_TO'},
+  {source:'proc-claim-disputes', target:'proc-appeals', label:'ESCALATES_TO'},
+  {source:'proc-claims-submission', target:'proc-corrected-claims', label:'TRIGGERS'},
+  {source:'proc-claims-submission', target:'proc-post-payment-review', label:'SUBJECT_TO'},
+  {source:'stakeholder-regulators', target:'proc-provider-directory-maintenance', label:'MANDATES'},
+  {source:'stakeholder-regulators', target:'proc-quality-measurement', label:'EVALUATES'},
+  {source:'proc-quality-measurement', target:'metric-star-ratings', label:'PRODUCES'},
+  {source:'proc-quality-measurement', target:'metric-quality-measures', label:'TRACKS'},
+  {source:'metric-enrollment-growth', target:'metric-geographic-coverage', label:'DEPENDS_ON'},
+  {source:'plan-total', target:'metric-geographic-coverage', label:'EXPANDING_INTO'},
+  {source:'plan-easycare-plus', target:'metric-enrollment-growth', label:'DRIVES'},
+  {source:'leader-gursoy-brickner', target:'proc-quality-measurement', label:'LEADS'},
+  {source:'stakeholder-employees', target:'stakeholder-members', label:'DELIVERS_CARE'},
+  {source:'stakeholder-employees', target:'stakeholder-providers', label:'COORDINATES'}
+];
+
+const width = window.innerWidth;
+const height = window.innerHeight;
+
+const svg = d3.select('#graph-container').append('svg')
+  .attr('width', width).attr('height', height);
+
+const g = svg.append('g');
+
+const zoom = d3.zoom().scaleExtent([0.3, 3]).on('zoom', e => g.attr('transform', e.transform));
+svg.call(zoom);
+
+const simulation = d3.forceSimulation(nodes)
+  .force('link', d3.forceLink(links).id(d => d.id).distance(120))
+  .force('charge', d3.forceManyBody().strength(-400))
+  .force('center', d3.forceCenter(width/2, height/2))
+  .force('collision', d3.forceCollide().radius(d => (sizeMap[d.type]||14) + 10));
+
+const link = g.append('g').selectAll('line')
+  .data(links).join('line')
+  .attr('class', 'link')
+  .attr('stroke', '#2a3a5a')
+  .attr('stroke-width', 1.5);
+
+const node = g.append('g').selectAll('g')
+  .data(nodes).join('g')
+  .attr('class', 'node')
+  .call(d3.drag()
+    .on('start', (e,d) => { if(!e.active) simulation.alphaTarget(0.3).restart(); d.fx=e.x; d.fy=e.y; })
+    .on('drag', (e,d) => { d.fx=e.x; d.fy=e.y; })
+    .on('end', (e,d) => { if(!e.active) simulation.alphaTarget(0); d.fx=null; d.fy=null; })
+  );
+
+node.append('circle')
+  .attr('r', d => sizeMap[d.type]||14)
+  .attr('fill', d => colorMap[d.type]||'#888')
+  .attr('stroke', d => d3.color(colorMap[d.type]||'#888').brighter(0.5));
+
+node.append('text')
+  .attr('dy', d => (sizeMap[d.type]||14) + 14)
+  .text(d => d.label);
+
+const tooltip = d3.select('#tooltip');
+
+node.on('mouseover', (e, d) => {
+  tooltip.style('display', 'block')
+    .html(`<h3>${d.label}</h3><div class="type">${d.type.replace(/_/g,' ')}</div><div class="detail">${d.detail}</div>`);
+}).on('mousemove', e => {
+  tooltip.style('left', (e.pageX+15)+'px').style('top', (e.pageY-10)+'px');
+}).on('mouseout', () => tooltip.style('display', 'none'));
+
+simulation.on('tick', () => {
+  link.attr('x1',d=>d.source.x).attr('y1',d=>d.source.y).attr('x2',d=>d.target.x).attr('y2',d=>d.target.y);
+  node.attr('transform', d => `translate(${d.x},${d.y})`);
+});
+
+// Domain filtering
+document.querySelectorAll('.domain-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.domain-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const domain = btn.dataset.domain;
+
+    if (domain === 'all') {
+      node.style('opacity', 1);
+      link.style('opacity', 1);
+    } else {
+      const ids = new Set(domainMap[domain] || []);
+      node.style('opacity', d => ids.has(d.id) ? 1 : 0.1);
+      link.style('opacity', d => ids.has(d.source.id) && ids.has(d.target.id) ? 1 : 0.05);
+    }
+  });
+});
+</script>
+</body>
+</html>

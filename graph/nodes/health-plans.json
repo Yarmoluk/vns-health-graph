@@ -1,0 +1,66 @@
+{
+  "nodes": [
+    {
+      "id": "plan-easycare",
+      "type": "health_plan",
+      "label": "VNS Health EasyCare (HMO)",
+      "properties": {
+        "plan_id": "H5549-012",
+        "plan_type": "Medicare Advantage",
+        "includes_rx": true,
+        "monthly_premium": "$25.00",
+        "cms_star_rating": 3.5,
+        "coverage": ["hospital_care", "medical_services", "prescription_drugs"],
+        "enrollment_growth_2024": "34%",
+        "target_population": "Medicare beneficiaries"
+      }
+    },
+    {
+      "id": "plan-easycare-plus",
+      "type": "health_plan",
+      "label": "VNS Health EasyCare Plus (HMO D-SNP)",
+      "properties": {
+        "plan_id": "H5549-011",
+        "plan_type": "Dual-Eligible Special Needs Plan",
+        "beneficiaries_enrolled": 37353,
+        "enrollment_growth_2024": "60%",
+        "target_population": "dual_eligible_medicare_medicaid_no_ltc"
+      }
+    },
+    {
+      "id": "plan-total",
+      "type": "health_plan",
+      "label": "VNS Health Total (MAP)",
+      "properties": {
+        "plan_type": "Integrated Medicare-Medicaid (Medicaid Advantage Plus)",
+        "nysdoh_star_rating": 5.0,
+        "consecutive_5star_years": 2,
+        "enrollment_growth_2024": "25%",
+        "target_population": "dual_eligible_with_ltc_needs",
+        "distinction": "New York's top-rated MAP plan",
+        "expansion_target": "25 additional NY counties"
+      }
+    },
+    {
+      "id": "plan-mltc",
+      "type": "health_plan",
+      "label": "VNS Health MLTC",
+      "properties": {
+        "plan_type": "Medicaid Managed Long Term Care",
+        "rating": "highest_rated_mltc_nys",
+        "target_population": "medicaid_long_term_care"
+      }
+    },
+    {
+      "id": "plan-selecthealth",
+      "type": "health_plan",
+      "label": "SelectHealth",
+      "properties": {
+        "plan_type": "Medicaid Special Needs Plan",
+        "website": "selecthealthny.org",
+        "target_populations": ["HIV_positive", "homeless"],
+        "viral_load_suppression": "significantly_exceeds_statewide_average"
+      }
+    }
+  ]
+}

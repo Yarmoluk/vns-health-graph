@@ -1,0 +1,106 @@
+{
+  "nodes": [
+    {
+      "id": "proc-claims-submission",
+      "type": "process",
+      "label": "Claims Submission",
+      "properties": {
+        "channels": ["electronic_via_availity", "paper_mail"],
+        "paper_address": "VNS Health, P.O. Box 4498, Scranton, PA 18505",
+        "timely_filing_days": 90,
+        "secondary_claims_days": 60,
+        "critical_rule": "2025 and 2026 services must be on separate claims"
+      }
+    },
+    {
+      "id": "proc-claim-disputes",
+      "type": "process",
+      "label": "Claim Disputes",
+      "properties": {
+        "scope": ["coding_errors", "underpayments", "duplicate_denials"],
+        "method": "online_provider_claim_dispute_form",
+        "timelines": {
+          "LHCSA_FI_SNF": "60 days",
+          "meals_on_wheels": "90 days",
+          "ancillary_providers": "6 months with medical records"
+        }
+      }
+    },
+    {
+      "id": "proc-appeals",
+      "type": "process",
+      "label": "Coverage Appeals",
+      "properties": {
+        "scope": "coverage_denial_clinical_review",
+        "decision_timeline_days": 60,
+        "out_of_network_timeline_days": 120
+      }
+    },
+    {
+      "id": "proc-prior-auth",
+      "type": "process",
+      "label": "Prior Authorization",
+      "properties": {
+        "managed_by": "eviCore by Evernorth",
+        "submission_channels": ["provider_portal", "phone"],
+        "inpatient_to_home_health_sla": "1 business day",
+        "provider_portal_access": "24/7"
+      }
+    },
+    {
+      "id": "proc-credentialing",
+      "type": "process",
+      "label": "Provider Credentialing",
+      "properties": {
+        "managed_by": "VNS Health Plans",
+        "url": "vnshealthplans.org/health-professionals/credentialing/"
+      }
+    },
+    {
+      "id": "proc-post-payment-review",
+      "type": "process",
+      "label": "Post-Payment Review",
+      "properties": {
+        "vendor": "Varis",
+        "review_types": ["clinical_validation", "DRG_readmission"],
+        "record_request_deadline_days": 30,
+        "failure_consequence": "full_claim_reclamation_as_overpayment"
+      }
+    },
+    {
+      "id": "proc-corrected-claims",
+      "type": "process",
+      "label": "Corrected Claims Submission",
+      "properties": {
+        "ub04_frequency_code": 7,
+        "cms1500_resubmission_code": 7,
+        "requirement": "must_reference_correct_original_claim_number",
+        "common_failure": "not_marking_as_replacement_causes_denial"
+      }
+    },
+    {
+      "id": "proc-quality-measurement",
+      "type": "process",
+      "label": "Quality Measurement Program",
+      "properties": {
+        "total_measures_tracked": 100,
+        "categories": ["clinical_outcomes", "member_satisfaction", "operational_excellence"],
+        "reporting_frequency": "monthly",
+        "data_sources": ["care_managers", "home_health_aide_agencies", "primary_care_physicians"],
+        "leadership": "Mihriban Gursoy Brickner, SVP Quality & Clinical Operations"
+      }
+    },
+    {
+      "id": "proc-provider-directory-maintenance",
+      "type": "process",
+      "label": "Provider Directory Maintenance",
+      "properties": {
+        "cms_verification_cycle_days": 90,
+        "update_sla_days": 30,
+        "attestation": "annual_required",
+        "penalty": "directory_suppressed_on_medicare_plan_finder",
+        "compliance_gap": "must_document_when_aware_of_inaccuracy_and_response_taken"
+      }
+    }
+  ]
+}
