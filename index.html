@@ -3,713 +3,661 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VNS Health — Intelligence Layer</title>
+<title>VNS Health — Graphify Intelligence Deck</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
-  body { background: #0a0e1a; color: #e0e0e0; font-family: 'Inter', -apple-system, sans-serif; }
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;overflow:hidden;background:#080c18;color:#e0e0e0;font-family:'Inter',-apple-system,sans-serif;}
 
-  /* ── PROGRESS BAR ── */
-  #progress { position: fixed; top: 0; left: 0; height: 3px; background: linear-gradient(90deg, #5a8ade, #4ecdc4); z-index: 999; width: 0; transition: width 0.1s; }
+/* ── SLIDE CONTAINER ── */
+#deck{width:100vw;height:100vh;position:relative;}
+.slide{position:absolute;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.5s ease,transform 0.5s ease;transform:translateX(40px);padding:60px 80px;}
+.slide.active{opacity:1;pointer-events:all;transform:translateX(0);}
+.slide-inner{max-width:1100px;width:100%;}
 
-  /* ── NAV ── */
-  #nav {
-    position: fixed; top: 3px; left: 0; right: 0; z-index: 200;
-    background: rgba(10,14,26,0.92); backdrop-filter: blur(16px);
-    border-bottom: 1px solid #1a2040; padding: 0 32px;
-    display: flex; align-items: center; height: 52px; gap: 4px;
-  }
-  #nav .logo { font-size: 15px; font-weight: 700; color: #fff; margin-right: 20px; white-space: nowrap; }
-  #nav .logo span { color: #5a8ade; }
-  .nav-dot { width: 8px; height: 8px; border-radius: 50%; background: #222; cursor: pointer; transition: all 0.3s; margin: 0 3px; }
-  .nav-dot.active { background: #5a8ade; transform: scale(1.3); }
-  .nav-dot:hover { background: #3a5a9e; }
-  .nav-label { font-size: 11px; color: #555; margin-left: 12px; transition: color 0.3s; }
-  .nav-spacer { flex: 1; }
-  .nav-brand { font-size: 11px; color: #333; }
-  .nav-brand a { color: #5a8ade; text-decoration: none; }
+/* ── TOP BAR ── */
+#topbar{position:fixed;top:0;left:0;right:0;z-index:100;height:48px;background:rgba(8,12,24,0.9);backdrop-filter:blur(12px);border-bottom:1px solid #151d35;display:flex;align-items:center;padding:0 32px;}
+#topbar .logo{font-size:14px;font-weight:700;color:#fff;}
+#topbar .logo span{color:#5a8ade;}
+#topbar .sep{flex:1;}
+#topbar .slide-counter{font-size:12px;color:#555;font-variant-numeric:tabular-nums;}
+#topbar .brand{font-size:11px;color:#333;margin-left:24px;}
+#topbar .brand a{color:#5a8ade;text-decoration:none;}
 
-  /* ── SECTIONS ── */
-  section {
-    min-height: 100vh; padding: 80px 32px 60px;
-    display: flex; align-items: center; justify-content: center;
-    position: relative;
-  }
-  .section-inner { max-width: 880px; width: 100%; }
+/* ── PROGRESS ── */
+#progress{position:fixed;top:48px;left:0;height:3px;background:linear-gradient(90deg,#5a8ade,#4ecdc4);z-index:101;transition:width 0.3s;}
 
-  /* ── WHY BOX ── */
-  .why-box {
-    position: relative; margin-bottom: 48px;
-    background: linear-gradient(135deg, #2a1015, #1a0a0e); border: 2px solid #ff6b6b;
-    border-radius: 16px; padding: 32px 36px; text-align: left;
-    box-shadow: 0 0 40px rgba(255,107,107,0.08);
-  }
-  .why-box::before {
-    content: 'WHY THIS PRESENTATION EXISTS'; display: block;
-    font-size: 11px; font-weight: 700; letter-spacing: 2px; color: #ff6b6b;
-    margin-bottom: 16px;
-  }
-  .why-box p { color: #ccc; font-size: 14px; line-height: 1.8; margin-bottom: 12px; }
-  .why-box p:last-child { margin-bottom: 0; }
-  .why-box strong { color: #fff; }
-  .why-box .why-divider { border: none; border-top: 1px solid #3a1520; margin: 16px 0; }
+/* ── BOTTOM NAV ── */
+#bottomnav{position:fixed;bottom:0;left:0;right:0;z-index:100;height:56px;background:rgba(8,12,24,0.9);backdrop-filter:blur(12px);border-top:1px solid #151d35;display:flex;align-items:center;justify-content:center;gap:8px;padding:0 32px;}
+.dot{width:10px;height:10px;border-radius:50%;background:#1a2040;cursor:pointer;transition:all 0.3s;border:1px solid #1a2040;}
+.dot.active{background:#5a8ade;border-color:#5a8ade;transform:scale(1.3);}
+.dot:hover{background:#2a3a6a;border-color:#2a3a6a;}
+#prev-btn,#next-btn{position:fixed;top:50%;z-index:100;width:48px;height:48px;border-radius:50%;background:rgba(26,32,64,0.7);border:1px solid #2a3a5a;color:#888;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;transform:translateY(-50%);}
+#prev-btn{left:16px;}
+#next-btn{right:16px;}
+#prev-btn:hover,#next-btn:hover{background:#1a2545;color:#fff;border-color:#5a8ade;}
 
-  /* ── HERO ── */
-  #hero { text-align: center; }
-  #hero h1 {
-    font-size: 48px; font-weight: 900; line-height: 1.1; margin-bottom: 16px;
-    background: linear-gradient(135deg, #5a8ade 0%, #4ecdc4 100%);
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  }
-  #hero .sub { font-size: 18px; color: #666; max-width: 600px; margin: 0 auto 40px; line-height: 1.6; }
-  #hero .context-line { font-size: 13px; color: #444; margin-bottom: 8px; }
-  #hero .scroll-hint {
-    margin-top: 48px; font-size: 12px; color: #333;
-    animation: pulse 2s ease-in-out infinite;
-  }
-  @keyframes pulse { 0%,100%{opacity:0.3} 50%{opacity:0.8} }
+/* ── TYPOGRAPHY ── */
+.sl-label{font-size:11px;font-weight:700;color:#5a8ade;text-transform:uppercase;letter-spacing:2px;margin-bottom:12px;}
+.sl-title{font-size:42px;font-weight:900;color:#fff;line-height:1.1;margin-bottom:16px;}
+.sl-title em{font-style:normal;background:linear-gradient(135deg,#5a8ade,#4ecdc4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.sl-sub{font-size:18px;color:#777;line-height:1.6;margin-bottom:32px;max-width:700px;}
+.sl-body{font-size:15px;color:#999;line-height:1.7;}
+.sl-body strong{color:#e0e0e0;}
 
-  /* ── TYPOGRAPHY ── */
-  h2 {
-    font-size: 36px; font-weight: 800; color: #fff; margin-bottom: 12px;
-    line-height: 1.15;
-  }
-  h2 span { color: #5a8ade; }
-  h3 { font-size: 20px; font-weight: 700; color: #e0e0e0; margin: 32px 0 12px; }
-  h4 { font-size: 14px; font-weight: 600; color: #888; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 16px; }
-  p { color: #999; font-size: 15px; line-height: 1.7; margin-bottom: 16px; }
-  p strong { color: #e0e0e0; }
-  .lead { font-size: 17px; color: #aaa; line-height: 1.7; margin-bottom: 24px; }
+/* ── RED BOX ── */
+.red-box{background:linear-gradient(135deg,#2a0a10,#1a0508);border:2px solid #ff6b6b;border-radius:16px;padding:32px 36px;margin-bottom:0;box-shadow:0 0 60px rgba(255,80,80,0.1);position:relative;}
+.red-box::before{content:'WHY THIS PRESENTATION EXISTS';display:block;font-size:11px;font-weight:800;letter-spacing:2.5px;color:#ff6b6b;margin-bottom:16px;}
+.red-box p{color:#ccc;font-size:14px;line-height:1.8;margin-bottom:12px;}
+.red-box p:last-child{margin-bottom:0;}
+.red-box strong{color:#fff;}
+.red-box hr{border:none;border-top:1px solid #3a1520;margin:16px 0;}
 
-  /* ── CARDS ── */
-  .card {
-    background: #111827; border: 1px solid #1e2a45; border-radius: 12px;
-    padding: 28px 32px; margin-bottom: 20px; position: relative; overflow: hidden;
-  }
-  .card::before {
-    content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%;
-  }
-  .card.red::before { background: linear-gradient(180deg, #ff6b6b, #ff6b6b00); }
-  .card.green::before { background: linear-gradient(180deg, #4ecdc4, #4ecdc400); }
-  .card.blue::before { background: linear-gradient(180deg, #5a8ade, #5a8ade00); }
-  .card.gold::before { background: linear-gradient(180deg, #ffd93d, #ffd93d00); }
-  .card.purple::before { background: linear-gradient(180deg, #c77dff, #c77dff00); }
-  .card h3 { margin-top: 0; font-size: 17px; }
-  .card p { font-size: 14px; margin-bottom: 8px; }
-  .card p:last-child { margin-bottom: 0; }
+/* ── CARDS ── */
+.card{background:#0f1628;border:1px solid #1a2545;border-radius:12px;padding:24px 28px;position:relative;overflow:hidden;}
+.card::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;}
+.card.r::before{background:#ff6b6b;}
+.card.g::before{background:#4ecdc4;}
+.card.b::before{background:#5a8ade;}
+.card.y::before{background:#ffd93d;}
+.card.p::before{background:#c77dff;}
+.card h3{font-size:16px;font-weight:700;color:#fff;margin-bottom:8px;}
+.card p{font-size:13px;color:#999;line-height:1.7;margin-bottom:6px;}
+.card p:last-child{margin-bottom:0;}
 
-  /* ── FLOW DIAGRAM ── */
-  .flow {
-    background: #0d1117; border: 1px solid #1a2545; border-radius: 8px;
-    padding: 20px 24px; margin: 16px 0 24px; font-family: 'SF Mono', 'JetBrains Mono', monospace;
-    font-size: 13px; line-height: 2; overflow-x: auto;
-  }
-  .flow .a { color: #ff6b6b; } /* arrow/danger */
-  .flow .g { color: #4ecdc4; } /* good/graph */
-  .flow .w { color: #ffd93d; } /* warning */
-  .flow .b { color: #5a8ade; } /* info */
-  .flow .d { color: #555; }    /* dim */
+/* ── GRID LAYOUTS ── */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
+.grid-2-1{display:grid;grid-template-columns:1fr 1.2fr;gap:24px;align-items:start;}
+.grid-1-2{display:grid;grid-template-columns:1.2fr 1fr;gap:24px;align-items:start;}
 
-  /* ── TABLES ── */
-  .tbl { width: 100%; border-collapse: collapse; margin: 16px 0 24px; font-size: 13px; }
-  .tbl th { text-align: left; padding: 10px 14px; background: #111827; color: #666; font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid #1e2a45; }
-  .tbl td { padding: 10px 14px; border-bottom: 1px solid #111827; color: #bbb; }
-  .tbl tr:hover td { background: #0d1117; }
-  .tbl .bad { color: #ff6b6b; font-weight: 600; }
-  .tbl .ok { color: #4ecdc4; font-weight: 600; }
-  .tbl .gold { color: #ffd93d; font-weight: 600; }
+/* ── FLOW DIAGRAMS ── */
+.flow{background:#070b14;border:1px solid #131b30;border-radius:10px;padding:20px 24px;font-family:'SF Mono','JetBrains Mono',monospace;font-size:12px;line-height:2;overflow-x:auto;}
+.flow .a{color:#ff6b6b;}.flow .g{color:#4ecdc4;}.flow .w{color:#ffd93d;}.flow .b{color:#5a8ade;}.flow .d{color:#444;}
 
-  /* ── SIGNAL BOX ── */
-  .signal {
-    background: linear-gradient(135deg, #1a2545, #0d1117);
-    border: 1px solid #2a4a7a; border-radius: 12px;
-    padding: 24px 28px; margin: 24px 0;
-  }
-  .signal h4 { margin-bottom: 8px; }
-  .signal p { color: #ccc; margin-bottom: 0; }
+/* ── TABLES ── */
+.tbl{width:100%;border-collapse:collapse;font-size:13px;}
+.tbl th{text-align:left;padding:8px 12px;background:#0a0f1e;color:#555;font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid #151d35;}
+.tbl td{padding:8px 12px;border-bottom:1px solid #0f1628;color:#bbb;}
+.tbl tr:hover td{background:#0a0f1e;}
+.bad{color:#ff6b6b;font-weight:600;}
+.ok{color:#4ecdc4;font-weight:600;}
+.gold{color:#ffd93d;font-weight:600;}
 
-  /* ── TWO COL ── */
-  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0; }
-  @media (max-width: 700px) { .cols { grid-template-columns: 1fr; } }
+/* ── SIGNAL BOX ── */
+.signal{background:linear-gradient(135deg,#0f1a35,#0a0f1e);border:1px solid #1a3060;border-radius:12px;padding:20px 24px;margin-top:16px;}
+.signal h4{font-size:10px;font-weight:700;color:#5a8ade;text-transform:uppercase;letter-spacing:2px;margin-bottom:8px;}
+.signal p{color:#bbb;font-size:14px;line-height:1.6;margin-bottom:0;}
 
-  /* ── NUMBERED STEPS ── */
-  .step-num {
-    display: inline-flex; align-items: center; justify-content: center;
-    width: 32px; height: 32px; border-radius: 8px; font-weight: 800;
-    font-size: 15px; margin-right: 12px; flex-shrink: 0;
-  }
-  .step-num.r { background: #ff6b6b22; color: #ff6b6b; }
-  .step-num.y { background: #ffd93d22; color: #ffd93d; }
-  .step-num.g { background: #4ecdc422; color: #4ecdc4; }
-  .step-num.b { background: #5a8ade22; color: #5a8ade; }
-  .step-num.p { background: #c77dff22; color: #c77dff; }
+/* ── GRAPH CANVAS ── */
+#graph-canvas svg{border-radius:12px;border:1px solid #151d35;background:#060a14;}
+.node circle{stroke-width:2;cursor:pointer;}
+.node circle:hover{filter:brightness(1.4);}
+.node text{fill:#aaa;font-size:9px;pointer-events:none;text-anchor:middle;}
+.link-label{fill:#333;font-size:7px;text-anchor:middle;pointer-events:none;}
+.graph-tooltip{position:fixed;background:#111827;border:1px solid #2a3a5a;border-radius:8px;padding:10px 14px;font-size:12px;max-width:260px;pointer-events:none;display:none;z-index:300;box-shadow:0 4px 20px rgba(0,0,0,0.6);}
+.graph-tooltip h3{color:#fff;font-size:13px;margin-bottom:3px;}
+.graph-tooltip small{color:#666;font-size:10px;text-transform:uppercase;letter-spacing:0.5px;}
+.graph-tooltip p{color:#aaa;font-size:11px;margin-top:4px;margin-bottom:0;line-height:1.5;}
+.g-btn{background:#0a0f1e;border:1px solid #151d35;color:#666;padding:5px 12px;border-radius:5px;cursor:pointer;font-size:11px;font-family:inherit;transition:all 0.2s;}
+.g-btn:hover{border-color:#2a4a7a;color:#aaa;}
+.g-btn.active{background:#0f1a35;border-color:#5a8ade;color:#fff;}
 
-  .step-row {
-    display: flex; align-items: flex-start; padding: 16px 0;
-    border-bottom: 1px solid #111827;
-  }
-  .step-row:last-child { border-bottom: none; }
-  .step-content { flex: 1; }
-  .step-content .name { font-size: 15px; font-weight: 600; color: #e0e0e0; }
-  .step-content .desc { font-size: 13px; color: #777; margin-top: 2px; }
-  .step-meta { text-align: right; min-width: 140px; }
-  .step-meta .time { font-size: 13px; color: #888; }
-  .step-meta .risk { font-size: 13px; font-weight: 600; margin-top: 2px; }
+/* ── STEP ROWS ── */
+.step-row{display:flex;align-items:center;padding:14px 0;border-bottom:1px solid #0f1628;gap:16px;}
+.step-row:last-child{border-bottom:none;}
+.step-num{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px;flex-shrink:0;}
+.step-num.n1{background:#ff6b6b18;color:#ff6b6b;}
+.step-num.n2{background:#ffd93d18;color:#ffd93d;}
+.step-num.n3{background:#4ecdc418;color:#4ecdc4;}
+.step-num.n4{background:#5a8ade18;color:#5a8ade;}
+.step-num.n5{background:#c77dff18;color:#c77dff;}
+.step-info{flex:1;}
+.step-info .name{font-size:14px;font-weight:600;color:#e0e0e0;}
+.step-info .desc{font-size:12px;color:#666;margin-top:2px;}
+.step-meta{text-align:right;min-width:130px;}
+.step-meta .time{font-size:12px;color:#666;}
+.step-meta .risk{font-size:12px;font-weight:700;margin-top:2px;}
 
-  /* ── CTA ── */
-  .cta-box {
-    margin-top: 48px; padding: 40px; background: linear-gradient(135deg, #1a2545 0%, #111827 100%);
-    border: 1px solid #2a4a7a; border-radius: 16px; text-align: center;
-  }
-  .cta-box h3 { color: #fff; font-size: 22px; margin: 0 0 8px; }
-  .cta-box p { color: #888; font-size: 14px; margin-bottom: 0; }
-  .cta-box a { color: #5a8ade; text-decoration: none; font-weight: 600; }
-  .cta-box a:hover { text-decoration: underline; }
-  .cta-box .sep { color: #333; margin: 0 8px; }
+/* ── PROCESS FLOW VISUAL ── */
+.process-flow{display:flex;align-items:center;gap:0;margin:20px 0;flex-wrap:wrap;}
+.pf-step{background:#0f1628;border:1px solid #1a2545;border-radius:8px;padding:10px 16px;text-align:center;flex:1;min-width:100px;}
+.pf-step .pf-icon{font-size:22px;margin-bottom:4px;}
+.pf-step .pf-label{font-size:10px;color:#888;text-transform:uppercase;letter-spacing:0.5px;}
+.pf-step .pf-detail{font-size:11px;color:#555;margin-top:2px;}
+.pf-arrow{color:#2a3a5a;font-size:20px;padding:0 4px;flex-shrink:0;}
 
-  /* ── GRAPH VIEW ── */
-  #graph-section svg { width: 100%; height: 70vh; display: block; border-radius: 12px; border: 1px solid #1a2040; }
-  .graph-controls {
-    display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px;
-  }
-  .g-btn {
-    background: #111827; border: 1px solid #1e2a45; color: #888;
-    padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 12px;
-    font-family: inherit; transition: all 0.2s;
-  }
-  .g-btn:hover { border-color: #3a5a8a; color: #ccc; }
-  .g-btn.active { background: #1a2545; border-color: #5a8ade; color: #fff; }
-  .node circle { stroke-width: 2; cursor: pointer; }
-  .node circle:hover { filter: brightness(1.3); }
-  .node text { fill: #c0c0c0; font-size: 10px; pointer-events: none; text-anchor: middle; }
-  .link-label { fill: #444; font-size: 8px; text-anchor: middle; pointer-events: none; }
+/* ── CTA ── */
+.cta{margin-top:24px;padding:32px;background:linear-gradient(135deg,#0f1a35,#0a0f1e);border:1px solid #1a3060;border-radius:16px;text-align:center;}
+.cta h3{color:#fff;font-size:20px;margin-bottom:6px;}
+.cta p{color:#777;font-size:14px;margin-bottom:0;}
+.cta a{color:#5a8ade;text-decoration:none;font-weight:600;}
+.cta a:hover{text-decoration:underline;}
+.cta .s{color:#333;margin:0 6px;}
 
-  .graph-tooltip {
-    position: fixed; background: #1a1f2e; border: 1px solid #2a3a5a;
-    border-radius: 8px; padding: 12px 16px; font-size: 13px;
-    max-width: 300px; pointer-events: none; display: none; z-index: 300;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-  }
-  .graph-tooltip h3 { color: #fff; margin-bottom: 4px; font-size: 14px; }
-  .graph-tooltip .tt-type { color: #888; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
-  .graph-tooltip .tt-detail { color: #aaa; font-size: 12px; line-height: 1.5; }
-
-  /* ── SECTION DIVIDER ── */
-  .divider {
-    text-align: center; padding: 16px 0; color: #222; font-size: 24px;
-    letter-spacing: 12px;
-  }
+/* ── KEYBOARD HINT ── */
+.kb-hint{position:fixed;bottom:64px;right:24px;font-size:10px;color:#333;z-index:50;}
 </style>
 </head>
 <body>
 
-<div id="progress"></div>
-
-<div id="nav">
+<!-- TOP BAR -->
+<div id="topbar">
   <div class="logo">VNS Health <span>Intelligence</span></div>
-  <div class="nav-dot active" data-section="hero"></div>
-  <div class="nav-dot" data-section="world"></div>
-  <div class="nav-dot" data-section="signal"></div>
-  <div class="nav-dot" data-section="friction1"></div>
-  <div class="nav-dot" data-section="friction2"></div>
-  <div class="nav-dot" data-section="friction3"></div>
-  <div class="nav-dot" data-section="graph-section"></div>
-  <div class="nav-dot" data-section="roadmap"></div>
-  <div class="nav-label">VNS Health &middot; Shajey Rumi</div>
-  <div class="nav-spacer"></div>
-  <div class="nav-brand"><a href="https://graphifymd.com">Graphify.md</a></div>
+  <div class="sep"></div>
+  <div class="slide-counter"><span id="current-num">1</span> / <span id="total-num">12</span></div>
+  <div class="brand"><a href="https://graphifymd.com">Graphify.md</a></div>
+</div>
+<div id="progress" style="width:0"></div>
+
+<!-- BOTTOM NAV -->
+<div id="bottomnav"></div>
+<button id="prev-btn">&larr;</button>
+<button id="next-btn">&rarr;</button>
+<div class="kb-hint">Arrow keys to navigate</div>
+
+<!-- TOOLTIP -->
+<div class="graph-tooltip" id="gtt"></div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- SLIDE 1: RED BOX — WHY THIS EXISTS -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="slide active" id="s1">
+<div class="slide-inner">
+  <div class="red-box">
+    <p><strong>Shajey — this was built for you specifically.</strong></p>
+    <p>You're a Technical Product Manager building on <strong>Salesforce Health Cloud</strong> at a health plan growing 34-60% year over year. You earned your <strong>AI Product Management certification</strong> last November. You come from <strong>Deloitte SAP data warehousing</strong> — you understand what breaks when systems don't talk to each other. You mentor product managers at First Round. You write about strategic foresight — seeing the rivulets that form rivers.</p>
+    <p>We think you're the right person at VNS to see this because <strong>you sit at the intersection of the data layer and the product surface.</strong> The friction points in this deck aren't executive abstractions — they're product problems in your Salesforce implementation. And the graph solutions don't replace Health Cloud. They feed intelligence INTO it.</p>
+    <hr>
+    <p><strong>How we built this — no proprietary data, no inside access:</strong></p>
+    <p>100% public information: vnshealth.org, vnshealthplans.org, CMS plan data, posted provider manuals, newsroom articles, regulatory requirements. We scraped public pages, extracted entities, mapped relationships, and analyzed cross-domain patterns. <strong>This is what the graph shows on public data alone.</strong> Imagine what it reveals on your actual Salesforce records.</p>
+  </div>
+</div>
 </div>
 
-<!-- ════════════════════════════════════════ -->
-<!-- 1. HERO -->
-<!-- ════════════════════════════════════════ -->
-<section id="hero">
-  <div class="section-inner">
-    <div class="why-box">
-      <p><strong>Shajey — here's why we built this for you specifically.</strong></p>
-      <p>You're a Technical Product Manager building on Salesforce Health Cloud at a health plan growing 34-60% year over year. You just earned your AI Product Management certification. You come from Deloitte SAP data warehousing — you understand data pipelines and what breaks when systems don't talk to each other. You mentor product managers at First Round. You write about strategic foresight — seeing the rivulets that form rivers.</p>
-      <p>We think you're the right person at VNS to see this because <strong>you sit at the intersection of the data layer and the product surface.</strong> The five friction points in this presentation aren't executive-level abstractions — they're product problems that show up in your Salesforce implementation every day. And the graph solutions we propose don't replace Health Cloud. They feed intelligence INTO it.</p>
-      <hr class="why-divider">
-      <p><strong>How we built this — no proprietary data, no inside access:</strong></p>
-      <p>Everything in this graph was constructed from <strong>publicly available information only</strong> — vnshealth.org, vnshealthplans.org, CMS plan data, provider manuals posted online, newsroom articles, and industry regulatory requirements. We scraped public web pages, extracted entities (plans, vendors, processes, metrics, stakeholders), mapped the relationships between them, and then analyzed the cross-domain patterns that emerge when you connect all the dots.</p>
-      <p>This is what the graph looks like built on <strong>public data alone.</strong> Imagine what it reveals when connected to your actual Salesforce records, claims data, and provider interactions. That's the demo we'd love to show you.</p>
-    </div>
-
-    <div class="context-line">Prepared for Shajey Rumi &middot; Technical Product Manager, VNS Health</div>
-    <div class="context-line" style="margin-bottom:32px;">March 14, 2026</div>
-    <h1>The Intelligence Layer<br>Your Product Is Missing</h1>
-    <p class="sub">Salesforce Health Cloud is your system of record. But relationships between providers, members, claims, and outcomes live in the gaps between records. A knowledge graph makes those gaps queryable.</p>
-    <div class="scroll-hint">Scroll to explore &darr;</div>
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- SLIDE 2: TITLE -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="slide" id="s2">
+<div class="slide-inner" style="text-align:center;">
+  <div class="sl-label">Prepared for Shajey Rumi &middot; March 2026</div>
+  <div class="sl-title" style="font-size:52px;margin-bottom:20px;">The Intelligence Layer<br><em>Your Product Is Missing</em></div>
+  <div class="sl-sub" style="margin:0 auto 40px;text-align:center;">Salesforce Health Cloud is your system of record.<br>But relationships between providers, members, claims, and outcomes<br>live in the gaps between records. A knowledge graph makes those gaps queryable.</div>
+  <div class="process-flow" style="max-width:700px;margin:0 auto;">
+    <div class="pf-step"><div class="pf-icon">🌐</div><div class="pf-label">Public Data</div><div class="pf-detail">Web scrape</div></div>
+    <div class="pf-arrow">&rarr;</div>
+    <div class="pf-step"><div class="pf-icon">🔍</div><div class="pf-label">Entity Extraction</div><div class="pf-detail">36 entities found</div></div>
+    <div class="pf-arrow">&rarr;</div>
+    <div class="pf-step"><div class="pf-icon">🕸️</div><div class="pf-label">Relationship Mapping</div><div class="pf-detail">32 connections</div></div>
+    <div class="pf-arrow">&rarr;</div>
+    <div class="pf-step"><div class="pf-icon">⚡</div><div class="pf-label">Pattern Analysis</div><div class="pf-detail">5 friction points</div></div>
+    <div class="pf-arrow">&rarr;</div>
+    <div class="pf-step"><div class="pf-icon">🎯</div><div class="pf-label">Actionable Output</div><div class="pf-detail">This deck</div></div>
   </div>
-</section>
+</div>
+</div>
 
-<!-- ════════════════════════════════════════ -->
-<!-- 2. YOUR WORLD -->
-<!-- ════════════════════════════════════════ -->
-<section id="world">
-  <div class="section-inner">
-    <h4>Your World</h4>
-    <h2>What you're <span>navigating</span> every day</h2>
-    <p class="lead">You're building on Salesforce Health Cloud in a health plan that's growing 34-60% year over year, managing 73,000 daily touchpoints, across 5 plans, with 4+ vendor systems generating data in different formats and different timelines.</p>
-
-    <div class="cols">
-      <div class="card blue">
-        <h3>The Product Surface</h3>
-        <p>Salesforce Health Cloud as the backbone. Provider data, member records, care plans, claims status. You own the product that providers and internal staff interact with daily.</p>
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- SLIDE 3: YOUR WORLD -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="slide" id="s3">
+<div class="slide-inner">
+  <div class="sl-label">Your World</div>
+  <div class="sl-title">What you're <em>navigating</em> every day</div>
+  <div class="grid-2" style="margin-top:24px;">
+    <div>
+      <div class="card b" style="margin-bottom:14px;">
+        <h3>Your Product Surface</h3>
+        <p>Salesforce Health Cloud as the backbone. Provider data, member records, care plans, claims status. You own the product that providers and internal staff touch daily.</p>
       </div>
-      <div class="card red">
+      <div class="card r">
         <h3>The Data Reality</h3>
-        <p>Availity sends claims data. eviCore manages auth decisions. Varis runs post-payment audits. MedImpact handles Part D. Each vendor speaks a different language. Salesforce sees pieces, never the whole picture.</p>
+        <p>Availity sends claims. eviCore manages auth. Varis runs audits. MedImpact handles Part D. <strong>Each vendor speaks a different language.</strong> Salesforce sees pieces — never the whole picture.</p>
       </div>
     </div>
-
-    <div class="card gold">
-      <h3>The Product Problem You Can't Solve in Salesforce Alone</h3>
-      <p>Salesforce stores records. But the <strong>relationships between records</strong> — why a provider is leaving the network, which member engagement pattern predicts churn, how a claims denial cascades into a compliance gap — those live in the connections. And connections aren't rows in a table.</p>
-      <p>That's what a graph does. It makes the <strong>space between your records</strong> queryable, traceable, and actionable.</p>
-    </div>
-  </div>
-</section>
-
-<!-- ════════════════════════════════════════ -->
-<!-- 3. THE SIGNAL -->
-<!-- ════════════════════════════════════════ -->
-<section id="signal">
-  <div class="section-inner">
-    <h4>The Signal</h4>
-    <h2>We mapped VNS Health's <span>entire ecosystem</span></h2>
-    <p class="lead">36 entities. 32 relationships. 6 strategic domains. Every connection between plans, vendors, processes, stakeholders, and metrics — traced and analyzed. Here's what the graph surfaced.</p>
-
-    <div class="signal">
-      <h4>The Master Finding</h4>
-      <p>Everything connects through one node: <strong>provider directory data quality.</strong> It's the junction where growth strategy, CMS compliance, provider satisfaction, member experience, and star ratings all intersect. And the gap isn't data accuracy — it's <strong>data provenance.</strong></p>
-    </div>
-
-    <table class="tbl">
-      <thead><tr><th>Friction</th><th>What the Graph Found</th><th>Revenue at Risk</th></tr></thead>
-      <tbody>
-        <tr><td><strong>"Prove When You Knew"</strong></td><td>CMS doesn't care if data is right — they care if you can prove when you learned it was wrong</td><td class="bad">Blocks 25-county expansion</td></tr>
-        <tr><td><strong>4 Vendors, Zero Visibility</strong></td><td>No single system shows auth → claim → payment → audit lifecycle</td><td class="gold">$300K+/yr admin cost</td></tr>
-        <tr><td><strong>15K New Members, One Playbook</strong></td><td>D-SNP and EasyCare members get MLTC-style engagement. Wrong channel, wrong message.</td><td class="bad">$7.5M-$11.25M/yr churn</td></tr>
-        <tr><td><strong>The Varis Trap</strong></td><td>30-day records deadline → full reclamation → providers leave → no one connects the dots</td><td class="gold">Network adequacy</td></tr>
-        <tr><td><strong>Knowledge Drain</strong></td><td>130 years of institutional knowledge lives in people retiring, not systems</td><td class="bad">Irreversible moat loss</td></tr>
-      </tbody>
-    </table>
-
-    <p style="color:#555; font-size:13px;">Let's walk through the three that matter most for your product roadmap.</p>
-  </div>
-</section>
-
-<!-- ════════════════════════════════════════ -->
-<!-- 4. FRICTION #1 — PROVE WHEN YOU KNEW -->
-<!-- ════════════════════════════════════════ -->
-<section id="friction1">
-  <div class="section-inner">
-    <h4>Friction #1</h4>
-    <h2>"Prove when <span>you knew</span>"</h2>
-    <p class="lead">CMS doesn't just ask: "Is your provider directory accurate?" They ask: "When did you become aware of the inaccuracy, and what did you do about it, and how fast?"</p>
-
-    <h3>Why You Can't Answer This Today</h3>
-    <div class="flow">
-      Provider moves offices January 15<br>
-      <span class="a">&rarr;</span> Maybe tells VNS. Maybe doesn't.<br>
-      <span class="a">&rarr;</span> Update comes through credentialing, or a member call, or 90-day outreach<br>
-      <span class="a">&rarr;</span> Someone updates the Salesforce record on March 3<br>
-      <span class="a">&rarr;</span> CMS auditor asks: <span class="w">"When did you know?"</span><br>
-      <span class="a">&rarr;</span> Salesforce shows the record was updated March 3<br>
-      <span class="a">&rarr;</span> <span class="a">Cannot prove whether VNS knew Jan 20, Feb 5, or Mar 1</span><br>
-      <span class="a">&rarr;</span> <span class="a">Corrective Action Plan issued</span><br>
-      <span class="a">&rarr;</span> <span class="a">Directory SUPPRESSED on Medicare Plan Finder</span><br>
-      <span class="a">&rarr;</span> <span class="a">Enrollment growth stalls across ALL plans</span>
-    </div>
-
-    <p>Salesforce has the <strong>current state</strong> of every provider record. What it doesn't have is the <strong>chain of custody</strong> — when each piece of information entered the system, from what source, and what action was taken in response.</p>
-
-    <div class="card green">
-      <h3>The Graph Layer: Provider Data Lineage</h3>
-      <p>A knowledge graph sits alongside Salesforce. Every provider record change becomes a timestamped edge with source, detection method, response action, and resolution:</p>
-      <div class="flow">
-        <span class="g">(:ProviderRecord {npi, address})</span><br>
-        &nbsp;&nbsp;<span class="g">-[:CHANGED {</span><br>
-        &nbsp;&nbsp;&nbsp;&nbsp;timestamp: <span class="b">"2026-01-20T14:32:00Z"</span>,<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;source: <span class="b">"member_call"</span>,<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;detected_by: <span class="b">"agent_4421"</span>,<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;response: <span class="b">"ticket_created"</span>,<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;response_time: <span class="b">"38 minutes"</span>,<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;resolved: <span class="b">"next business day"</span>,<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;sla_met: <span class="g">true</span><br>
-        &nbsp;&nbsp;<span class="g">}]-></span> <span class="g">(:ProviderRecord {updated})</span>
-      </div>
-      <p>CMS asks "when?" — you pull the graph. <strong>Awareness:</strong> Jan 20, 2:32 PM. <strong>Response:</strong> 38 minutes. <strong>Resolution:</strong> next business day. <strong>SLA: met.</strong></p>
-      <p>That's not a compliance answer. <strong>That's a compliance weapon.</strong></p>
-    </div>
-
-    <div class="signal">
-      <h4>What This Means for Your Product</h4>
-      <p>This graph layer <strong>feeds back into Salesforce</strong> — surfacing provenance data in the provider record, powering dashboards for compliance teams, and generating alerts when verification cycles are approaching. You don't replace your Health Cloud investment. You make it capable of answering the question CMS is actually asking.</p>
-    </div>
-  </div>
-</section>
-
-<!-- ════════════════════════════════════════ -->
-<!-- 5. FRICTION #2 — VENDOR VISIBILITY + MEMBER SEGMENTS -->
-<!-- ════════════════════════════════════════ -->
-<section id="friction2">
-  <div class="section-inner">
-    <h4>Friction #2</h4>
-    <h2>Four vendors.<br><span>Zero unified view.</span></h2>
-    <p class="lead">A provider touches Availity (claims), eviCore (auth), Varis (audit), and your Salesforce portal — four systems, four logins, four status languages. No one can see the full lifecycle of a single patient interaction.</p>
-
-    <table class="tbl">
-      <thead><tr><th>Step</th><th>System</th><th>Vendor</th><th>Data Home</th></tr></thead>
-      <tbody>
-        <tr><td>Check auth requirement</td><td>VNS Provider Portal</td><td>Salesforce</td><td class="ok">Your system</td></tr>
-        <tr><td>Submit prior auth</td><td>eviCore</td><td>Evernorth/Cigna</td><td class="bad">External</td></tr>
-        <tr><td>Submit claim</td><td>Availity</td><td>Availity</td><td class="bad">External</td></tr>
-        <tr><td>Respond to audit</td><td>Varis</td><td>Varis</td><td class="bad">External (surprise)</td></tr>
-      </tbody>
-    </table>
-
-    <div class="card green">
-      <h3>The Graph Layer: Claims Lifecycle Intelligence</h3>
-      <div class="flow">
-        <span class="g">(:AuthRequest)</span> <span class="a">&rarr;</span> <span class="g">(:Authorization)</span> <span class="a">&rarr;</span> <span class="g">(:Claim)</span> <span class="a">&rarr;</span> <span class="g">(:Outcome)</span> <span class="a">&rarr;</span> <span class="g">(:PostPaymentReview)</span>
-      </div>
-      <p>One graph stitches the journey across all four vendors. Root cause tracing goes from denial backward to find the break. Cross-year billing errors caught before submission. Varis early warning 15 days before the 30-day records deadline.</p>
-      <p><strong>For your product:</strong> This surfaces in Salesforce as a unified claim timeline component — providers see one view instead of four. You ship a feature no competing health plan portal offers.</p>
-    </div>
-
-    <div class="divider">&middot;&middot;&middot;</div>
-
-    <h4>Friction #3</h4>
-    <h2>15,000 new members.<br><span>One engagement playbook.</span></h2>
-
-    <table class="tbl">
-      <thead><tr><th></th><th>Legacy MLTC</th><th>New D-SNP (60% growth)</th><th>New EasyCare (34%)</th></tr></thead>
-      <tbody>
-        <tr><td><strong>Relationship</strong></td><td>Years</td><td>Days/weeks</td><td>Days/weeks</td></tr>
-        <tr><td><strong>Channel</strong></td><td>Phone, in-person</td><td>Unknown</td><td class="ok">Digital-first</td></tr>
-        <tr><td><strong>Driver</strong></td><td>Continuity</td><td>Benefits clarity</td><td>Cost, convenience</td></tr>
-        <tr><td><strong>CAHPS risk</strong></td><td class="ok">Low</td><td class="bad">High</td><td class="bad">High</td></tr>
-      </tbody>
-    </table>
-
-    <p>The 5-star rating was earned on MLTC relationships built over years. New D-SNP and EasyCare members have different expectations. Same playbook = satisfaction divergence = star rating erosion. The blended score masks it until it's <strong>12-18 months too late.</strong></p>
-
-    <div class="card green">
-      <h3>The Graph Layer: Member Segment Intelligence</h3>
-      <p>Map every member interaction across care team, portal, phone, and claims — segmented by plan type and enrollment tenure. The graph identifies which engagement patterns correlate with retention for each segment.</p>
-      <p><strong>For your product:</strong> This powers AI-driven engagement recommendations inside Salesforce Health Cloud. Care managers see: <em>"This D-SNP member hasn't logged into the portal, missed a follow-up, and had a provider change — churn probability 85%. Recommended action: benefits education call within 48 hours."</em></p>
-      <p>That's the AI product management application. Graph features as inputs. Salesforce as the delivery surface.</p>
-    </div>
-
-    <div class="signal">
-      <h4>The Money Math</h4>
-      <p>MA capitation: ~$10K-$15K/member/year. Losing 5% of 15,000 new members = 750 members = <strong>$7.5M-$11.25M annual revenue loss.</strong> Reducing churn by 2 points pays for the entire investment. Denial rate drop from 10% to 7% = <strong>$300K/year in admin savings.</strong></p>
-    </div>
-  </div>
-</section>
-
-<!-- ════════════════════════════════════════ -->
-<!-- 6. FRICTION #3 — VARIS + KNOWLEDGE -->
-<!-- ════════════════════════════════════════ -->
-<section id="friction3">
-  <div class="section-inner">
-    <h4>The Hidden Cascades</h4>
-    <h2>Two frictions that <span>compound silently</span></h2>
-
-    <div class="cols">
-      <div class="card red">
-        <h3>The Varis Trap</h3>
-        <p>Varis requests records. Provider has 30 days. Miss it? <strong>Full claim reclamation.</strong> Provider did the work. Patient got the care. But a missed admin deadline = zero pay.</p>
-        <p>After this happens twice, the provider stops accepting VNS members. VNS sees "network attrition" and doesn't connect it to Varis.</p>
-        <p><strong>Graph fix:</strong> Provider risk scoring. Flag providers with 2+ recoupments + declining claims + no portal logins. Proactive outreach 15 days before Varis deadline. One call saves the relationship.</p>
-      </div>
-      <div class="card purple">
-        <h3>Knowledge Walking Out</h3>
-        <p>130 years of institutional knowledge lives in people. Which providers actually return calls. Which aides are reliable in which neighborhoods. Which members need their daughter called first.</p>
-        <p>When veteran staff retire — especially <strong>multilingual staff</strong> in a 50+ language market — the entire relationship network of a care territory vanishes.</p>
-        <p><strong>Graph fix:</strong> Institutional knowledge capture. When a care manager announces retirement, generate their full profile — relationships, operational insights, community knowledge — and transfer it.</p>
+    <div>
+      <div class="card y">
+        <h3>The Product Problem Salesforce Can't Solve Alone</h3>
+        <p>Salesforce stores <strong>records</strong>. But the <strong>relationships between records</strong> — why a provider is leaving, which engagement pattern predicts churn, how a denial cascades into a compliance gap — those live in the connections.</p>
+        <p>Connections aren't rows in a table. That's what a graph does. It makes the <strong>space between your records</strong> queryable, traceable, and actionable.</p>
+        <p style="margin-top:12px;padding-top:12px;border-top:1px solid #1a2545;color:#5a8ade;font-weight:600;">Graph = intelligence layer ON TOP of Salesforce. Not a replacement.</p>
       </div>
     </div>
+  </div>
+</div>
+</div>
 
-    <div class="signal">
-      <h4>The Pattern</h4>
-      <p>These aren't separate problems. The Varis trap erodes the provider network, which breaks member-provider relationships, which drops CAHPS scores, which hits star ratings, which reduces enrollment revenue, which constrains workforce investment, which accelerates knowledge drain. <strong>It's one system. The graph shows you the whole system.</strong></p>
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- SLIDE 4: VNS AT A GLANCE -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="slide" id="s4">
+<div class="slide-inner">
+  <div class="sl-label">VNS Health — What We Found</div>
+  <div class="sl-title">The <em>ecosystem</em> we mapped</div>
+  <div class="grid-3" style="margin-top:20px;margin-bottom:20px;">
+    <div class="card b"><h3 style="font-size:28px;color:#5a8ade;">73K+</h3><p>Daily patients & members served</p></div>
+    <div class="card g"><h3 style="font-size:28px;color:#4ecdc4;">5 Plans</h3><p>EasyCare, EasyCare Plus, Total, MLTC, SelectHealth</p></div>
+    <div class="card y"><h3 style="font-size:28px;color:#ffd93d;">4.5★</h3><p>Medicare Advantage — highest in NYC & Long Island</p></div>
+    <div class="card g"><h3 style="font-size:28px;color:#4ecdc4;">60%</h3><p>D-SNP enrollment growth (2024)</p></div>
+    <div class="card b"><h3 style="font-size:28px;color:#5a8ade;">50+</h3><p>Languages across care teams</p></div>
+    <div class="card r"><h3 style="font-size:28px;color:#ff6b6b;">4</h3><p>Vendor systems with no unified view</p></div>
+  </div>
+  <div class="signal">
+    <h4>Master Finding</h4>
+    <p>Everything connects through one node: <strong>provider directory data quality.</strong> It's the junction where growth, compliance, provider satisfaction, member experience, and star ratings all intersect. And the gap isn't accuracy — it's <strong>provenance.</strong></p>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- SLIDE 5: THE 5 FRICTION POINTS -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="slide" id="s5">
+<div class="slide-inner">
+  <div class="sl-label">The Signal</div>
+  <div class="sl-title">Five friction points <em>the graph exposed</em></div>
+  <table class="tbl" style="margin-top:24px;">
+    <thead><tr><th style="width:30px">#</th><th>Friction</th><th>What the Graph Found</th><th style="text-align:right">Revenue at Risk</th></tr></thead>
+    <tbody>
+      <tr><td class="bad">1</td><td><strong>"Prove When You Knew"</strong></td><td>CMS cares when you learned data was wrong, not just that it's right now</td><td style="text-align:right" class="bad">Blocks 25-county expansion</td></tr>
+      <tr><td class="gold">2</td><td><strong>4 Vendors, Zero Visibility</strong></td><td>No system shows auth → claim → payment → audit lifecycle</td><td style="text-align:right" class="gold">$300K+/yr admin cost</td></tr>
+      <tr><td class="bad">3</td><td><strong>15K New Members, One Playbook</strong></td><td>D-SNP and EasyCare get MLTC engagement. Wrong channel, wrong message.</td><td style="text-align:right" class="bad">$7.5M-$11.25M/yr churn</td></tr>
+      <tr><td class="gold">4</td><td><strong>The Varis Trap</strong></td><td>30-day deadline → full reclamation → providers leave → no one connects it</td><td style="text-align:right" class="gold">Network adequacy</td></tr>
+      <tr><td class="bad">5</td><td><strong>Knowledge Walking Out</strong></td><td>130 years of knowledge lives in people retiring, not systems</td><td style="text-align:right" class="bad">Irreversible moat loss</td></tr>
+    </tbody>
+  </table>
+  <p style="color:#444;font-size:12px;margin-top:20px;">Let's walk through each one — what's broken, why, and exactly what we build to fix it.</p>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- SLIDE 6: FRICTION #1 — PROVE WHEN YOU KNEW -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="slide" id="s6">
+<div class="slide-inner">
+  <div class="sl-label">Friction #1</div>
+  <div class="sl-title">"Prove when <em>you knew</em>"</div>
+  <div class="grid-2-1" style="margin-top:20px;">
+    <div>
+      <p class="sl-body"><strong>CMS doesn't just ask:</strong> "Is your provider directory accurate?"</p>
+      <p class="sl-body"><strong>CMS asks:</strong> "When did you become aware Dr. Smith moved, what did you do about it, and how fast?"</p>
+      <div class="flow" style="margin-top:16px;">
+        Provider moves offices Jan 15<br>
+        <span class="a">&rarr;</span> Maybe tells VNS. Maybe doesn't.<br>
+        <span class="a">&rarr;</span> Salesforce record updated March 3<br>
+        <span class="a">&rarr;</span> CMS asks: <span class="w">"When did you know?"</span><br>
+        <span class="a">&rarr;</span> <span class="a">Can't prove whether VNS knew Jan 20 or Mar 1</span><br>
+        <span class="a">&rarr;</span> <span class="a">Corrective Action Plan issued</span><br>
+        <span class="a">&rarr;</span> <span class="a">Directory SUPPRESSED on Medicare Plan Finder</span><br>
+        <span class="a">&rarr;</span> <span class="a">Enrollment growth stalls — ALL plans</span>
+      </div>
+    </div>
+    <div>
+      <div class="card g">
+        <h3>The Graph Fix: Data Lineage</h3>
+        <div class="flow" style="font-size:11px;">
+          <span class="g">(:Provider {npi, address})</span><br>
+          &nbsp;<span class="g">-[:CHANGED {</span><br>
+          &nbsp;&nbsp;timestamp: <span class="b">"Jan 20, 2:32 PM"</span><br>
+          &nbsp;&nbsp;source: <span class="b">"member_call"</span><br>
+          &nbsp;&nbsp;response: <span class="b">"ticket_created"</span><br>
+          &nbsp;&nbsp;response_time: <span class="b">"38 min"</span><br>
+          &nbsp;&nbsp;resolved: <span class="b">"next biz day"</span><br>
+          &nbsp;&nbsp;sla_met: <span class="g">true</span><br>
+          &nbsp;<span class="g">}]-></span>
+        </div>
+        <p style="margin-top:12px;"><strong>CMS asks "when?"</strong> — pull the graph. Awareness: Jan 20. Response: 38 min. SLA: met.</p>
+        <p><strong>Not a compliance answer. A compliance weapon.</strong></p>
+      </div>
+      <div class="signal" style="margin-top:14px;">
+        <h4>For Your Product</h4>
+        <p>Feeds provenance data back into Salesforce — compliance dashboards, 90-day verification countdowns, SLA alerts. Unblocks the <strong>25-county expansion.</strong></p>
+      </div>
     </div>
   </div>
-</section>
+</div>
+</div>
 
-<!-- ════════════════════════════════════════ -->
-<!-- 7. INTERACTIVE GRAPH -->
-<!-- ════════════════════════════════════════ -->
-<section id="graph-section" style="padding-bottom:40px;">
-  <div class="section-inner">
-    <h4>The Full Picture</h4>
-    <h2>Explore the <span>knowledge graph</span></h2>
-    <p>36 entities. 32 relationships. Click a domain to isolate that view. Hover nodes for detail. Drag to rearrange.</p>
-    <div class="graph-controls">
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- SLIDE 7: FRICTION #2 — FOUR VENDORS -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="slide" id="s7">
+<div class="slide-inner">
+  <div class="sl-label">Friction #2</div>
+  <div class="sl-title">Four vendors. <em>Zero unified view.</em></div>
+  <div class="grid-1-2" style="margin-top:20px;">
+    <div>
+      <table class="tbl">
+        <thead><tr><th>Step</th><th>System</th><th>Data</th></tr></thead>
+        <tbody>
+          <tr><td>Check auth</td><td>VNS Portal (Salesforce)</td><td class="ok">Yours</td></tr>
+          <tr><td>Submit auth</td><td>eviCore</td><td class="bad">External</td></tr>
+          <tr><td>Submit claim</td><td>Availity</td><td class="bad">External</td></tr>
+          <tr><td>Respond to audit</td><td>Varis</td><td class="bad">Surprise</td></tr>
+        </tbody>
+      </table>
+      <p class="sl-body" style="margin-top:16px;">A provider cannot see: <em>"I submitted auth Monday, approved Wednesday, billed Thursday, now in Varis review."</em></p>
+      <p class="sl-body"><strong>That view doesn't exist anywhere.</strong> Not for the provider. Not for VNS.</p>
+    </div>
+    <div>
+      <div class="card g">
+        <h3>The Graph Fix: Claims Lifecycle</h3>
+        <div class="process-flow" style="margin:12px 0;">
+          <div class="pf-step" style="min-width:70px;"><div class="pf-label" style="color:#4ecdc4;">Auth</div></div>
+          <div class="pf-arrow" style="color:#4ecdc4;">&rarr;</div>
+          <div class="pf-step" style="min-width:70px;"><div class="pf-label" style="color:#4ecdc4;">Approval</div></div>
+          <div class="pf-arrow" style="color:#4ecdc4;">&rarr;</div>
+          <div class="pf-step" style="min-width:70px;"><div class="pf-label" style="color:#4ecdc4;">Claim</div></div>
+          <div class="pf-arrow" style="color:#4ecdc4;">&rarr;</div>
+          <div class="pf-step" style="min-width:70px;"><div class="pf-label" style="color:#4ecdc4;">Outcome</div></div>
+          <div class="pf-arrow" style="color:#4ecdc4;">&rarr;</div>
+          <div class="pf-step" style="min-width:70px;"><div class="pf-label" style="color:#4ecdc4;">Audit</div></div>
+        </div>
+        <p>One graph stitches the journey across all four vendors. Root cause tracing from denial backward. Cross-year billing catch before submission. Varis early warning 15 days before deadline.</p>
+      </div>
+      <div class="signal" style="margin-top:14px;">
+        <h4>The Money</h4>
+        <p>50K claims/yr. Denial rate 10% → 7% = 1,500 fewer denials. At ~$200 admin cost each: <strong>$300K/year saved.</strong> Plus: providers stop leaving over billing frustration.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- SLIDE 8: FRICTION #3 — ONE PLAYBOOK -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="slide" id="s8">
+<div class="slide-inner">
+  <div class="sl-label">Friction #3</div>
+  <div class="sl-title">15,000 new members. <em>One playbook.</em></div>
+  <div class="grid-2-1" style="margin-top:20px;">
+    <div>
+      <table class="tbl">
+        <thead><tr><th></th><th>Legacy MLTC</th><th>New D-SNP</th><th>New EasyCare</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Relationship</strong></td><td>Years</td><td>Days</td><td>Days</td></tr>
+          <tr><td><strong>Channel</strong></td><td>Phone</td><td>Unknown</td><td class="ok">Digital</td></tr>
+          <tr><td><strong>Driver</strong></td><td>Continuity</td><td>Benefits clarity</td><td>Cost</td></tr>
+          <tr><td><strong>CAHPS risk</strong></td><td class="ok">Low</td><td class="bad">High</td><td class="bad">High</td></tr>
+        </tbody>
+      </table>
+      <p class="sl-body" style="margin-top:16px;">5-star rating built on legacy MLTC relationships. Same playbook applied to new populations = satisfaction divergence masked by blended scores. <strong>12-18 months before it shows up in star ratings.</strong></p>
+    </div>
+    <div>
+      <div class="card g">
+        <h3>The Graph Fix: Segment Intelligence</h3>
+        <p>Map every member interaction by plan type and tenure. Graph identifies which engagement patterns drive retention per segment. Surface early churn signals:</p>
+        <p><strong>Complaint + missed appointment + provider change within 60 days = 85% churn probability.</strong></p>
+        <p style="margin-top:10px;padding-top:10px;border-top:1px solid #1a2545;color:#5a8ade;font-size:12px;"><strong>For your AI PM roadmap:</strong> Graph features as model inputs. Salesforce as the delivery surface. Care managers see personalized engagement recommendations — right channel, right message, right timing.</p>
+      </div>
+      <div class="signal" style="margin-top:14px;">
+        <h4>The Money</h4>
+        <p>MA capitation: ~$10K-$15K/member/year. Losing 5% of 15K = 750 members = <strong>$7.5M-$11.25M annual revenue loss.</strong> Reducing churn by 2 points pays for everything.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- SLIDE 9: FRICTIONS #4 & #5 — VARIS + KNOWLEDGE -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="slide" id="s9">
+<div class="slide-inner">
+  <div class="sl-label">Frictions #4 & #5</div>
+  <div class="sl-title">The cascades that <em>compound silently</em></div>
+  <div class="grid-2" style="margin-top:24px;">
+    <div class="card r">
+      <h3>The Varis Trap</h3>
+      <p>Varis requests records. Provider has 30 days. Miss it? <strong>Full claim reclamation.</strong> Provider did the work. Patient got the care. Missed admin deadline = zero pay.</p>
+      <p>After this happens twice, provider stops accepting VNS members. VNS sees "network attrition" and doesn't connect it to Varis.</p>
+      <p style="margin-top:10px;padding-top:10px;border-top:1px solid #2a1520;"><strong style="color:#4ecdc4;">Graph fix:</strong> Provider risk scoring. Flag 2+ recoupments + declining claims + no portal logins. Proactive VNS outreach 15 days before Varis deadline. <strong>One call saves the relationship.</strong></p>
+    </div>
+    <div class="card p">
+      <h3>Knowledge Walking Out the Door</h3>
+      <p>130 years of knowledge lives in people. Which providers return calls. Which aides are reliable where. Which members need their daughter called first.</p>
+      <p>When veteran staff retire — especially <strong>multilingual staff</strong> in a 50+ language market — the entire relationship network of a care territory vanishes.</p>
+      <p style="margin-top:10px;padding-top:10px;border-top:1px solid #201530;"><strong style="color:#4ecdc4;">Graph fix:</strong> Institutional knowledge capture. On retirement announcement → generate full profile: relationships, operational insights, community knowledge → transfer to successor.</p>
+    </div>
+  </div>
+  <div class="signal">
+    <h4>The Connection</h4>
+    <p>Varis erodes providers → breaks member-provider relationships → drops CAHPS → hits star ratings → reduces enrollment revenue → constrains hiring → accelerates knowledge drain. <strong>It's one system. The graph shows the whole system.</strong></p>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- SLIDE 10: INTERACTIVE GRAPH -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="slide" id="s10">
+<div class="slide-inner">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+    <div>
+      <div class="sl-label">The Full Picture</div>
+      <div class="sl-title" style="font-size:28px;margin-bottom:0;">VNS Health <em>Knowledge Graph</em></div>
+    </div>
+    <div style="display:flex;gap:5px;flex-wrap:wrap;">
       <button class="g-btn active" data-domain="all">All</button>
       <button class="g-btn" data-domain="growth">Growth</button>
       <button class="g-btn" data-domain="data-quality">Data Quality</button>
       <button class="g-btn" data-domain="provider">Provider</button>
       <button class="g-btn" data-domain="member">Member</button>
       <button class="g-btn" data-domain="employee">Employee</button>
-      <button class="g-btn" data-domain="claims">Claims/Auth</button>
+      <button class="g-btn" data-domain="claims">Claims</button>
     </div>
-    <div id="graph-canvas"></div>
-    <div class="graph-tooltip" id="gtt"></div>
   </div>
-</section>
-
-<!-- ════════════════════════════════════════ -->
-<!-- 8. PRODUCT ROADMAP -->
-<!-- ════════════════════════════════════════ -->
-<section id="roadmap">
-  <div class="section-inner">
-    <h4>Your Product Roadmap</h4>
-    <h2>What this enables <span>inside Salesforce</span></h2>
-    <p class="lead">The graph isn't a separate product. It's an intelligence layer that feeds capabilities into your existing Health Cloud platform. Here's how it sequences.</p>
-
-    <div class="step-row">
-      <div class="step-num r">1</div>
-      <div class="step-content">
-        <div class="name">Provider Data Lineage → Compliance Dashboard</div>
-        <div class="desc">Graph tracks provenance of every provider change. Salesforce surfaces it as a compliance-ready audit trail with 90-day verification countdowns and SLA tracking. CMS-proof.</div>
-      </div>
-      <div class="step-meta">
-        <div class="time">6-8 weeks</div>
-        <div class="risk" style="color:#ff6b6b;">Unblocks 25-county expansion</div>
-      </div>
-    </div>
-
-    <div class="step-row">
-      <div class="step-num y">2</div>
-      <div class="step-content">
-        <div class="name">Member Segment Intelligence → AI Engagement Engine</div>
-        <div class="desc">Graph identifies retention patterns by plan type. Salesforce delivers personalized care manager recommendations: right channel, right message, right timing per segment. This is where your AI PM certification meets production.</div>
-      </div>
-      <div class="step-meta">
-        <div class="time">6-8 weeks</div>
-        <div class="risk" style="color:#ff6b6b;">Protects $7.5M-$11.25M/yr</div>
-      </div>
-    </div>
-
-    <div class="step-row">
-      <div class="step-num g">3</div>
-      <div class="step-content">
-        <div class="name">Claims Lifecycle Graph → Unified Provider Timeline</div>
-        <div class="desc">Graph stitches Availity + eviCore + Varis data. Salesforce renders it as a single claim journey view in the provider portal. Feature no competitor offers.</div>
-      </div>
-      <div class="step-meta">
-        <div class="time">8-10 weeks</div>
-        <div class="risk" style="color:#ffd93d;">$300K+/yr savings</div>
-      </div>
-    </div>
-
-    <div class="step-row">
-      <div class="step-num b">4</div>
-      <div class="step-content">
-        <div class="name">Provider Risk Scoring → Retention Alerts</div>
-        <div class="desc">Graph models Varis recoupment patterns + engagement decline. Salesforce triggers proactive outreach before providers leave. Network adequacy protection.</div>
-      </div>
-      <div class="step-meta">
-        <div class="time">4-6 weeks</div>
-        <div class="risk" style="color:#ffd93d;">Network adequacy</div>
-      </div>
-    </div>
-
-    <div class="step-row">
-      <div class="step-num p">5</div>
-      <div class="step-content">
-        <div class="name">Institutional Knowledge Graph → Succession Intelligence</div>
-        <div class="desc">Graph captures care manager relationships, operational insights, language coverage. Salesforce generates handoff profiles on role transitions. Protects the 50+ language moat.</div>
-      </div>
-      <div class="step-meta">
-        <div class="time">8-12 weeks</div>
-        <div class="risk" style="color:#c77dff;">Competitive moat</div>
-      </div>
-    </div>
-
-    <div class="signal" style="margin-top:40px;">
-      <h4>The Architecture</h4>
-      <p><strong>Salesforce Health Cloud</strong> remains the system of record and the user interface. The <strong>knowledge graph</strong> (Neo4j or similar) sits alongside it as the intelligence layer — ingesting data from Salesforce + Availity + eviCore + Varis, computing relationships and patterns, and pushing insights back into Salesforce as custom objects, dashboards, and triggered actions. No rip-and-replace. Additive capability on your existing investment.</p>
-    </div>
-
-    <div class="cta-box">
-      <h3>See this on your actual data.</h3>
-      <p style="margin-bottom:16px;">30-minute demo. We bring the graph. You bring a provider data sample. You'll see provenance tracking working in the first session.</p>
-      <p>
-        <a href="https://calendly.com/daniel-yarmoluk/30min">Book 30 minutes</a>
-        <span class="sep">&middot;</span>
-        <a href="https://graphifymd.com" style="color:#4ecdc4;">graphifymd.com</a>
-      </p>
-    </div>
-
-    <p style="color:#333; font-size:11px; text-align:center; margin-top:40px;">Daniel Yarmoluk &middot; Graphify.md &middot; March 2026</p>
+  <div id="graph-canvas"></div>
+  <div style="display:flex;gap:16px;margin-top:10px;justify-content:center;">
+    <span style="font-size:11px;color:#555;"><span style="color:#5a8ade;">●</span> Organization</span>
+    <span style="font-size:11px;color:#555;"><span style="color:#4ecdc4;">●</span> Health Plan</span>
+    <span style="font-size:11px;color:#555;"><span style="color:#ff6b6b;">●</span> Vendor/System</span>
+    <span style="font-size:11px;color:#555;"><span style="color:#ffd93d;">●</span> Process</span>
+    <span style="font-size:11px;color:#555;"><span style="color:#95e77e;">●</span> Metric</span>
+    <span style="font-size:11px;color:#555;"><span style="color:#c77dff;">●</span> Stakeholder</span>
   </div>
-</section>
+</div>
+</div>
 
-<!-- ── SCRIPTS ── -->
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- SLIDE 11: PRODUCT ROADMAP -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="slide" id="s11">
+<div class="slide-inner">
+  <div class="sl-label">Product Roadmap</div>
+  <div class="sl-title">What this enables <em>inside Salesforce</em></div>
+  <p class="sl-body" style="margin-bottom:20px;">The graph isn't a separate product. It's an intelligence layer that feeds capabilities into Health Cloud.</p>
+
+  <div class="step-row">
+    <div class="step-num n1">1</div>
+    <div class="step-info"><div class="name">Provider Data Lineage → Compliance Dashboard</div><div class="desc">Graph tracks provenance. Salesforce surfaces audit trails, 90-day countdowns, SLA alerts.</div></div>
+    <div class="step-meta"><div class="time">6-8 weeks</div><div class="risk bad">Unblocks 25-county expansion</div></div>
+  </div>
+  <div class="step-row">
+    <div class="step-num n2">2</div>
+    <div class="step-info"><div class="name">Member Segment Intelligence → AI Engagement Engine</div><div class="desc">Graph finds retention patterns by plan type. Salesforce delivers personalized recommendations to care managers.</div></div>
+    <div class="step-meta"><div class="time">6-8 weeks</div><div class="risk bad">Protects $7.5M-$11.25M/yr</div></div>
+  </div>
+  <div class="step-row">
+    <div class="step-num n3">3</div>
+    <div class="step-info"><div class="name">Claims Lifecycle Graph → Unified Provider Timeline</div><div class="desc">Graph stitches Availity + eviCore + Varis. Salesforce renders single claim journey view. No competitor offers this.</div></div>
+    <div class="step-meta"><div class="time">8-10 weeks</div><div class="risk gold">$300K+/yr savings</div></div>
+  </div>
+  <div class="step-row">
+    <div class="step-num n4">4</div>
+    <div class="step-info"><div class="name">Provider Risk Scoring → Retention Alerts</div><div class="desc">Graph models Varis recoupment + engagement decline. Salesforce triggers proactive outreach before providers leave.</div></div>
+    <div class="step-meta"><div class="time">4-6 weeks</div><div class="risk gold">Network adequacy</div></div>
+  </div>
+  <div class="step-row">
+    <div class="step-num n5">5</div>
+    <div class="step-info"><div class="name">Institutional Knowledge Graph → Succession Intelligence</div><div class="desc">Graph captures care manager relationships + operational insights. Salesforce generates handoff profiles on transitions.</div></div>
+    <div class="step-meta"><div class="time">8-12 weeks</div><div class="risk" style="color:#c77dff;">Competitive moat</div></div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- SLIDE 12: CTA -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="slide" id="s12">
+<div class="slide-inner" style="text-align:center;">
+  <div class="sl-label">Next Step</div>
+  <div class="sl-title" style="font-size:44px;">See this on <em>your actual data.</em></div>
+  <div class="sl-sub" style="margin:0 auto 24px;text-align:center;">30-minute demo. We bring the graph. You bring a provider data sample.<br>You'll see provenance tracking working in the first session.</div>
+
+  <div class="signal" style="text-align:left;max-width:600px;margin:0 auto 32px;">
+    <h4>The Architecture — No Rip and Replace</h4>
+    <p><strong>Salesforce Health Cloud</strong> stays the system of record and UI. <strong>Knowledge graph</strong> (Neo4j) sits alongside — ingests from Salesforce + Availity + eviCore + Varis, computes relationships and patterns, pushes insights back as custom objects, dashboards, and triggered actions. Additive capability on your existing investment.</p>
+  </div>
+
+  <div class="cta">
+    <h3>Let's build it.</h3>
+    <p style="margin-bottom:12px;">
+      <a href="https://calendly.com/daniel-yarmoluk/30min">Book 30 Minutes</a>
+      <span class="s">&middot;</span>
+      <a href="https://graphifymd.com" style="color:#4ecdc4;">graphifymd.com</a>
+    </p>
+    <p style="color:#444;font-size:12px;">Daniel Yarmoluk &middot; Graphify.md &middot; March 2026</p>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- SCRIPTS -->
+<!-- ═══════════════════════════════════════════════════ -->
 <script src="https://d3js.org/d3.v7.min.js"></script>
 <script>
-// ── PROGRESS BAR & NAV DOTS ──
-const sections = document.querySelectorAll('section');
-const dots = document.querySelectorAll('.nav-dot');
-const navLabel = document.querySelector('.nav-label');
-const sectionNames = {
-  hero:'Cover', world:'Your World', signal:'The Signal',
-  friction1:'Prove When You Knew', friction2:'Vendor Visibility',
-  friction3:'Hidden Cascades', 'graph-section':'Knowledge Graph', roadmap:'Product Roadmap'
-};
+// ── SLIDE ENGINE ──
+const slides = document.querySelectorAll('.slide');
+const totalSlides = slides.length;
+let current = 0;
+document.getElementById('total-num').textContent = totalSlides;
 
-window.addEventListener('scroll', () => {
-  const h = document.documentElement.scrollHeight - window.innerHeight;
-  document.getElementById('progress').style.width = (window.scrollY / h * 100) + '%';
+// Build dots
+const bnav = document.getElementById('bottomnav');
+slides.forEach((_, i) => {
+  const d = document.createElement('div');
+  d.className = 'dot' + (i === 0 ? ' active' : '');
+  d.addEventListener('click', () => goTo(i));
+  bnav.appendChild(d);
+});
+const dots = document.querySelectorAll('.dot');
 
-  let current = '';
-  sections.forEach(s => { if (window.scrollY >= s.offsetTop - 200) current = s.id; });
-  dots.forEach(d => d.classList.toggle('active', d.dataset.section === current));
-  navLabel.textContent = sectionNames[current] || '';
+function goTo(n) {
+  if (n < 0 || n >= totalSlides) return;
+  slides[current].classList.remove('active');
+  dots[current].classList.remove('active');
+  current = n;
+  slides[current].classList.add('active');
+  dots[current].classList.add('active');
+  document.getElementById('current-num').textContent = current + 1;
+  document.getElementById('progress').style.width = ((current / (totalSlides - 1)) * 100) + '%';
+
+  // Lazy init graph
+  if (current === 9 && !window.graphInit) initGraph();
+}
+
+document.getElementById('prev-btn').addEventListener('click', () => goTo(current - 1));
+document.getElementById('next-btn').addEventListener('click', () => goTo(current + 1));
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); goTo(current + 1); }
+  if (e.key === 'ArrowLeft') { e.preventDefault(); goTo(current - 1); }
 });
 
-dots.forEach(d => d.addEventListener('click', () => {
-  document.getElementById(d.dataset.section).scrollIntoView({ behavior: 'smooth' });
-}));
-
 // ── GRAPH ──
-const graphObserver = new IntersectionObserver(entries => {
-  if (entries[0].isIntersecting && !window.graphInit) initGraph();
-}, { threshold: 0.1 });
-graphObserver.observe(document.getElementById('graph-section'));
-
 function initGraph() {
   window.graphInit = true;
   const C = {organization:'#5a8ade',organization_unit:'#5a8ade',health_plan:'#4ecdc4',vendor_system:'#ff6b6b',internal_system:'#ff6b6b',process:'#ffd93d',metric:'#95e77e',stakeholder_group:'#c77dff',leader:'#ff9f43'};
-  const S = {organization:24,organization_unit:14,health_plan:16,vendor_system:12,internal_system:12,process:10,metric:12,stakeholder_group:18,leader:10};
+  const SZ = {organization:22,organization_unit:12,health_plan:14,vendor_system:11,internal_system:11,process:9,metric:11,stakeholder_group:16,leader:9};
   const DM = {
-    'growth':['vns-health','vns-health-plans','plan-easycare','plan-easycare-plus','plan-total','plan-mltc','plan-selecthealth','metric-enrollment-growth','metric-geographic-coverage','metric-star-ratings'],
-    'data-quality':['vns-health','vns-health-plans','sys-provider-search','proc-dir-maint','proc-quality','metric-quality-measures','metric-star-ratings','stakeholder-regulators','leader-mgb'],
-    'provider':['stakeholder-providers','sys-availity','sys-evicore','sys-varis','sys-provider-portal','proc-claims','proc-disputes','proc-appeals','proc-prior-auth','proc-cred','proc-ppr','proc-corrected'],
-    'member':['stakeholder-members','sys-member-portal','plan-easycare','plan-easycare-plus','plan-total','plan-mltc','plan-selecthealth','metric-star-ratings','stakeholder-employees'],
-    'employee':['stakeholder-employees','stakeholder-members','stakeholder-providers','vns-health','vns-home-care','vns-hospice','vns-behavioral'],
-    'claims':['proc-claims','proc-disputes','proc-appeals','proc-prior-auth','proc-corrected','proc-ppr','sys-availity','sys-evicore','sys-varis','sys-medimpact','sys-provider-portal','stakeholder-providers']
+    'growth':['vns','plans','ec','ecp','total','mltc','sh','m-grow','m-geo','m-star'],
+    'data-quality':['vns','plans','s-dir','p-dirmaint','p-qual','m-qm','m-star','st-reg','l-mgb'],
+    'provider':['st-prov','s-avl','s-evi','s-var','s-pp','p-claims','p-disp','p-app','p-auth','p-cred','p-ppr','p-corr'],
+    'member':['st-mem','s-mp','ec','ecp','total','mltc','sh','m-star','st-emp'],
+    'employee':['st-emp','st-mem','st-prov','vns','hc','hosp','bh'],
+    'claims':['p-claims','p-disp','p-app','p-auth','p-corr','p-ppr','s-avl','s-evi','s-var','s-med','s-pp','st-prov']
   };
 
   const nodes = [
-    {id:'vns-health',label:'VNS Health',type:'organization',detail:'130+ yrs, 73K daily, 50+ languages'},
-    {id:'vns-health-plans',label:'Health Plans',type:'organization_unit',detail:'5 plans, 33K members'},
-    {id:'vns-home-care',label:'Home Care',type:'organization_unit',detail:'Nursing, rehab, dementia care'},
-    {id:'vns-hospice',label:'Hospice',type:'organization_unit',detail:'Heart, dementia, cancer, COPD'},
-    {id:'vns-behavioral',label:'Behavioral Health',type:'organization_unit',detail:'Mental health, substance use'},
-    {id:'plan-easycare',label:'EasyCare',type:'health_plan',detail:'MA HMO, 3.5★, 34% growth'},
-    {id:'plan-easycare-plus',label:'EasyCare Plus',type:'health_plan',detail:'D-SNP, 37K, 60% growth'},
-    {id:'plan-total',label:'VNS Total',type:'health_plan',detail:'MAP, 5★, 25-county expansion'},
-    {id:'plan-mltc',label:'MLTC',type:'health_plan',detail:'#1 rated MLTC in NYS'},
-    {id:'plan-selecthealth',label:'SelectHealth',type:'health_plan',detail:'HIV+, homeless populations'},
-    {id:'sys-availity',label:'Availity',type:'vendor_system',detail:'EDI claims & remittance'},
-    {id:'sys-evicore',label:'eviCore',type:'vendor_system',detail:'Prior auth (Evernorth)'},
-    {id:'sys-varis',label:'Varis',type:'vendor_system',detail:'Post-payment audit'},
-    {id:'sys-medimpact',label:'MedImpact',type:'vendor_system',detail:'Part D vaccines'},
-    {id:'sys-provider-portal',label:'Provider Portal',type:'internal_system',detail:'Salesforce-based, 24/7'},
-    {id:'sys-member-portal',label:'Member Portal',type:'internal_system',detail:'Recently launched'},
-    {id:'sys-provider-search',label:'Provider Dir.',type:'internal_system',detail:'CMS 90-day verify'},
-    {id:'proc-claims',label:'Claims',type:'process',detail:'90-day filing, cross-year rule'},
-    {id:'proc-disputes',label:'Disputes',type:'process',detail:'Coding, underpayment, dupes'},
-    {id:'proc-appeals',label:'Appeals',type:'process',detail:'60-120 day clinical review'},
-    {id:'proc-prior-auth',label:'Prior Auth',type:'process',detail:'eviCore, 1-day SLA'},
-    {id:'proc-cred',label:'Credentialing',type:'process',detail:'Network enrollment'},
-    {id:'proc-ppr',label:'Post-Pay Review',type:'process',detail:'30 days or reclamation'},
-    {id:'proc-corrected',label:'Corrected Claims',type:'process',detail:'Code 7 replacement'},
-    {id:'proc-quality',label:'Quality',type:'process',detail:'100 measures monthly'},
-    {id:'proc-dir-maint',label:'Dir. Maint.',type:'process',detail:'90-day CMS cycle'},
-    {id:'metric-enrollment-growth',label:'Enrollment',type:'metric',detail:'34-60% growth, 15K new'},
-    {id:'metric-star-ratings',label:'Star Ratings',type:'metric',detail:'4.5★ MA, 5★ MLTC'},
-    {id:'metric-quality-measures',label:'100 Measures',type:'metric',detail:'Clinical, satisfaction, ops'},
-    {id:'metric-geographic-coverage',label:'Geography',type:'metric',detail:'13 → 38 counties'},
-    {id:'stakeholder-members',label:'Members',type:'stakeholder_group',detail:'73K daily, 50+ languages'},
-    {id:'stakeholder-providers',label:'Providers',type:'stakeholder_group',detail:'PCPs, HHAs, SNFs'},
-    {id:'stakeholder-employees',label:'Workforce',type:'stakeholder_group',detail:'NYC best workplace'},
-    {id:'stakeholder-regulators',label:'Regulators',type:'stakeholder_group',detail:'CMS, NYSDOH'},
-    {id:'leader-mgb',label:'Gursoy Brickner',type:'leader',detail:'SVP Quality & Clinical Ops'}
+    {id:'vns',label:'VNS Health',type:'organization',d:'130+ yrs, 73K daily'},
+    {id:'plans',label:'Health Plans',type:'organization_unit',d:'5 plans, 33K members'},
+    {id:'hc',label:'Home Care',type:'organization_unit',d:'Nursing, rehab, wound care'},
+    {id:'hosp',label:'Hospice',type:'organization_unit',d:'Heart, dementia, cancer'},
+    {id:'bh',label:'Behavioral Health',type:'organization_unit',d:'Mental health, substance use'},
+    {id:'ec',label:'EasyCare',type:'health_plan',d:'MA HMO, 3.5★, 34% growth'},
+    {id:'ecp',label:'EasyCare Plus',type:'health_plan',d:'D-SNP, 37K, 60% growth'},
+    {id:'total',label:'VNS Total',type:'health_plan',d:'MAP, 5★, 25-county expansion'},
+    {id:'mltc',label:'MLTC',type:'health_plan',d:'#1 rated MLTC in NYS'},
+    {id:'sh',label:'SelectHealth',type:'health_plan',d:'HIV+, homeless'},
+    {id:'s-avl',label:'Availity',type:'vendor_system',d:'EDI claims submission'},
+    {id:'s-evi',label:'eviCore',type:'vendor_system',d:'Prior auth (Evernorth)'},
+    {id:'s-var',label:'Varis',type:'vendor_system',d:'Post-payment audit'},
+    {id:'s-med',label:'MedImpact',type:'vendor_system',d:'Part D vaccines'},
+    {id:'s-pp',label:'Provider Portal',type:'internal_system',d:'Salesforce, 24/7'},
+    {id:'s-mp',label:'Member Portal',type:'internal_system',d:'Recently launched'},
+    {id:'s-dir',label:'Provider Dir.',type:'internal_system',d:'CMS 90-day verify'},
+    {id:'p-claims',label:'Claims',type:'process',d:'90-day filing, cross-year'},
+    {id:'p-disp',label:'Disputes',type:'process',d:'Coding, underpayment'},
+    {id:'p-app',label:'Appeals',type:'process',d:'60-120 day review'},
+    {id:'p-auth',label:'Prior Auth',type:'process',d:'eviCore, 1-day SLA'},
+    {id:'p-cred',label:'Credentialing',type:'process',d:'Network enrollment'},
+    {id:'p-ppr',label:'Post-Pay Review',type:'process',d:'30 days or reclaim'},
+    {id:'p-corr',label:'Corrected Claims',type:'process',d:'Code 7 replacement'},
+    {id:'p-qual',label:'Quality',type:'process',d:'100 measures monthly'},
+    {id:'p-dirmaint',label:'Dir. Maint.',type:'process',d:'90-day CMS cycle'},
+    {id:'m-grow',label:'Enrollment',type:'metric',d:'34-60% growth'},
+    {id:'m-star',label:'Star Ratings',type:'metric',d:'4.5★ MA, 5★ MLTC'},
+    {id:'m-qm',label:'100 Measures',type:'metric',d:'Clinical, ops, CAHPS'},
+    {id:'m-geo',label:'Geography',type:'metric',d:'13 → 38 counties'},
+    {id:'st-mem',label:'Members',type:'stakeholder_group',d:'73K daily, 50+ languages'},
+    {id:'st-prov',label:'Providers',type:'stakeholder_group',d:'PCPs, HHAs, SNFs'},
+    {id:'st-emp',label:'Workforce',type:'stakeholder_group',d:'NYC best workplace'},
+    {id:'st-reg',label:'Regulators',type:'stakeholder_group',d:'CMS, NYSDOH'},
+    {id:'l-mgb',label:'Gursoy Brickner',type:'leader',d:'SVP Quality & Clin Ops'}
   ];
 
   const links = [
-    {source:'vns-health',target:'vns-health-plans',label:'OPERATES'},
-    {source:'vns-health',target:'vns-home-care',label:'OPERATES'},
-    {source:'vns-health',target:'vns-hospice',label:'OPERATES'},
-    {source:'vns-health',target:'vns-behavioral',label:'OPERATES'},
-    {source:'vns-health-plans',target:'plan-easycare',label:'ADMINISTERS'},
-    {source:'vns-health-plans',target:'plan-easycare-plus',label:'ADMINISTERS'},
-    {source:'vns-health-plans',target:'plan-total',label:'ADMINISTERS'},
-    {source:'vns-health-plans',target:'plan-mltc',label:'ADMINISTERS'},
-    {source:'vns-health-plans',target:'plan-selecthealth',label:'ADMINISTERS'},
-    {source:'stakeholder-providers',target:'sys-availity',label:'CLAIMS'},
-    {source:'stakeholder-providers',target:'sys-evicore',label:'AUTH'},
-    {source:'stakeholder-providers',target:'sys-provider-portal',label:'ACCESSES'},
-    {source:'stakeholder-members',target:'sys-member-portal',label:'ACCESSES'},
-    {source:'sys-varis',target:'stakeholder-providers',label:'AUDITS'},
-    {source:'sys-varis',target:'proc-ppr',label:'EXECUTES'},
-    {source:'sys-availity',target:'proc-claims',label:'ENABLES'},
-    {source:'sys-evicore',target:'proc-prior-auth',label:'MANAGES'},
-    {source:'proc-claims',target:'proc-disputes',label:'ESCALATES'},
-    {source:'proc-disputes',target:'proc-appeals',label:'ESCALATES'},
-    {source:'proc-claims',target:'proc-corrected',label:'TRIGGERS'},
-    {source:'proc-claims',target:'proc-ppr',label:'AUDITED BY'},
-    {source:'stakeholder-regulators',target:'proc-dir-maint',label:'MANDATES'},
-    {source:'stakeholder-regulators',target:'proc-quality',label:'EVALUATES'},
-    {source:'proc-quality',target:'metric-star-ratings',label:'PRODUCES'},
-    {source:'proc-quality',target:'metric-quality-measures',label:'TRACKS'},
-    {source:'metric-enrollment-growth',target:'metric-geographic-coverage',label:'DEPENDS ON'},
-    {source:'plan-total',target:'metric-geographic-coverage',label:'EXPANDING'},
-    {source:'plan-easycare-plus',target:'metric-enrollment-growth',label:'DRIVES'},
-    {source:'leader-mgb',target:'proc-quality',label:'LEADS'},
-    {source:'stakeholder-employees',target:'stakeholder-members',label:'CARES FOR'},
-    {source:'stakeholder-employees',target:'stakeholder-providers',label:'COORDINATES'}
+    {source:'vns',target:'plans'},{source:'vns',target:'hc'},{source:'vns',target:'hosp'},{source:'vns',target:'bh'},
+    {source:'plans',target:'ec'},{source:'plans',target:'ecp'},{source:'plans',target:'total'},{source:'plans',target:'mltc'},{source:'plans',target:'sh'},
+    {source:'st-prov',target:'s-avl',label:'CLAIMS'},{source:'st-prov',target:'s-evi',label:'AUTH'},{source:'st-prov',target:'s-pp',label:'ACCESS'},
+    {source:'st-mem',target:'s-mp'},{source:'s-var',target:'st-prov',label:'AUDITS'},
+    {source:'s-var',target:'p-ppr'},{source:'s-avl',target:'p-claims'},{source:'s-evi',target:'p-auth'},
+    {source:'p-claims',target:'p-disp',label:'ESCALATES'},{source:'p-disp',target:'p-app',label:'ESCALATES'},
+    {source:'p-claims',target:'p-corr'},{source:'p-claims',target:'p-ppr'},
+    {source:'st-reg',target:'p-dirmaint',label:'MANDATES'},{source:'st-reg',target:'p-qual',label:'EVALUATES'},
+    {source:'p-qual',target:'m-star'},{source:'p-qual',target:'m-qm'},
+    {source:'m-grow',target:'m-geo'},{source:'total',target:'m-geo'},
+    {source:'ecp',target:'m-grow',label:'DRIVES'},
+    {source:'l-mgb',target:'p-qual'},{source:'st-emp',target:'st-mem'},{source:'st-emp',target:'st-prov'}
   ];
 
-  const container = document.getElementById('graph-canvas');
-  const w = container.clientWidth;
-  const h = Math.max(500, window.innerHeight * 0.7);
-
+  const el = document.getElementById('graph-canvas');
+  const w = el.clientWidth || 900;
+  const h = Math.min(480, window.innerHeight - 220);
   const svg = d3.select('#graph-canvas').append('svg').attr('width',w).attr('height',h);
   const g = svg.append('g');
-  svg.call(d3.zoom().scaleExtent([0.3,3]).on('zoom',e=>g.attr('transform',e.transform)));
+  svg.call(d3.zoom().scaleExtent([0.4,3]).on('zoom',e=>g.attr('transform',e.transform)));
 
   const sim = d3.forceSimulation(nodes)
-    .force('link',d3.forceLink(links).id(d=>d.id).distance(100))
-    .force('charge',d3.forceManyBody().strength(-350))
+    .force('link',d3.forceLink(links).id(d=>d.id).distance(80))
+    .force('charge',d3.forceManyBody().strength(-280))
     .force('center',d3.forceCenter(w/2,h/2))
-    .force('collision',d3.forceCollide().radius(d=>(S[d.type]||12)+10));
+    .force('collision',d3.forceCollide().radius(d=>(SZ[d.type]||10)+8));
 
   const link = g.append('g').selectAll('line').data(links).join('line')
-    .attr('stroke','#1e2a45').attr('stroke-width',1.2).attr('stroke-opacity',0.5);
-
+    .attr('stroke','#151d35').attr('stroke-width',1).attr('stroke-opacity',0.5);
   const ll = g.append('g').selectAll('text').data(links).join('text')
-    .attr('class','link-label').text(d=>d.label);
-
+    .attr('class','link-label').text(d=>d.label||'');
   const node = g.append('g').selectAll('g').data(nodes).join('g')
-    .call(d3.drag()
-      .on('start',(e,d)=>{if(!e.active)sim.alphaTarget(0.3).restart();d.fx=e.x;d.fy=e.y;})
-      .on('drag',(e,d)=>{d.fx=e.x;d.fy=e.y;})
-      .on('end',(e,d)=>{if(!e.active)sim.alphaTarget(0);d.fx=null;d.fy=null;})
-    );
-
-  node.append('circle').attr('r',d=>S[d.type]||12)
-    .attr('fill',d=>C[d.type]||'#888')
-    .attr('stroke',d=>d3.color(C[d.type]||'#888').brighter(0.5))
-    .attr('stroke-width',2);
-
-  node.append('text').attr('dy',d=>(S[d.type]||12)+12).text(d=>d.label);
+    .call(d3.drag().on('start',(e,d)=>{if(!e.active)sim.alphaTarget(0.3).restart();d.fx=e.x;d.fy=e.y;}).on('drag',(e,d)=>{d.fx=e.x;d.fy=e.y;}).on('end',(e,d)=>{if(!e.active)sim.alphaTarget(0);d.fx=null;d.fy=null;}));
+  node.append('circle').attr('r',d=>SZ[d.type]||10).attr('fill',d=>C[d.type]||'#888').attr('stroke',d=>d3.color(C[d.type]||'#888').brighter(0.5)).attr('stroke-width',1.5);
+  node.append('text').attr('dy',d=>(SZ[d.type]||10)+11).text(d=>d.label);
 
   const tt = document.getElementById('gtt');
-  node.on('mouseover',(e,d)=>{
-    tt.style.display='block';
-    tt.innerHTML=`<h3>${d.label}</h3><div class="tt-type">${d.type.replace(/_/g,' ')}</div><div class="tt-detail">${d.detail}</div>`;
-  }).on('mousemove',e=>{
-    tt.style.left=(e.pageX+15)+'px';tt.style.top=(e.pageY-10)+'px';
-  }).on('mouseout',()=>{tt.style.display='none';});
+  node.on('mouseover',(e,d)=>{tt.style.display='block';tt.innerHTML=`<h3>${d.label}</h3><small>${d.type.replace(/_/g,' ')}</small><p>${d.d}</p>`;})
+    .on('mousemove',e=>{tt.style.left=(e.pageX+12)+'px';tt.style.top=(e.pageY-8)+'px';})
+    .on('mouseout',()=>{tt.style.display='none';});
 
   sim.on('tick',()=>{
     link.attr('x1',d=>d.source.x).attr('y1',d=>d.source.y).attr('x2',d=>d.target.x).attr('y2',d=>d.target.y);
@@ -723,12 +671,7 @@ function initGraph() {
       btn.classList.add('active');
       const dm=btn.dataset.domain;
       if(dm==='all'){node.style('opacity',1);link.style('opacity',0.5);ll.style('opacity',1);}
-      else{
-        const ids=new Set(DM[dm]||[]);
-        node.style('opacity',d=>ids.has(d.id)?1:0.06);
-        link.style('opacity',d=>ids.has(d.source.id)&&ids.has(d.target.id)?0.5:0.02);
-        ll.style('opacity',d=>ids.has(d.source.id)&&ids.has(d.target.id)?1:0.03);
-      }
+      else{const ids=new Set(DM[dm]||[]);node.style('opacity',d=>ids.has(d.id)?1:0.06);link.style('opacity',d=>ids.has(d.source.id)&&ids.has(d.target.id)?0.5:0.02);ll.style('opacity',d=>ids.has(d.source.id)&&ids.has(d.target.id)?1:0.03);}
     });
   });
 }
