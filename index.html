@@ -9,20 +9,16 @@
 *{margin:0;padding:0;box-sizing:border-box;}
 html,body{height:100%;overflow:hidden;background:#080c18;color:#e0e0e0;font-family:'Inter',-apple-system,sans-serif;}
 
-/* SLIDE ENGINE */
-#deck{width:100vw;height:100vh;position:relative;}
-.slide{position:absolute;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.45s ease,transform 0.45s ease;transform:translateX(30px);padding:60px 80px;}
+.slide{position:absolute;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.45s ease,transform 0.45s ease;transform:translateX(30px);padding:56px 80px 52px;}
 .slide.active{opacity:1;pointer-events:all;transform:translateX(0);}
 .si{max-width:1060px;width:100%;}
 
-/* TOP BAR */
 #topbar{position:fixed;top:0;left:0;right:0;z-index:100;height:44px;background:rgba(8,12,24,0.92);backdrop-filter:blur(12px);border-bottom:1px solid #141a30;display:flex;align-items:center;padding:0 28px;}
 #topbar .logo{font-size:13px;font-weight:700;color:#888;}
 #topbar .sep{flex:1;}
 #topbar .cnt{font-size:11px;color:#444;font-variant-numeric:tabular-nums;}
 #progress{position:fixed;top:44px;left:0;height:2px;background:linear-gradient(90deg,#5a8ade,#4ecdc4);z-index:101;transition:width 0.3s;}
 
-/* BOTTOM NAV */
 #bnav{position:fixed;bottom:0;left:0;right:0;z-index:100;height:48px;background:rgba(8,12,24,0.92);backdrop-filter:blur(12px);border-top:1px solid #141a30;display:flex;align-items:center;justify-content:center;gap:7px;}
 .dot{width:9px;height:9px;border-radius:50%;background:#141a30;cursor:pointer;transition:all 0.3s;border:1px solid #1a2040;}
 .dot.active{background:#5a8ade;border-color:#5a8ade;transform:scale(1.25);}
@@ -31,25 +27,22 @@ html,body{height:100%;overflow:hidden;background:#080c18;color:#e0e0e0;font-fami
 #pb{left:12px;}#nb{right:12px;}
 #pb:hover,#nb:hover{background:#1a2545;color:#fff;border-color:#3a5a8a;}
 
-/* TYPOGRAPHY */
 .lab{font-size:11px;font-weight:700;color:#5a8ade;text-transform:uppercase;letter-spacing:2px;margin-bottom:12px;}
 .t1{font-size:44px;font-weight:900;color:#fff;line-height:1.1;margin-bottom:16px;}
 .t1 em{font-style:normal;background:linear-gradient(135deg,#5a8ade,#4ecdc4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
 .t2{font-size:28px;font-weight:800;color:#fff;line-height:1.15;margin-bottom:12px;}
 .t2 em{font-style:normal;color:#5a8ade;}
-.sub{font-size:17px;color:#777;line-height:1.65;margin-bottom:28px;max-width:680px;}
+.sub{font-size:17px;color:#777;line-height:1.65;margin-bottom:28px;max-width:700px;}
 .body{font-size:14px;color:#999;line-height:1.7;margin-bottom:14px;}
 .body strong{color:#e0e0e0;}
 
-/* RED BOX */
 .red-box{background:linear-gradient(135deg,#2a0a10,#1a0508);border:2px solid #ff6b6b;border-radius:16px;padding:32px 36px;box-shadow:0 0 50px rgba(255,80,80,0.08);}
-.red-box::before{content:'WHY THIS PRESENTATION EXISTS';display:block;font-size:11px;font-weight:800;letter-spacing:2.5px;color:#ff6b6b;margin-bottom:16px;}
+.red-box::before{content:'HOW WE BUILT THIS';display:block;font-size:11px;font-weight:800;letter-spacing:2.5px;color:#ff6b6b;margin-bottom:16px;}
 .red-box p{color:#ccc;font-size:14px;line-height:1.8;margin-bottom:12px;}
 .red-box p:last-child{margin-bottom:0;}
 .red-box strong{color:#fff;}
 .red-box hr{border:none;border-top:1px solid #3a1520;margin:16px 0;}
 
-/* CARDS */
 .card{background:#0f1628;border:1px solid #1a2545;border-radius:12px;padding:22px 26px;position:relative;overflow:hidden;}
 .card::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;}
 .card.r::before{background:#ff6b6b;}.card.g::before{background:#4ecdc4;}.card.b::before{background:#5a8ade;}.card.y::before{background:#ffd93d;}.card.p::before{background:#c77dff;}
@@ -57,47 +50,24 @@ html,body{height:100%;overflow:hidden;background:#080c18;color:#e0e0e0;font-fami
 .card p{font-size:13px;color:#999;line-height:1.7;margin-bottom:6px;}
 .card p:last-child{margin-bottom:0;}
 
-/* GRID */
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
 .g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
 .g21{display:grid;grid-template-columns:1fr 1.15fr;gap:20px;align-items:start;}
 .g12{display:grid;grid-template-columns:1.15fr 1fr;gap:20px;align-items:start;}
 
-/* FLOW */
 .flow{background:#060a14;border:1px solid #101828;border-radius:10px;padding:18px 22px;font-family:'SF Mono','JetBrains Mono',monospace;font-size:12px;line-height:2;overflow-x:auto;}
 .flow .a{color:#ff6b6b;}.flow .g{color:#4ecdc4;}.flow .w{color:#ffd93d;}.flow .b{color:#5a8ade;}
 
-/* TABLES */
 .tbl{width:100%;border-collapse:collapse;font-size:13px;}
 .tbl th{text-align:left;padding:8px 12px;background:#0a0f1e;color:#555;font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid #141a30;}
 .tbl td{padding:8px 12px;border-bottom:1px solid #0f1628;color:#bbb;}
 .tbl tr:hover td{background:#0a0f1e;}
 .bad{color:#ff6b6b;font-weight:600;}.ok{color:#4ecdc4;font-weight:600;}.gold{color:#ffd93d;font-weight:600;}
 
-/* SIGNAL */
 .sig{background:linear-gradient(135deg,#0f1a35,#0a0f1e);border:1px solid #1a3060;border-radius:12px;padding:18px 22px;margin-top:14px;}
 .sig h4{font-size:10px;font-weight:700;color:#5a8ade;text-transform:uppercase;letter-spacing:2px;margin-bottom:6px;}
 .sig p{color:#bbb;font-size:13px;line-height:1.6;margin-bottom:0;}
 
-/* IMPACT METER */
-.meter{display:flex;align-items:center;gap:8px;margin:6px 0;}
-.meter-bar{height:6px;border-radius:3px;background:#1a2040;}
-.meter-fill{height:100%;border-radius:3px;}
-.meter-label{font-size:11px;color:#666;min-width:60px;}
-
-/* STEP ROWS */
-.sr{display:flex;align-items:center;padding:14px 0;border-bottom:1px solid #0f1628;gap:14px;}
-.sr:last-child{border-bottom:none;}
-.sn{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;flex-shrink:0;}
-.sn.n1{background:#ff6b6b18;color:#ff6b6b;}.sn.n2{background:#ffd93d18;color:#ffd93d;}.sn.n3{background:#4ecdc418;color:#4ecdc4;}.sn.n4{background:#5a8ade18;color:#5a8ade;}.sn.n5{background:#c77dff18;color:#c77dff;}
-.sinfo{flex:1;}
-.sinfo .nm{font-size:14px;font-weight:600;color:#e0e0e0;}
-.sinfo .ds{font-size:12px;color:#666;margin-top:2px;}
-.smeta{text-align:right;min-width:120px;}
-.smeta .tm{font-size:11px;color:#555;}
-.smeta .rk{font-size:12px;font-weight:700;margin-top:2px;}
-
-/* PROCESS VISUAL */
 .pflow{display:flex;align-items:center;gap:0;margin:16px 0;flex-wrap:wrap;}
 .pfs{background:#0f1628;border:1px solid #1a2545;border-radius:8px;padding:8px 14px;text-align:center;flex:1;min-width:80px;}
 .pfs .pi{font-size:18px;margin-bottom:2px;}
@@ -105,7 +75,13 @@ html,body{height:100%;overflow:hidden;background:#080c18;color:#e0e0e0;font-fami
 .pfs .pd{font-size:10px;color:#444;margin-top:1px;}
 .pa{color:#2a3a5a;font-size:18px;padding:0 3px;flex-shrink:0;}
 
-/* GRAPH */
+.sr{display:flex;align-items:center;padding:14px 0;border-bottom:1px solid #0f1628;gap:14px;}
+.sr:last-child{border-bottom:none;}
+.sn{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;flex-shrink:0;}
+.sn.n1{background:#ff6b6b18;color:#ff6b6b;}.sn.n2{background:#ffd93d18;color:#ffd93d;}.sn.n3{background:#4ecdc418;color:#4ecdc4;}.sn.n4{background:#5a8ade18;color:#5a8ade;}.sn.n5{background:#c77dff18;color:#c77dff;}
+.sinfo{flex:1;}.sinfo .nm{font-size:14px;font-weight:600;color:#e0e0e0;}.sinfo .ds{font-size:12px;color:#666;margin-top:2px;}
+.smeta{text-align:right;min-width:120px;}.smeta .rk{font-size:12px;font-weight:700;}
+
 #gc svg{border-radius:12px;border:1px solid #141a30;background:#060a14;}
 .node circle{stroke-width:1.5;cursor:pointer;}.node circle:hover{filter:brightness(1.4);}
 .node text{fill:#aaa;font-size:9px;pointer-events:none;text-anchor:middle;}
@@ -115,11 +91,9 @@ html,body{height:100%;overflow:hidden;background:#080c18;color:#e0e0e0;font-fami
 .gb{background:#0a0f1e;border:1px solid #141a30;color:#666;padding:4px 11px;border-radius:5px;cursor:pointer;font-size:11px;font-family:inherit;transition:all 0.2s;}
 .gb:hover{border-color:#2a4a7a;color:#aaa;}.gb.active{background:#0f1a35;border-color:#5a8ade;color:#fff;}
 
-/* CTA */
 .cta{padding:28px;background:linear-gradient(135deg,#0f1a35,#0a0f1e);border:1px solid #1a3060;border-radius:14px;text-align:center;margin-top:24px;}
 .cta h3{color:#fff;font-size:18px;margin-bottom:6px;}.cta p{color:#666;font-size:13px;margin-bottom:0;}
 .cta a{color:#5a8ade;text-decoration:none;font-weight:600;}.cta a:hover{text-decoration:underline;}
-
 .kbh{position:fixed;bottom:56px;right:20px;font-size:9px;color:#282e40;z-index:50;}
 </style>
 </head>
@@ -133,17 +107,16 @@ html,body{height:100%;overflow:hidden;background:#080c18;color:#e0e0e0;font-fami
 <div class="gtt" id="gtt"></div>
 
 <!-- ═══════════════════════════════════════ -->
-<!-- 1. RED BOX -->
+<!-- 1. RED BOX — HOW WE BUILT THIS -->
 <!-- ═══════════════════════════════════════ -->
 <div class="slide active" id="s1"><div class="si">
   <div class="red-box">
-    <p><strong>Shajey — we built this for you.</strong></p>
-    <p>You're a Technical Product Manager on <strong>Salesforce Health Cloud</strong> at a health plan growing 34-60% year over year. You come from <strong>Deloitte SAP data warehousing</strong> — you know what breaks when systems don't talk. You just earned your <strong>AI Product Management certification</strong>. You mentor PMs at First Round. You write about strategic foresight — seeing the rivulets that form rivers.</p>
-    <p>What follows is a set of <strong>specific, actionable problems</strong> we found in VNS Health's publicly available data. Not theory. Not a product pitch. Just: <strong>here's what's breaking, here's why, and here's what you can do about it.</strong></p>
+    <p>Everything in this deck was built from <strong>publicly available information only.</strong></p>
+    <p>Sources: vnshealth.org, vnshealthplans.org, CMS plan data (Plan Finder, star ratings, enrollment), provider manuals and reference guides posted publicly, VNS Health newsroom articles, eviCore/Availity/Varis provider-facing documentation, NYSDOH quality ratings, and CMS regulatory requirements for provider directory accuracy and network adequacy.</p>
+    <p><strong>No proprietary data. No inside access. No assumptions about internal systems.</strong></p>
     <hr>
-    <p><strong>How we built this — zero proprietary data:</strong></p>
-    <p>Everything here comes from public sources: vnshealth.org, vnshealthplans.org, CMS plan data, provider manuals posted online, newsroom articles, and industry regulatory filings. We scraped public pages, extracted every entity we could find (plans, vendors, processes, metrics, people), mapped the relationships between them, and analyzed the patterns that emerge when you connect all the dots.</p>
-    <p><strong>This is what shows up from public data alone.</strong> The problems are real. The fixes are within your reach.</p>
+    <p>We extracted every entity we could find — plans, vendors, processes, stakeholders, metrics, regulatory requirements — mapped the relationships between them, and analyzed the cross-domain patterns that only become visible when you connect the dots.</p>
+    <p>What follows are <strong>five specific operational friction points</strong> that surfaced from that analysis. Each one is real, each one is connected to the others, and each one has a concrete path to resolution.</p>
   </div>
 </div></div>
 
@@ -151,39 +124,39 @@ html,body{height:100%;overflow:hidden;background:#080c18;color:#e0e0e0;font-fami
 <!-- 2. TITLE -->
 <!-- ═══════════════════════════════════════ -->
 <div class="slide" id="s2"><div class="si" style="text-align:center;">
-  <div class="lab">Prepared for Shajey Rumi &middot; March 2026</div>
+  <div class="lab">VNS Health &middot; March 2026</div>
   <div class="t1" style="font-size:50px;margin-bottom:20px;">What Your Data<br><em>Is Telling You</em></div>
-  <div class="sub" style="margin:0 auto 36px;text-align:center;">Five friction points hiding in plain sight at VNS Health.<br>Each one is connected. Each one is fixable. Here's the map.</div>
+  <div class="sub" style="margin:0 auto 36px;text-align:center;">Five operational friction points hiding in plain sight.<br>Each one is connected. Each one is costing you. Here's the map.</div>
   <div class="pflow" style="max-width:680px;margin:0 auto;">
-    <div class="pfs"><div class="pi">🌐</div><div class="pl">Public Data</div><div class="pd">Web scrape</div></div>
+    <div class="pfs"><div class="pi">🌐</div><div class="pl">Public Data</div><div class="pd">6 source types</div></div>
     <div class="pa">&rarr;</div>
-    <div class="pfs"><div class="pi">🔍</div><div class="pl">Extract</div><div class="pd">36 entities</div></div>
+    <div class="pfs"><div class="pi">🔍</div><div class="pl">Entity Extraction</div><div class="pd">36 entities</div></div>
     <div class="pa">&rarr;</div>
-    <div class="pfs"><div class="pi">🔗</div><div class="pl">Connect</div><div class="pd">32 relationships</div></div>
+    <div class="pfs"><div class="pi">🔗</div><div class="pl">Relationship Mapping</div><div class="pd">32 connections</div></div>
     <div class="pa">&rarr;</div>
-    <div class="pfs"><div class="pi">⚡</div><div class="pl">Analyze</div><div class="pd">5 patterns</div></div>
+    <div class="pfs"><div class="pi">⚡</div><div class="pl">Pattern Analysis</div><div class="pd">5 friction points</div></div>
     <div class="pa">&rarr;</div>
-    <div class="pfs"><div class="pi">🎯</div><div class="pl">Action</div><div class="pd">This deck</div></div>
+    <div class="pfs"><div class="pi">🎯</div><div class="pl">This Deck</div><div class="pd">Actionable signal</div></div>
   </div>
 </div></div>
 
 <!-- ═══════════════════════════════════════ -->
-<!-- 3. VNS AT A GLANCE -->
+<!-- 3. VNS TODAY -->
 <!-- ═══════════════════════════════════════ -->
 <div class="slide" id="s3"><div class="si">
   <div class="lab">VNS Health Today</div>
   <div class="t2">Incredible momentum. <em>Hidden cracks.</em></div>
   <div class="g3" style="margin-top:20px;margin-bottom:18px;">
-    <div class="card b"><h3 style="font-size:26px;color:#5a8ade;">73K+</h3><p>Daily patients & members</p></div>
-    <div class="card g"><h3 style="font-size:26px;color:#4ecdc4;">60%</h3><p>D-SNP enrollment growth (2024)</p></div>
-    <div class="card g"><h3 style="font-size:26px;color:#4ecdc4;">4.5★</h3><p>Medicare Advantage — highest in NYC</p></div>
-    <div class="card b"><h3 style="font-size:26px;color:#5a8ade;">5 Plans</h3><p>EasyCare, Plus, Total, MLTC, SelectHealth</p></div>
-    <div class="card b"><h3 style="font-size:26px;color:#5a8ade;">50+</h3><p>Languages across care teams</p></div>
-    <div class="card r"><h3 style="font-size:26px;color:#ff6b6b;">4 Vendors</h3><p>Availity, eviCore, Varis, MedImpact — no unified view</p></div>
+    <div class="card b"><h3 style="font-size:26px;color:#5a8ade;">73K+</h3><p>Daily patients & members served across New York</p></div>
+    <div class="card g"><h3 style="font-size:26px;color:#4ecdc4;">60%</h3><p>D-SNP enrollment growth (2024) — fastest-growing segment</p></div>
+    <div class="card g"><h3 style="font-size:26px;color:#4ecdc4;">4.5★</h3><p>Medicare Advantage — highest rating in NYC & Long Island</p></div>
+    <div class="card b"><h3 style="font-size:26px;color:#5a8ade;">5 Plans</h3><p>EasyCare, EasyCare Plus, Total (5★), MLTC (#1 NYS), SelectHealth</p></div>
+    <div class="card b"><h3 style="font-size:26px;color:#5a8ade;">50+</h3><p>Languages across care teams — genuine competitive moat in NYC</p></div>
+    <div class="card r"><h3 style="font-size:26px;color:#ff6b6b;">4 Vendors</h3><p>Availity, eviCore, Varis, MedImpact — each with separate data, separate workflows</p></div>
   </div>
   <div class="sig">
-    <h4>The Hidden Pattern</h4>
-    <p>Every problem we're about to show you connects through one thing: <strong>provider data.</strong> Growth depends on network adequacy. Network adequacy depends on directory accuracy. Directory accuracy depends on knowing <em>when</em> data changed. And nobody at VNS can prove <em>when.</em></p>
+    <h4>What The Analysis Revealed</h4>
+    <p>Every problem in this deck connects through one thing: <strong>provider data.</strong> Growth requires network adequacy. Network adequacy requires directory accuracy. Directory accuracy requires proving <em>when</em> you learned data was wrong. And that proof doesn't exist in any system we could find evidence of. That's the thread. Pull it and everything else unravels.</p>
   </div>
 </div></div>
 
@@ -191,16 +164,16 @@ html,body{height:100%;overflow:hidden;background:#080c18;color:#e0e0e0;font-fami
 <!-- 4. THE FIVE PROBLEMS -->
 <!-- ═══════════════════════════════════════ -->
 <div class="slide" id="s4"><div class="si">
-  <div class="lab">The Five Problems</div>
-  <div class="t2">What the data says. <em>What you can do.</em></div>
+  <div class="lab">The Five Friction Points</div>
+  <div class="t2">What's breaking. <em>What it's costing.</em></div>
   <table class="tbl" style="margin-top:20px;">
-    <thead><tr><th style="width:28px">#</th><th>Problem</th><th>Why It Matters</th><th style="text-align:right">At Stake</th></tr></thead>
+    <thead><tr><th style="width:28px">#</th><th>Friction</th><th>Root Cause</th><th style="text-align:right">At Stake</th></tr></thead>
     <tbody>
-      <tr><td class="bad">1</td><td><strong>You can't prove "when you knew"</strong></td><td>CMS doesn't care if data is right — they care if you can prove when you learned it was wrong</td><td style="text-align:right" class="bad">25-county expansion blocked</td></tr>
-      <tr><td class="gold">2</td><td><strong>Providers navigate 4 blind systems</strong></td><td>No single view of auth → claim → payment → audit. Friction on every interaction.</td><td style="text-align:right" class="gold">$300K+/yr in avoidable admin</td></tr>
-      <tr><td class="bad">3</td><td><strong>15K new members, one engagement playbook</strong></td><td>D-SNP and EasyCare members get MLTC-style outreach. Wrong channel. Wrong message.</td><td style="text-align:right" class="bad">$7.5M-$11.25M/yr in churn</td></tr>
-      <tr><td class="gold">4</td><td><strong>Varis is silently eroding your network</strong></td><td>30-day audit deadline → full reclamation → providers leave → nobody connects the dots</td><td style="text-align:right" class="gold">Network adequacy risk</td></tr>
-      <tr><td class="bad">5</td><td><strong>Institutional knowledge is walking out</strong></td><td>130 years of relationship intelligence lives in people who are retiring</td><td style="text-align:right" class="bad">Irreversible moat loss</td></tr>
+      <tr><td class="bad">1</td><td><strong>Can't prove "when you knew"</strong></td><td>Provider data changes are tracked by result, not by when awareness occurred or how</td><td style="text-align:right" class="bad">25-county expansion blocked</td></tr>
+      <tr><td class="gold">2</td><td><strong>4 vendor systems, no unified lifecycle</strong></td><td>Claims (Availity), auth (eviCore), audit (Varis) are separate silos with no cross-view</td><td style="text-align:right" class="gold">$300K+/yr avoidable admin</td></tr>
+      <tr><td class="bad">3</td><td><strong>15K new members, one engagement model</strong></td><td>D-SNP and EasyCare populations receive outreach designed for legacy MLTC members</td><td style="text-align:right" class="bad">$7.5M-$11.25M/yr churn risk</td></tr>
+      <tr><td class="gold">4</td><td><strong>Post-payment audits silently eroding network</strong></td><td>Varis 30-day records deadline → full reclamation → providers leave → no one connects it</td><td style="text-align:right" class="gold">Network adequacy</td></tr>
+      <tr><td class="bad">5</td><td><strong>Institutional knowledge walking out the door</strong></td><td>130 years of relationship intelligence lives in people retiring, not in any system</td><td style="text-align:right" class="bad">Irreversible competitive loss</td></tr>
     </tbody>
   </table>
   <p style="color:#444;font-size:12px;margin-top:16px;">These aren't five separate problems. They're one system. Let's walk through each.</p>
@@ -210,33 +183,37 @@ html,body{height:100%;overflow:hidden;background:#080c18;color:#e0e0e0;font-fami
 <!-- 5. PROBLEM #1 -->
 <!-- ═══════════════════════════════════════ -->
 <div class="slide" id="s5"><div class="si">
-  <div class="lab">Problem #1</div>
-  <div class="t1" style="font-size:38px;">"When did you <em>become aware?</em>"</div>
-  <div class="g21" style="margin-top:20px;">
+  <div class="lab">Friction #1 — The Compliance Tripwire</div>
+  <div class="t1" style="font-size:36px;">"When did you <em>become aware?</em>"</div>
+  <div class="g21" style="margin-top:16px;">
     <div>
-      <p class="body"><strong>What CMS actually asks</strong> isn't "Is Dr. Smith's address correct?" It's: "When did you learn it was wrong, what did you do, and how fast?"</p>
-      <p class="body">Salesforce shows the record was updated March 3. <strong>It cannot prove</strong> whether VNS knew on January 20 (from a member call), February 5 (from credentialing), or March 1 (from 90-day outreach).</p>
-      <div class="flow" style="margin-top:14px;font-size:11px;">
-        Provider moves offices Jan 15<br>
-        <span class="a">&rarr;</span> Maybe tells VNS. Maybe doesn't.<br>
-        <span class="a">&rarr;</span> Salesforce updated March 3<br>
-        <span class="a">&rarr;</span> CMS: <span class="w">"When did you know?"</span><br>
-        <span class="a">&rarr;</span> <span class="a">Can't prove awareness timeline</span><br>
-        <span class="a">&rarr;</span> <span class="a">Corrective Action Plan</span><br>
-        <span class="a">&rarr;</span> <span class="a">Directory SUPPRESSED on Plan Finder</span><br>
-        <span class="a">&rarr;</span> <span class="a">Enrollment stalls — all plans</span>
+      <p class="body"><strong>What CMS actually asks</strong> during a provider directory audit isn't "Is Dr. Smith's address correct right now?"</p>
+      <p class="body">CMS asks: <strong>"When did you become aware the address was wrong, what did you do about it, and how quickly?"</strong></p>
+      <p class="body">Most health plans can answer the first question. Almost none can answer the second. Many Corrective Action Plans are issued <strong>not because data was wrong, but because the plan couldn't demonstrate its awareness timeline.</strong></p>
+      <div class="flow" style="margin-top:12px;font-size:11px;">
+        Provider moves offices January 15<br>
+        <span class="a">&rarr;</span> Maybe notifies VNS. Maybe doesn't.<br>
+        <span class="a">&rarr;</span> Info reaches VNS via member call, credentialing, or 90-day outreach<br>
+        <span class="a">&rarr;</span> Directory updated March 3<br>
+        <span class="a">&rarr;</span> CMS asks: <span class="w">"When did you know?"</span><br>
+        <span class="a">&rarr;</span> <span class="a">Can show update date. Cannot prove awareness date.</span><br>
+        <span class="a">&rarr;</span> <span class="a">Corrective Action Plan issued</span><br>
+        <span class="a">&rarr;</span> <span class="a">Directory SUPPRESSED on Medicare Plan Finder</span><br>
+        <span class="a">&rarr;</span> <span class="a">Enrollment growth stalls — across ALL plans</span>
       </div>
     </div>
     <div>
       <div class="card g">
-        <h3>What You Can Do</h3>
-        <p>Build a <strong>change audit layer</strong> on your provider records. Every update gets a timestamp, source channel (member call, credentialing, outreach), who detected it, what action was taken, and resolution time.</p>
-        <p>This isn't a new system. It's metadata on your existing Salesforce provider objects — a <strong>Field History Tracking</strong> implementation with structured source attribution.</p>
-        <p style="margin-top:10px;padding-top:10px;border-top:1px solid #1a2545;color:#4ecdc4;font-weight:600;">Result: CMS asks "when?" — you pull the audit trail. Awareness: Jan 20, 2:32 PM. Response: 38 minutes. SLA: met.</p>
+        <h3>The Fix: Provider Data Provenance</h3>
+        <p>Every provider record change needs three things it probably doesn't have today:</p>
+        <p><strong>1. Source attribution</strong> — How did VNS learn about this change? Member call? Credentialing update? 90-day outreach? Provider self-report?</p>
+        <p><strong>2. Awareness timestamp</strong> — Not when the record was updated. When VNS <em>first learned</em> the data was wrong.</p>
+        <p><strong>3. Response audit trail</strong> — What action was taken, by whom, and how quickly? Was the internal SLA met?</p>
+        <p style="margin-top:10px;padding-top:10px;border-top:1px solid #1a2545;color:#4ecdc4;font-weight:600;">CMS asks "when?" — you pull the trail. Awareness: Jan 20, 2:32 PM via member call. Action: ticket created 38 min later. Resolution: next business day. SLA: met.</p>
       </div>
       <div class="sig" style="margin-top:12px;">
         <h4>Why This Is Urgent</h4>
-        <p>VNS is expanding into <strong>25 new counties.</strong> Each one adds hundreds of provider records you've never managed. Without provenance tracking, every new county = new compliance exposure.</p>
+        <p>VNS is expanding VNS Health Total into <strong>25 additional counties.</strong> Hundreds of new provider records never managed before. Without provenance tracking, every new county = new compliance exposure. With it, expansion becomes a compliance strength.</p>
       </div>
     </div>
   </div>
@@ -246,33 +223,34 @@ html,body{height:100%;overflow:hidden;background:#080c18;color:#e0e0e0;font-fami
 <!-- 6. PROBLEM #2 -->
 <!-- ═══════════════════════════════════════ -->
 <div class="slide" id="s6"><div class="si">
-  <div class="lab">Problem #2</div>
-  <div class="t1" style="font-size:38px;">Four vendors. <em>Zero visibility.</em></div>
-  <div class="g12" style="margin-top:20px;">
+  <div class="lab">Friction #2 — The Vendor Fragmentation Tax</div>
+  <div class="t1" style="font-size:36px;">Four systems. <em>Zero unified view.</em></div>
+  <div class="g12" style="margin-top:16px;">
     <div>
-      <table class="tbl">
-        <thead><tr><th>Step</th><th>System</th><th>Data Ownership</th></tr></thead>
+      <p class="body">A network provider interacting with VNS Health touches <strong>four separate vendor systems</strong> for a single patient episode:</p>
+      <table class="tbl" style="margin-top:8px;">
+        <thead><tr><th>Step</th><th>System</th><th>Vendor</th></tr></thead>
         <tbody>
-          <tr><td>Check if auth needed</td><td>VNS Portal (Salesforce)</td><td class="ok">Yours</td></tr>
-          <tr><td>Submit prior auth</td><td>eviCore (Evernorth)</td><td class="bad">External</td></tr>
-          <tr><td>Submit claim</td><td>Availity</td><td class="bad">External</td></tr>
-          <tr><td>Respond to audit</td><td>Varis</td><td class="bad">Surprise external</td></tr>
+          <tr><td>Check if auth needed</td><td>VNS Provider Portal</td><td class="ok">VNS Health</td></tr>
+          <tr><td>Submit prior auth</td><td>eviCore portal</td><td class="bad">Evernorth/Cigna</td></tr>
+          <tr><td>Submit claim</td><td>Availity EDI</td><td class="bad">Availity</td></tr>
+          <tr><td>Respond to post-pay audit</td><td>Varis</td><td class="bad">Varis</td></tr>
         </tbody>
       </table>
-      <p class="body" style="margin-top:14px;">A provider cannot see: <em>"I submitted auth Monday, approved Wednesday, billed Thursday, now in Varis review."</em></p>
-      <p class="body"><strong>That view doesn't exist anywhere.</strong> Not for providers. Not for VNS internally. Four separate data silos, four logins, four status vocabularies.</p>
-      <p class="body">Plus: cross-year billing rule (2025/2026 services on separate claims) is generating <strong>predictable, preventable denials right now</strong> in Q1 2026.</p>
+      <p class="body" style="margin-top:14px;">Each system has its own login, its own status vocabulary, its own SLAs, and its own support channel. A provider cannot see: <em>"I submitted auth Monday, approved Wednesday, billed Thursday, now flagged for Varis review."</em></p>
+      <p class="body"><strong>That view doesn't exist. Not for providers. Not inside VNS.</strong></p>
+      <p class="body">On top of this: the cross-year billing rule (2025 and 2026 services must be on separate claims) is generating <strong>predictable, preventable denials</strong> right now in Q1 2026. Every provider who bills across years on one claim gets denied.</p>
     </div>
     <div>
       <div class="card g">
-        <h3>What You Can Do</h3>
-        <p><strong>Unify the claim lifecycle in Salesforce.</strong> Pull auth status from eviCore, claim status from Availity, and audit flags from Varis into a single timeline view on the provider record.</p>
-        <p>This is an integration problem you can solve with APIs and Salesforce Flows. eviCore and Availity both have provider-facing APIs. Varis data can come through your existing payment feeds.</p>
-        <p style="margin-top:10px;padding-top:10px;border-top:1px solid #1a2545;"><strong>Quick win:</strong> Cross-year billing validator. Pre-submission check that flags mixed 2025/2026 claims before they hit Availity. You could ship this in <strong>2 weeks</strong> and prevent every one of those denials.</p>
+        <h3>The Fix: Lifecycle Visibility</h3>
+        <p>VNS needs a <strong>unified claim lifecycle view</strong> — one place that shows the full journey from auth request through adjudication through post-payment review, regardless of which vendor handled which step.</p>
+        <p>This means stitching data from eviCore (auth decisions), Availity (claim status), and Varis (audit flags) into a single timeline per provider per member encounter.</p>
+        <p><strong>Immediate quick win:</strong> A cross-year billing validator that catches mixed 2025/2026 claims before submission. This is a rules-based check that could be deployed in weeks and prevent every one of those avoidable denials.</p>
       </div>
       <div class="sig" style="margin-top:12px;">
-        <h4>The Money</h4>
-        <p>50K claims/yr. Denial rate 10%→7% = 1,500 fewer denials &times; ~$200 rework cost = <strong>$300K/year saved.</strong> Plus: providers stop leaving over billing friction.</p>
+        <h4>The Cost of Inaction</h4>
+        <p>~50K claims/year. If denial rate drops from industry average 10% to 7% through better visibility and pre-submission validation = 1,500 fewer denials &times; ~$200 rework cost = <strong>$300K/year in avoidable admin cost.</strong> Plus: every denial is a provider friction event that pushes toward network departure.</p>
       </div>
     </div>
   </div>
@@ -282,36 +260,36 @@ html,body{height:100%;overflow:hidden;background:#080c18;color:#e0e0e0;font-fami
 <!-- 7. PROBLEM #3 -->
 <!-- ═══════════════════════════════════════ -->
 <div class="slide" id="s7"><div class="si">
-  <div class="lab">Problem #3</div>
-  <div class="t1" style="font-size:38px;">15,000 new members.<br><em>One playbook.</em></div>
-  <div class="g21" style="margin-top:20px;">
+  <div class="lab">Friction #3 — The Engagement Mismatch</div>
+  <div class="t1" style="font-size:36px;">15,000 new members.<br><em>One playbook.</em></div>
+  <div class="g21" style="margin-top:16px;">
     <div>
       <table class="tbl">
-        <thead><tr><th></th><th>Legacy MLTC</th><th>New D-SNP</th><th>New EasyCare</th></tr></thead>
+        <thead><tr><th></th><th>Legacy MLTC</th><th>New D-SNP (60%↑)</th><th>New EasyCare (34%↑)</th></tr></thead>
         <tbody>
-          <tr><td><strong>Time w/ VNS</strong></td><td>Years</td><td>Days</td><td>Days</td></tr>
-          <tr><td><strong>Preferred channel</strong></td><td>Phone, in-person</td><td>Unknown</td><td class="ok">Digital</td></tr>
-          <tr><td><strong>What drives satisfaction</strong></td><td>Care continuity</td><td>Benefits clarity</td><td>Cost, convenience</td></tr>
-          <tr><td><strong>CAHPS risk</strong></td><td class="ok">Low</td><td class="bad">High</td><td class="bad">High</td></tr>
+          <tr><td><strong>Relationship w/ VNS</strong></td><td>Years</td><td>Days/weeks</td><td>Days/weeks</td></tr>
+          <tr><td><strong>Care complexity</strong></td><td>High (LTC needs)</td><td>Medium (dual-elig)</td><td>Lower (Medicare-only)</td></tr>
+          <tr><td><strong>Likely channel pref</strong></td><td>Phone, in-person</td><td>Unknown — never asked</td><td>Probably digital-first</td></tr>
+          <tr><td><strong>What drives satisfaction</strong></td><td>Continuity, same aide</td><td>Benefits understanding</td><td>Cost, convenience</td></tr>
+          <tr><td><strong>CAHPS risk level</strong></td><td class="ok">Low (known, managed)</td><td class="bad">High (unmet expectations)</td><td class="bad">High (wrong channel)</td></tr>
         </tbody>
       </table>
-      <p class="body" style="margin-top:14px;">VNS's 5-star rating was earned on MLTC relationships built over years. Now VNS is calling new EasyCare members the same way they call MLTC members.</p>
-      <p class="body">A 45-year-old Medicare HMO member who chose a $25/month plan <strong>does not want the same outreach</strong> as an 80-year-old with a home health aide.</p>
-      <p class="body">The blended star rating masks this. By the time segment-specific problems surface, it's <strong>12-18 months too late.</strong></p>
+      <p class="body" style="margin-top:14px;">VNS Health's 5-star MLTC rating was earned on relationships built over years. The engagement model — high-touch, phone-based, care-manager-driven — works beautifully for that population.</p>
+      <p class="body">But 15,000 new members just walked in through D-SNP and EasyCare. A 45-year-old Medicare HMO member who chose a $25/month plan <strong>does not want the same outreach</strong> as an 80-year-old with a home health aide. One is annoyed. The other depends on it.</p>
     </div>
     <div>
       <div class="card g">
-        <h3>What You Can Do</h3>
-        <p><strong>Segment your engagement by plan type inside Salesforce.</strong> You already have the data: plan type, enrollment date, interaction history, portal login frequency, complaint records.</p>
-        <p>Build Salesforce Flows that route engagement based on segment:</p>
-        <p>&bull; <strong>New D-SNP:</strong> Benefits education call within 14 days of enrollment<br>
-        &bull; <strong>New EasyCare:</strong> Portal onboarding email + self-service nudge<br>
-        &bull; <strong>Legacy MLTC:</strong> Continue high-touch model</p>
-        <p style="margin-top:10px;padding-top:10px;border-top:1px solid #1a2545;color:#4ecdc4;font-weight:600;">This is where your AI PM cert meets production. Interaction patterns as features → churn prediction model → Salesforce surfaces recommendations to care managers.</p>
+        <h3>The Fix: Segment-Specific Engagement</h3>
+        <p>VNS needs to <strong>stratify engagement by plan type and enrollment tenure</strong> — not just care complexity.</p>
+        <p>At minimum, three distinct outreach models:</p>
+        <p>&bull; <strong>New D-SNP:</strong> Benefits education within 14 days. Most don't fully understand dual-eligible coverage.<br>
+        &bull; <strong>New EasyCare:</strong> Digital onboarding. Portal-first. Self-service-oriented.<br>
+        &bull; <strong>Legacy MLTC:</strong> Continue the high-touch model that earned the 5-star rating.</p>
+        <p style="margin-top:10px;padding-top:10px;border-top:1px solid #1a2545;">The blended star rating is masking this problem. Overall satisfaction might look fine while D-SNP satisfaction craters. By the time it shows in annual ratings, it's <strong>12-18 months too late to fix.</strong></p>
       </div>
       <div class="sig" style="margin-top:12px;">
-        <h4>The Money</h4>
-        <p>MA capitation ~$10K-$15K/member/yr. Losing 5% of 15K = 750 members = <strong>$7.5M-$11.25M/yr.</strong> Reducing churn by 2 points pays for everything.</p>
+        <h4>The Cost of Inaction</h4>
+        <p>MA capitation: ~$10K-$15K per member per year. Losing 5% of 15,000 new members = 750 members = <strong>$7.5M-$11.25M annual revenue loss.</strong> Reducing churn by even 2 percentage points more than pays for any engagement redesign.</p>
       </div>
     </div>
   </div>
@@ -321,32 +299,34 @@ html,body{height:100%;overflow:hidden;background:#080c18;color:#e0e0e0;font-fami
 <!-- 8. PROBLEMS #4 & #5 -->
 <!-- ═══════════════════════════════════════ -->
 <div class="slide" id="s8"><div class="si">
-  <div class="lab">Problems #4 & #5</div>
-  <div class="t2">Two cascades <em>compounding silently</em></div>
+  <div class="lab">Frictions #4 & #5 — Silent Compounders</div>
+  <div class="t2">Two cascades <em>nobody is connecting</em></div>
   <div class="g2" style="margin-top:20px;">
     <div class="card r">
-      <h3>The Varis Trap</h3>
-      <p>Varis sends records request. Provider has 30 days. Miss it? <strong>Full claim payment reclaimed.</strong> Provider did the work. Patient got care. Missed admin deadline = zero pay.</p>
-      <p>After this happens twice, provider stops accepting VNS members. VNS sees "network attrition" — <strong>nobody connects it to Varis.</strong></p>
-      <p style="margin-top:10px;padding-top:10px;border-top:1px solid #2a1520;"><strong style="color:#4ecdc4;">Action:</strong> Build a Varis deadline tracker in Salesforce. Flag claims in post-payment review. Auto-alert provider relations 15 days before deadline. <strong>One proactive call saves the relationship.</strong></p>
-      <p><strong style="color:#4ecdc4;">Advanced:</strong> Track providers with 2+ recoupments AND declining claim volume AND no portal logins. That's your "about to leave" signal. Intervene before they do.</p>
+      <h3>#4: The Post-Payment Audit Trap</h3>
+      <p>Varis conducts post-payment reviews on behalf of VNS. The dynamic:</p>
+      <p>1. VNS pays a claim<br>2. Weeks/months later, Varis flags it for clinical validation<br>3. Varis sends the provider a records request<br>4. Provider has <strong>30 days</strong> to respond<br>5. Non-response = <strong>full claim payment reclaimed as overpayment</strong></p>
+      <p>The provider did the work. The patient got the care. But a missed admin deadline = <strong>zero pay.</strong></p>
+      <p>After this happens once or twice, the provider stops accepting VNS members. VNS sees "network attrition" in the aggregate data. <strong>Nobody connects it to the Varis recoupment that triggered the departure.</strong></p>
+      <p style="margin-top:10px;padding-top:10px;border-top:1px solid #2a1520;"><strong style="color:#4ecdc4;">Fix:</strong> Track which providers are in active Varis review. Proactive outreach from VNS provider relations — not Varis — 15 days before the deadline: "Claim #12345 needs records by March 30. Need help?" One call saves the relationship. Flag providers with 2+ recoupments as at-risk for network exit.</p>
     </div>
     <div class="card p">
-      <h3>Knowledge Walking Out the Door</h3>
-      <p>130 years of institutional knowledge lives in people, not systems. Which providers return calls. Which aides are reliable in which neighborhoods. Which members need their daughter called first.</p>
-      <p>When veteran staff retire — especially <strong>multilingual staff</strong> in a 50+ language market — the entire relationship network of a territory vanishes. New hire gets a procedure manual. <strong>Not 20 years of relationship intelligence.</strong></p>
-      <p style="margin-top:10px;padding-top:10px;border-top:1px solid #201530;"><strong style="color:#4ecdc4;">Action:</strong> Start structured knowledge capture NOW. When a care manager gives notice, run an offboarding protocol: document every provider relationship, member preference, operational workaround, and community contact. Store it in Salesforce as structured notes on the relevant records.</p>
-      <p><strong style="color:#4ecdc4;">Critical:</strong> Map language coverage by geography. If the only Bengali-speaking care manager in the Bronx leaves, you need to know that the day they give notice — not after.</p>
+      <h3>#5: Knowledge Walking Out the Door</h3>
+      <p>VNS has operated for 130 years. The nurses, care managers, and social workers who've been there decades carry knowledge that exists in no system:</p>
+      <p>&bull; Which providers actually return calls<br>&bull; Which home health aide agencies are reliable in which neighborhoods<br>&bull; Which members need their daughter called first before scheduling<br>&bull; How to navigate a specific county Medicaid office's quirks</p>
+      <p>When these people retire, that knowledge vanishes. The replacement gets a procedure manual. <strong>Not 20 years of relationship intelligence.</strong></p>
+      <p>The 50+ language moat makes this worse. A Mandarin-speaking care manager who retires doesn't just take language capability — they take the <strong>entire relationship network</strong> of Mandarin-speaking members and providers in their territory.</p>
+      <p style="margin-top:10px;padding-top:10px;border-top:1px solid #201530;"><strong style="color:#4ecdc4;">Fix:</strong> Structured knowledge capture on role transitions. Map language capability by geography. If the only Bengali-speaking care manager in the Bronx gives notice, that needs to be a Day 1 alert — not a discovery after they're gone.</p>
     </div>
   </div>
   <div class="sig">
-    <h4>How These Connect</h4>
-    <p>Varis erodes providers → breaks member-provider relationships → drops CAHPS → hits stars → reduces enrollment revenue → constrains hiring → accelerates knowledge drain. <strong>It's one system.</strong></p>
+    <h4>Why These Are Connected</h4>
+    <p>Varis recoupments erode the provider network → member-provider relationships break → CAHPS scores drop → star ratings decline → enrollment revenue falls → workforce hiring constrained → burnout increases → veteran staff retire faster → institutional knowledge lost faster. <strong>It's one feedback loop.</strong></p>
   </div>
 </div></div>
 
 <!-- ═══════════════════════════════════════ -->
-<!-- 9. THE MAP -->
+<!-- 9. THE FULL MAP -->
 <!-- ═══════════════════════════════════════ -->
 <div class="slide" id="s9"><div class="si">
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
@@ -363,12 +343,12 @@ html,body{height:100%;overflow:hidden;background:#080c18;color:#e0e0e0;font-fami
   </div>
   <div id="gc"></div>
   <div style="display:flex;gap:14px;margin-top:8px;justify-content:center;">
-    <span style="font-size:10px;color:#444;"><span style="color:#5a8ade;">●</span> Org</span>
-    <span style="font-size:10px;color:#444;"><span style="color:#4ecdc4;">●</span> Plan</span>
-    <span style="font-size:10px;color:#444;"><span style="color:#ff6b6b;">●</span> Vendor</span>
-    <span style="font-size:10px;color:#444;"><span style="color:#ffd93d;">●</span> Process</span>
-    <span style="font-size:10px;color:#444;"><span style="color:#95e77e;">●</span> Metric</span>
-    <span style="font-size:10px;color:#444;"><span style="color:#c77dff;">●</span> Stakeholder</span>
+    <span style="font-size:10px;color:#444;"><span style="color:#5a8ade;">&#9679;</span> Organization</span>
+    <span style="font-size:10px;color:#444;"><span style="color:#4ecdc4;">&#9679;</span> Health Plan</span>
+    <span style="font-size:10px;color:#444;"><span style="color:#ff6b6b;">&#9679;</span> Vendor / System</span>
+    <span style="font-size:10px;color:#444;"><span style="color:#ffd93d;">&#9679;</span> Process</span>
+    <span style="font-size:10px;color:#444;"><span style="color:#95e77e;">&#9679;</span> Metric</span>
+    <span style="font-size:10px;color:#444;"><span style="color:#c77dff;">&#9679;</span> Stakeholder</span>
   </div>
 </div></div>
 
@@ -376,34 +356,34 @@ html,body{height:100%;overflow:hidden;background:#080c18;color:#e0e0e0;font-fami
 <!-- 10. ACTION PLAN -->
 <!-- ═══════════════════════════════════════ -->
 <div class="slide" id="s10"><div class="si">
-  <div class="lab">Your Action Plan</div>
-  <div class="t2">What to do <em>and in what order</em></div>
-  <p class="body" style="margin-bottom:16px;">Sequenced by dependency. #1 unblocks everything else. #2 protects the most revenue. The rest compound.</p>
+  <div class="lab">Recommended Actions</div>
+  <div class="t2">What to do. <em>In what order.</em></div>
+  <p class="body" style="margin-bottom:16px;">Sequenced by dependency and urgency. #1 unblocks the growth strategy. #2 is a quick win you can ship now. The rest compound.</p>
 
   <div class="sr">
     <div class="sn n1">1</div>
-    <div class="sinfo"><div class="nm">Provider Change Audit Trail</div><div class="ds">Add source attribution + timestamp to every provider record change in Salesforce. Prove "when you knew" to CMS.</div></div>
-    <div class="smeta"><div class="tm">4-6 weeks</div><div class="rk bad">Unblocks 25-county expansion</div></div>
+    <div class="sinfo"><div class="nm">Provider Data Provenance</div><div class="ds">Add source attribution + awareness timestamp + response audit trail to every provider record change. Make "when did you know?" answerable.</div></div>
+    <div class="smeta"><div class="rk bad">Unblocks 25-county expansion</div></div>
   </div>
   <div class="sr">
     <div class="sn n2">2</div>
-    <div class="sinfo"><div class="nm">Segment-Based Member Engagement</div><div class="ds">Salesforce Flows routing outreach by plan type + tenure. D-SNP ≠ EasyCare ≠ MLTC. Stop one-size-fits-all.</div></div>
-    <div class="smeta"><div class="tm">4-6 weeks</div><div class="rk bad">Protects $7.5M-$11.25M/yr</div></div>
+    <div class="sinfo"><div class="nm">Cross-Year Billing Validator</div><div class="ds">Pre-submission check catching mixed 2025/2026 claims before they hit Availity. Rules-based, deployable in weeks, prevents every one of those denials.</div></div>
+    <div class="smeta"><div class="rk gold">Immediate denial reduction</div></div>
   </div>
   <div class="sr">
     <div class="sn n3">3</div>
-    <div class="sinfo"><div class="nm">Cross-Year Billing Validator</div><div class="ds">Pre-submission check blocking mixed 2025/2026 claims. Ship in 2 weeks. Prevents every one of those denials.</div></div>
-    <div class="smeta"><div class="tm">2 weeks</div><div class="rk gold">Immediate denial reduction</div></div>
+    <div class="sinfo"><div class="nm">Segment-Specific Member Engagement</div><div class="ds">Three distinct outreach models for D-SNP, EasyCare, and MLTC. Stop applying the same playbook to populations with fundamentally different needs.</div></div>
+    <div class="smeta"><div class="rk bad">Protects $7.5M-$11.25M/yr</div></div>
   </div>
   <div class="sr">
     <div class="sn n4">4</div>
-    <div class="sinfo"><div class="nm">Unified Claim Timeline + Varis Tracker</div><div class="ds">Pull auth, claim, and audit status into one Salesforce view. Auto-alert provider relations 15 days before Varis deadline.</div></div>
-    <div class="smeta"><div class="tm">8-10 weeks</div><div class="rk gold">$300K/yr + network retention</div></div>
+    <div class="sinfo"><div class="nm">Varis Deadline Tracker + Provider Risk Alerts</div><div class="ds">Track post-payment review deadlines. Proactive provider outreach 15 days before. Flag providers with 2+ recoupments as network exit risk.</div></div>
+    <div class="smeta"><div class="rk gold">Network retention</div></div>
   </div>
   <div class="sr">
     <div class="sn n5">5</div>
-    <div class="sinfo"><div class="nm">Knowledge Capture + Language Coverage Map</div><div class="ds">Structured offboarding protocol. Map language capability by geography. Know when a territory loses coverage.</div></div>
-    <div class="smeta"><div class="tm">6-8 weeks</div><div class="rk" style="color:#c77dff;">Protects competitive moat</div></div>
+    <div class="sinfo"><div class="nm">Structured Knowledge Capture + Language Coverage Map</div><div class="ds">Offboarding protocol for veteran staff. Map language capability by geography and team. Alert on coverage gaps the day someone gives notice.</div></div>
+    <div class="smeta"><div class="rk" style="color:#c77dff;">Protects competitive moat</div></div>
   </div>
 </div></div>
 
@@ -411,11 +391,11 @@ html,body{height:100%;overflow:hidden;background:#080c18;color:#e0e0e0;font-fami
 <!-- 11. CLOSE -->
 <!-- ═══════════════════════════════════════ -->
 <div class="slide" id="s11"><div class="si" style="text-align:center;">
-  <div class="t1" style="font-size:44px;margin-bottom:20px;">These problems are <em>solvable.</em></div>
-  <div class="sub" style="margin:0 auto 32px;text-align:center;">Everything we showed you was built from public data in one session. The problems are real, the connections between them are clear, and most of the fixes live inside Salesforce tools you already have access to.</div>
-  <div class="sub" style="margin:0 auto 32px;text-align:center;">If you want help building any of this — the audit trail, the engagement segmentation, the claim lifecycle view, the Varis tracker — we do this for health plans. 30 minutes is enough to scope it.</div>
+  <div class="t1" style="font-size:42px;margin-bottom:20px;">These problems<br>are <em>solvable.</em></div>
+  <div class="sub" style="margin:0 auto 20px;text-align:center;">Everything you just saw was built from public data in a single session.<br>The friction points are real. The connections between them are clear.<br>And the fixes are well within reach.</div>
+  <div class="sub" style="margin:0 auto 32px;text-align:center;">If any of this resonated — or if you're already working on pieces of it and want a thought partner on the rest — I'd love to spend 30 minutes comparing notes.</div>
   <div class="cta">
-    <h3>Let's talk about it.</h3>
+    <h3>Let's compare notes.</h3>
     <p style="margin-bottom:8px;">
       <a href="https://calendly.com/daniel-yarmoluk/30min">Book 30 Minutes</a>
     </p>
@@ -424,8 +404,6 @@ html,body{height:100%;overflow:hidden;background:#080c18;color:#e0e0e0;font-fami
 </div></div>
 
 <!-- ═══════════════════════════════════════ -->
-<!-- SCRIPTS -->
-<!-- ═══════════════════════════════════════ -->
 <script src="https://d3js.org/d3.v7.min.js"></script>
 <script>
 const slides=document.querySelectorAll('.slide'),T=slides.length;let cur=0;
@@ -433,7 +411,6 @@ document.getElementById('tn').textContent=T;
 const bnav=document.getElementById('bnav');
 slides.forEach((_,i)=>{const d=document.createElement('div');d.className='dot'+(i===0?' active':'');d.onclick=()=>go(i);bnav.appendChild(d);});
 const dots=document.querySelectorAll('.dot');
-
 function go(n){if(n<0||n>=T)return;slides[cur].classList.remove('active');dots[cur].classList.remove('active');cur=n;slides[cur].classList.add('active');dots[cur].classList.add('active');document.getElementById('cn').textContent=cur+1;document.getElementById('progress').style.width=((cur/(T-1))*100)+'%';if(cur===8&&!window.gi)initGraph();}
 document.getElementById('pb').onclick=()=>go(cur-1);
 document.getElementById('nb').onclick=()=>go(cur+1);
@@ -452,41 +429,41 @@ function initGraph(){
     claims:['pc','pd','pa','pau','pco','ppr','sav','sev','sva','smed','spp','sprov']
   };
   const N=[
-    {id:'vns',l:'VNS Health',t:'organization',d:'130+ yrs, 73K daily'},
+    {id:'vns',l:'VNS Health',t:'organization',d:'130+ yrs, 73K daily, 50+ languages'},
     {id:'plans',l:'Health Plans',t:'organization_unit',d:'5 plans, 33K members'},
-    {id:'hc',l:'Home Care',t:'organization_unit',d:'Nursing, rehab'},
-    {id:'ho',l:'Hospice',t:'organization_unit',d:'End-of-life care'},
-    {id:'bh',l:'Behavioral',t:'organization_unit',d:'Mental health'},
-    {id:'ec',l:'EasyCare',t:'health_plan',d:'MA HMO, 34% growth'},
-    {id:'ecp',l:'EasyCare+',t:'health_plan',d:'D-SNP, 60% growth'},
-    {id:'total',l:'VNS Total',t:'health_plan',d:'MAP, 5★, expanding'},
-    {id:'mltc',l:'MLTC',t:'health_plan',d:'#1 in NYS'},
-    {id:'sh',l:'SelectHealth',t:'health_plan',d:'HIV+, homeless'},
-    {id:'sav',l:'Availity',t:'vendor_system',d:'Claims EDI'},
-    {id:'sev',l:'eviCore',t:'vendor_system',d:'Prior auth'},
-    {id:'sva',l:'Varis',t:'vendor_system',d:'Post-pay audit'},
-    {id:'smed',l:'MedImpact',t:'vendor_system',d:'Part D'},
-    {id:'spp',l:'Provider Portal',t:'internal_system',d:'Salesforce'},
-    {id:'smp',l:'Member Portal',t:'internal_system',d:'New launch'},
-    {id:'sdir',l:'Provider Dir.',t:'internal_system',d:'CMS 90-day'},
-    {id:'pc',l:'Claims',t:'process',d:'90-day filing'},
-    {id:'pd',l:'Disputes',t:'process',d:'Coding errors'},
-    {id:'pa',l:'Appeals',t:'process',d:'Clinical review'},
-    {id:'pau',l:'Prior Auth',t:'process',d:'1-day SLA'},
+    {id:'hc',l:'Home Care',t:'organization_unit',d:'Nursing, rehab, wound care'},
+    {id:'ho',l:'Hospice',t:'organization_unit',d:'End-of-life care programs'},
+    {id:'bh',l:'Behavioral Health',t:'organization_unit',d:'Mental health, substance use'},
+    {id:'ec',l:'EasyCare',t:'health_plan',d:'MA HMO, 3.5★, 34% growth'},
+    {id:'ecp',l:'EasyCare Plus',t:'health_plan',d:'D-SNP, 37K enrolled, 60% growth'},
+    {id:'total',l:'VNS Total',t:'health_plan',d:'MAP, 5★ NYS, 25-county expansion'},
+    {id:'mltc',l:'MLTC',t:'health_plan',d:'#1 rated MLTC in New York State'},
+    {id:'sh',l:'SelectHealth',t:'health_plan',d:'Medicaid SNP — HIV+, homeless'},
+    {id:'sav',l:'Availity',t:'vendor_system',d:'Preferred EDI — claims submission'},
+    {id:'sev',l:'eviCore',t:'vendor_system',d:'Prior auth (Evernorth/Cigna)'},
+    {id:'sva',l:'Varis',t:'vendor_system',d:'Post-payment clinical validation'},
+    {id:'smed',l:'MedImpact',t:'vendor_system',d:'Part D vaccine claims'},
+    {id:'spp',l:'Provider Portal',t:'internal_system',d:'24/7 auth & claims status'},
+    {id:'smp',l:'Member Portal',t:'internal_system',d:'Recently launched'},
+    {id:'sdir',l:'Provider Directory',t:'internal_system',d:'CMS 90-day verification'},
+    {id:'pc',l:'Claims',t:'process',d:'90-day filing, cross-year rule'},
+    {id:'pd',l:'Disputes',t:'process',d:'Coding errors, underpayments'},
+    {id:'pa',l:'Appeals',t:'process',d:'Clinical review, 60-120 days'},
+    {id:'pau',l:'Prior Auth',t:'process',d:'eviCore managed, 1-day SLA'},
     {id:'pcr',l:'Credentialing',t:'process',d:'Network enrollment'},
-    {id:'ppr',l:'Post-Pay',t:'process',d:'30-day deadline'},
-    {id:'pco',l:'Corrected',t:'process',d:'Code 7'},
-    {id:'pq',l:'Quality',t:'process',d:'100 measures'},
-    {id:'pdm',l:'Dir. Maint.',t:'process',d:'90-day cycle'},
-    {id:'mg',l:'Enrollment',t:'metric',d:'34-60% growth'},
-    {id:'ms',l:'Star Ratings',t:'metric',d:'4.5★ MA'},
-    {id:'mqm',l:'100 Measures',t:'metric',d:'Monthly tracking'},
-    {id:'mge',l:'Geography',t:'metric',d:'13→38 counties'},
-    {id:'smem',l:'Members',t:'stakeholder_group',d:'73K, 50+ langs'},
-    {id:'sprov',l:'Providers',t:'stakeholder_group',d:'PCPs, HHAs, SNFs'},
-    {id:'semp',l:'Workforce',t:'stakeholder_group',d:'NYC best workplace'},
+    {id:'ppr',l:'Post-Pay Review',t:'process',d:'30-day deadline or reclamation'},
+    {id:'pco',l:'Corrected Claims',t:'process',d:'Code 7 replacement required'},
+    {id:'pq',l:'Quality',t:'process',d:'100 measures tracked monthly'},
+    {id:'pdm',l:'Dir. Maintenance',t:'process',d:'90-day CMS verification cycle'},
+    {id:'mg',l:'Enrollment Growth',t:'metric',d:'34-60% across plans, 15K new'},
+    {id:'ms',l:'Star Ratings',t:'metric',d:'4.5★ MA, 5★ MLTC/MAP'},
+    {id:'mqm',l:'Quality Measures',t:'metric',d:'100 measures, 3 categories'},
+    {id:'mge',l:'Geographic Reach',t:'metric',d:'13 counties → expanding to 38'},
+    {id:'smem',l:'Members',t:'stakeholder_group',d:'73K daily, 50+ languages served'},
+    {id:'sprov',l:'Providers',t:'stakeholder_group',d:'PCPs, specialists, HHAs, SNFs'},
+    {id:'semp',l:'Workforce',t:'stakeholder_group',d:'Named NYC best workplace'},
     {id:'sreg',l:'Regulators',t:'stakeholder_group',d:'CMS, NYSDOH'},
-    {id:'lm',l:'Gursoy Brickner',t:'leader',d:'SVP Quality'}
+    {id:'lm',l:'Gursoy Brickner',t:'leader',d:'SVP Quality & Clinical Ops'}
   ];
   const E=[
     {s:'vns',t:'plans'},{s:'vns',t:'hc'},{s:'vns',t:'ho'},{s:'vns',t:'bh'},
