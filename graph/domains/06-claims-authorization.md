@@ -2,14 +2,14 @@
 
 ## Current State
 
-VNS Health's claims and authorization ecosystem relies on a multi-vendor architecture with Availity (claims), eviCore (prior auth), Varis (post-payment review), and MedImpact (Part D vaccines).
+Healthcare Organization's claims and authorization ecosystem relies on a multi-vendor architecture with Availity (claims), eviCore (prior auth), Varis (post-payment review), and MedImpact (Part D vaccines).
 
 ### Claims Architecture
 
 ```
 CLAIM LIFECYCLE:
 
-  Provider → [Availity EDI] → VNS Adjudication → Payment
+  Provider → [Availity EDI] → Healthcare Organization Adjudication → Payment
        ↓              ↓              ↓              ↓
   [Paper Mail]   [Rejection]    [Denial]      [Varis Audit]
        ↓              ↓              ↓              ↓
@@ -23,7 +23,7 @@ AUTH LIFECYCLE:
 
   Provider → [eviCore Portal/Phone] → Clinical Review → Approval/Denial
        ↓                                                      ↓
-  [VNS Provider Portal]                              [Appeal Process]
+  [Healthcare Organization Provider Portal]                              [Appeal Process]
   (status check only)                               (60-120 day decision)
 ```
 
@@ -51,7 +51,7 @@ AUTH LIFECYCLE:
 ### Process Friction Points
 
 #### 1. The Two-Vendor Auth Problem
-Providers must know which services need eviCore auth vs. VNS direct auth. Getting it wrong delays care. The provider portal shows status but doesn't route — providers must figure out the right door.
+Providers must know which services need eviCore auth vs. Healthcare Organization direct auth. Getting it wrong delays care. The provider portal shows status but doesn't route — providers must figure out the right door.
 
 #### 2. Cross-Year Billing Trap
 "Services from 2025 and 2026 must be billed on separate claims. Submitting multiple service years on one claim may result in denials or delayed payment."
@@ -89,7 +89,7 @@ Why does an LHCSA get 60 days but an ancillary provider gets 6 months? The incon
 ### The Auth Bottleneck
 ```
 [Provider Needs Auth for Service]
-    → [Unsure: eviCore or VNS Direct?]
+    → [Unsure: eviCore or Healthcare Organization Direct?]
         → [Submits to Wrong Entity]
             → [Redirected — Time Lost]
                 → [Auth Delayed]
@@ -102,7 +102,7 @@ Why does an LHCSA get 60 days but an ancillary provider gets 6 months? The incon
 ## Opportunities for Graphify
 
 1. **Claims Flow Intelligence** — End-to-end graph of every claim from submission through final disposition, with real-time bottleneck detection and denial pattern analysis
-2. **Authorization Routing Engine** — Graph-based routing logic that tells providers exactly where to submit auth requests, eliminating the eviCore vs. VNS guessing game
+2. **Authorization Routing Engine** — Graph-based routing logic that tells providers exactly where to submit auth requests, eliminating the eviCore vs. Healthcare Organization guessing game
 3. **Cross-Year Billing Prevention** — Automated pre-submission validation that flags mixed-year claims before they reach Availity
 4. **Denial Pattern Graph** — Map denial reasons → root causes → provider types → time periods to identify systemic issues vs. one-off errors
 5. **Vendor Dependency Risk Map** — Model cascading impacts of vendor outages or performance degradation across the claims/auth ecosystem

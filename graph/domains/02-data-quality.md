@@ -2,7 +2,7 @@
 
 ## Current State
 
-VNS Health tracks 100 quality measures monthly across clinical outcomes, member satisfaction, and operational excellence. SVP Mihriban Gursoy Brickner drives a culture where "every business lead knows what their metrics are."
+Healthcare Organization tracks 100 quality measures monthly across clinical outcomes, member satisfaction, and operational excellence. SVP Mihriban Gursoy Brickner drives a culture where "every business lead knows what their metrics are."
 
 ### What's Working
 - Monthly reporting cadence enables rapid detection of underperformance

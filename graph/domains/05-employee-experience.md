@@ -2,7 +2,7 @@
 
 ## Current State
 
-VNS Health's workforce includes nurses, pharmacists, social workers, care managers, and home health aides — named among NYC's best places to work. Their 50+ language capability is a genuine competitive moat in New York's diverse population.
+Healthcare Organization's workforce includes nurses, pharmacists, social workers, care managers, and home health aides — named among NYC's best places to work. Their 50+ language capability is a genuine competitive moat in New York's diverse population.
 
 ### Workforce Strengths
 - **NYC Best Places to Work** recognition

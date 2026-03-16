@@ -3,7 +3,7 @@
     {
       "id": "plan-easycare",
       "type": "health_plan",
-      "label": "VNS Health EasyCare (HMO)",
+      "label": "Healthcare Organization EasyCare (HMO)",
       "properties": {
         "plan_id": "H5549-012",
         "plan_type": "Medicare Advantage",
@@ -18,7 +18,7 @@
     {
       "id": "plan-easycare-plus",
       "type": "health_plan",
-      "label": "VNS Health EasyCare Plus (HMO D-SNP)",
+      "label": "Healthcare Organization EasyCare Plus (HMO D-SNP)",
       "properties": {
         "plan_id": "H5549-011",
         "plan_type": "Dual-Eligible Special Needs Plan",
@@ -30,7 +30,7 @@
     {
       "id": "plan-total",
       "type": "health_plan",
-      "label": "VNS Health Total (MAP)",
+      "label": "Healthcare Organization Total (MAP)",
       "properties": {
         "plan_type": "Integrated Medicare-Medicaid (Medicaid Advantage Plus)",
         "nysdoh_star_rating": 5.0,
@@ -44,7 +44,7 @@
     {
       "id": "plan-mltc",
       "type": "health_plan",
-      "label": "VNS Health MLTC",
+      "label": "Healthcare Organization MLTC",
       "properties": {
         "plan_type": "Medicaid Managed Long Term Care",
         "rating": "highest_rated_mltc_nys",

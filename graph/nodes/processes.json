@@ -6,7 +6,7 @@
       "label": "Claims Submission",
       "properties": {
         "channels": ["electronic_via_availity", "paper_mail"],
-        "paper_address": "VNS Health, P.O. Box 4498, Scranton, PA 18505",
+        "paper_address": "Healthcare Organization, P.O. Box 4498, Scranton, PA 18505",
         "timely_filing_days": 90,
         "secondary_claims_days": 60,
         "critical_rule": "2025 and 2026 services must be on separate claims"
@@ -52,8 +52,8 @@
       "type": "process",
       "label": "Provider Credentialing",
       "properties": {
-        "managed_by": "VNS Health Plans",
-        "url": "vnshealthplans.org/health-professionals/credentialing/"
+        "managed_by": "Healthcare Organization Plans",
+        "url": "[healthplan-provider-website]/health-professionals/credentialing/"
       }
     },
     {

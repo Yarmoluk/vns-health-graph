@@ -7,19 +7,19 @@
 ## What's Here
 
 ### 1. Healthcare AI 2026 Landscape Report
-**→ [View Live](https://yarmoluk.github.io/vns-health-graph/healthcare-ai-intelligence.html)**
+**→ [View Live](https://yarmoluk.github.io/shajey-healthcare-graphifymd/healthcare-ai-intelligence.html)**
 
 10 major consulting reports (Bessemer, NVIDIA, Deloitte, McKinsey, BCG, EY, KPMG, Wolters Kluwer) synthesized into one connected intelligence brief. 80+ data points, 8 convergence themes, 5 nascent signals no single report identifies, 4 win-win-win scenarios, breakdowns by every actor in healthcare.
 
 Prompted by Shajey Rumi. Refined and expanded by Graphify.md.
 
 ### 2. Health Plan Operational Analysis
-**→ [View Live](https://yarmoluk.github.io/vns-health-graph/)**
+**→ [View Live](https://yarmoluk.github.io/shajey-healthcare-graphifymd/)**
 
 12-slide interactive presentation analyzing health plan operational friction: provider data provenance, vendor fragmentation, member engagement segmentation, post-payment audit cascades, and institutional knowledge preservation.
 
 ### 3. Session Analysis
-**→ [View Live](https://yarmoluk.github.io/vns-health-graph/session-analysis.html)**
+**→ [View Live](https://yarmoluk.github.io/shajey-healthcare-graphifymd/session-analysis.html)**
 
 Full knowledge graph of the session itself: process timeline, all feedback comments, convergence analysis, and methodology documentation.
 

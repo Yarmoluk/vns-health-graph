@@ -1,4 +1,4 @@
-// VNS Health Knowledge Graph — Neo4j Cypher Schema
+// Healthcare Organization Knowledge Graph — Neo4j Cypher Schema
 // Import this into Neo4j for queryable graph intelligence
 
 // ============================================================
@@ -7,12 +7,12 @@
 
 CREATE (vns:Organization {
   id: 'vns-health',
-  name: 'VNS Health',
-  legal_name: 'VNS Health (formerly Visiting Nurse Service of New York)',
+  name: 'Healthcare Organization',
+  legal_name: 'Healthcare Organization (formerly Visiting Nurse Service of New York)',
   founded: 1893,
   heritage_years: 130,
   headquarters: 'New York, NY',
-  website: 'vnshealth.org',
+  website: '[healthplan-website]',
   daily_patients_members: 73000,
   languages_supported: 50,
   charitable_care_2024: 69000000,
@@ -20,10 +20,10 @@ CREATE (vns:Organization {
   mltc_star_rating: 5.0
 });
 
-CREATE (plans:BusinessUnit {id: 'vns-health-plans', name: 'VNS Health Plans', total_members: 33000, plan_count: 5});
-CREATE (homecare:BusinessUnit {id: 'vns-home-care', name: 'VNS Health Home Care'});
-CREATE (hospice:BusinessUnit {id: 'vns-hospice', name: 'VNS Health Hospice Care'});
-CREATE (behavioral:BusinessUnit {id: 'vns-behavioral-health', name: 'VNS Health Behavioral Health'});
+CREATE (plans:BusinessUnit {id: 'vns-health-plans', name: 'Healthcare Organization Plans', total_members: 33000, plan_count: 5});
+CREATE (homecare:BusinessUnit {id: 'vns-home-care', name: 'Healthcare Organization Home Care'});
+CREATE (hospice:BusinessUnit {id: 'vns-hospice', name: 'Healthcare Organization Hospice Care'});
+CREATE (behavioral:BusinessUnit {id: 'vns-behavioral-health', name: 'Healthcare Organization Behavioral Health'});
 CREATE (research:BusinessUnit {id: 'vns-research', name: 'Center for Home Care Policy & Research'});
 
 // ============================================================
@@ -31,26 +31,26 @@ CREATE (research:BusinessUnit {id: 'vns-research', name: 'Center for Home Care P
 // ============================================================
 
 CREATE (easycare:HealthPlan {
-  id: 'plan-easycare', name: 'VNS Health EasyCare', plan_type: 'Medicare Advantage HMO',
+  id: 'plan-easycare', name: 'Healthcare Organization EasyCare', plan_type: 'Medicare Advantage HMO',
   plan_id: 'H5549-012', monthly_premium: 25.00, cms_star_rating: 3.5,
   enrollment_growth_2024: 0.34, target_population: 'Medicare beneficiaries'
 });
 
 CREATE (easycareplus:HealthPlan {
-  id: 'plan-easycare-plus', name: 'VNS Health EasyCare Plus', plan_type: 'D-SNP HMO',
+  id: 'plan-easycare-plus', name: 'Healthcare Organization EasyCare Plus', plan_type: 'D-SNP HMO',
   plan_id: 'H5549-011', beneficiaries_enrolled: 37353,
   enrollment_growth_2024: 0.60, target_population: 'Dual-eligible without LTC needs'
 });
 
 CREATE (total:HealthPlan {
-  id: 'plan-total', name: 'VNS Health Total', plan_type: 'Medicaid Advantage Plus (MAP)',
+  id: 'plan-total', name: 'Healthcare Organization Total', plan_type: 'Medicaid Advantage Plus (MAP)',
   nysdoh_star_rating: 5.0, consecutive_5star_years: 2,
   enrollment_growth_2024: 0.25, expansion_target_counties: 25,
   distinction: 'New York top-rated MAP plan'
 });
 
 CREATE (mltc:HealthPlan {
-  id: 'plan-mltc', name: 'VNS Health MLTC', plan_type: 'Medicaid Managed Long Term Care',
+  id: 'plan-mltc', name: 'Healthcare Organization MLTC', plan_type: 'Medicaid Managed Long Term Care',
   rating: 'highest rated MLTC in NYS'
 });
 
@@ -92,7 +92,7 @@ CREATE (dirmaint:Process {id: 'proc-directory-maintenance', name: 'Directory Mai
 
 CREATE (members:Stakeholder {id: 'stakeholder-members', name: 'Plan Members', daily_served: 73000});
 CREATE (providers:Stakeholder {id: 'stakeholder-providers', name: 'Network Providers'});
-CREATE (employees:Stakeholder {id: 'stakeholder-employees', name: 'VNS Workforce', languages: 50});
+CREATE (employees:Stakeholder {id: 'stakeholder-employees', name: 'Healthcare Organization Workforce', languages: 50});
 CREATE (regulators:Stakeholder {id: 'stakeholder-regulators', name: 'Regulators (CMS, NYSDOH)'});
 
 // LEADER

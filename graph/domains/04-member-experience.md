@@ -2,7 +2,7 @@
 
 ## Current State
 
-VNS Health serves 73,000+ patients and members daily across five health plans, with personal support from nurses, pharmacists, and social workers. The organization recently launched an online member portal.
+Healthcare Organization serves 73,000+ patients and members daily across five health plans, with personal support from nurses, pharmacists, and social workers. The organization recently launched an online member portal.
 
 ### Strengths
 - **5-star MLTC rating** (consecutive years) — validated member satisfaction in legacy population
@@ -17,7 +17,7 @@ VNS Health serves 73,000+ patients and members daily across five health plans, w
 | Segment | Profile | Engagement Need |
 |---------|---------|----------------|
 | Legacy MLTC | Long-term, high-touch, known | Relationship continuity, care plan stability |
-| New D-SNP (60% growth) | Dual-eligible, diverse needs, less familiar with VNS | Onboarding, education, trust-building |
+| New D-SNP (60% growth) | Dual-eligible, diverse needs, less familiar with Healthcare Organization | Onboarding, education, trust-building |
 | New EasyCare (34% growth) | Medicare-only, may be healthier, digitally savvy | Self-service, portal adoption, preventive care |
 | SelectHealth | HIV+, homeless — highest acuity | Crisis response, housing support, adherence |
 
@@ -35,7 +35,7 @@ VNS Health serves 73,000+ patients and members daily across five health plans, w
 ```
 MEMBER touches:
   ├── Primary Care Physician
-  ├── Care Manager (VNS)
+  ├── Care Manager (Health Plan)
   ├── Home Health Aide
   ├── Specialist(s)
   ├── Pharmacist

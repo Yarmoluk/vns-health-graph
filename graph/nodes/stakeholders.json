@@ -34,7 +34,7 @@
     {
       "id": "stakeholder-employees",
       "type": "stakeholder_group",
-      "label": "VNS Health Workforce",
+      "label": "Healthcare Organization Workforce",
       "properties": {
         "roles": ["nurses", "pharmacists", "social_workers", "care_managers", "home_health_aides"],
         "recognition": "named among NYC best places to work",

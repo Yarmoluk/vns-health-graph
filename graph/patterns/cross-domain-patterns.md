@@ -70,7 +70,7 @@ Providers navigate 3+ vendor systems:
 - Availity for claims
 - eviCore for auth
 - Varis for audits
-- VNS portal for status
+- Healthcare Organization portal for status
 
 Each vendor interaction that goes wrong creates downstream effects:
 - Wrong auth routing → care delay → member harm
@@ -87,7 +87,7 @@ Each vendor interaction that goes wrong creates downstream effects:
 - If multilingual staff churn increases (due to caseload, burnout, competition):
   - Language-specific care relationships break
   - Members in underserved languages lose their connection
-  - VNS loses its differentiation in NYC's diverse market
+  - Healthcare Organization loses its differentiation in NYC's diverse market
 
 **This moat is maintained by people, not technology.** It's the most fragile competitive advantage in the graph.
 
@@ -95,7 +95,7 @@ Each vendor interaction that goes wrong creates downstream effects:
 
 **Domains:** Claims/Auth → Provider Experience → Data Quality
 
-- Every provider billing VNS must separate 2025 and 2026 services
+- Every provider billing Healthcare Organization must separate 2025 and 2026 services
 - This is happening RIGHT NOW (Q1 2026)
 - Predictable denial spike from mixed-year claims
 - Denials trigger disputes → admin burden → provider frustration
@@ -112,7 +112,7 @@ Each vendor interaction that goes wrong creates downstream effects:
 - **ROI:** Protects enrollment growth in 25 new counties
 
 ### 2. Claims Lifecycle Intelligence — $50K+ engagement
-- End-to-end claim visibility across Availity → VNS → Varis
+- End-to-end claim visibility across Availity → Healthcare Organization → Varis
 - Denial pattern detection and root cause analysis
 - Cross-year billing validation
 - **ROI:** Reduces denial rate → improves provider satisfaction → reduces admin cost
@@ -130,6 +130,6 @@ Each vendor interaction that goes wrong creates downstream effects:
 - **ROI:** Prevents burnout-driven turnover during growth phase
 
 ### 5. Authorization Routing Intelligence — $25K+ engagement
-- Graph-based routing: which services need eviCore vs. VNS direct auth
+- Graph-based routing: which services need eviCore vs. Healthcare Organization direct auth
 - Reduce auth submission errors and care delays
 - **ROI:** Faster care delivery, fewer readmissions, better member experience

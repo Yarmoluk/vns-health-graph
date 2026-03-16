@@ -44,17 +44,17 @@
     {
       "id": "sys-provider-portal",
       "type": "internal_system",
-      "label": "VNS Health Provider Portal",
+      "label": "Healthcare Organization Provider Portal",
       "properties": {
         "access": "24/7",
         "capabilities": ["authorization_status", "claims_status", "auth_submission", "eligibility_verification"],
-        "gateway_url": "vnshealthplans.org/provider-portal/"
+        "gateway_url": "[healthplan-provider-website]/provider-portal/"
       }
     },
     {
       "id": "sys-member-portal",
       "type": "internal_system",
-      "label": "VNS Health Member Portal",
+      "label": "Healthcare Organization Member Portal",
       "properties": {
         "function": "online member self-service",
         "launch_status": "recently_launched",
@@ -66,7 +66,7 @@
       "type": "internal_system",
       "label": "Provider Directory Search",
       "properties": {
-        "url": "providersearch.vnshealthplans.org",
+        "url": "providersearch.[healthplan-provider-website]",
         "cms_requirement": "verify_provider_info_every_90_days",
         "update_requirement": "within_30_days_of_change",
         "compliance_risk": "directory_suppression_on_medicare_plan_finder"
