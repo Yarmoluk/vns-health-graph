@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VNS Health — Session Knowledge Graph & Analysis</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#080c18;color:#e0e0e0;font-family:'Inter',-apple-system,sans-serif;line-height:1.7;}
+
+.container{max-width:1000px;margin:0 auto;padding:40px 32px 80px;}
+
+/* HEADER */
+.header{text-align:center;padding:60px 0 40px;border-bottom:1px solid #141a30;margin-bottom:48px;}
+.header .badge{display:inline-block;background:#ff6b6b18;border:1px solid #ff6b6b44;color:#ff6b6b;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:6px 16px;border-radius:20px;margin-bottom:16px;}
+.header h1{font-size:40px;font-weight:900;color:#fff;margin-bottom:12px;line-height:1.1;}
+.header h1 em{font-style:normal;background:linear-gradient(135deg,#5a8ade,#4ecdc4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.header .meta{font-size:14px;color:#555;margin-bottom:8px;}
+.header .meta strong{color:#888;}
+
+/* SECTIONS */
+h2{font-size:28px;font-weight:800;color:#fff;margin:48px 0 16px;padding-top:24px;border-top:1px solid #141a30;}
+h2:first-of-type{border-top:none;margin-top:0;}
+h2 em{font-style:normal;color:#5a8ade;}
+h3{font-size:18px;font-weight:700;color:#ddd;margin:28px 0 12px;}
+h4{font-size:12px;font-weight:700;color:#5a8ade;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;}
+p{color:#999;font-size:14px;margin-bottom:14px;}
+p strong{color:#e0e0e0;}
+
+/* PROCESS BOX */
+.process-box{background:linear-gradient(135deg,#0f1a35,#080c18);border:1px solid #1a3060;border-radius:16px;padding:32px;margin:24px 0;text-align:center;}
+.process-steps{display:flex;align-items:center;justify-content:center;gap:0;margin:20px 0;flex-wrap:wrap;}
+.ps{background:#0f1628;border:1px solid #1a2545;border-radius:10px;padding:12px 18px;text-align:center;min-width:100px;}
+.ps .icon{font-size:24px;margin-bottom:4px;}
+.ps .label{font-size:10px;color:#888;text-transform:uppercase;letter-spacing:0.5px;font-weight:600;}
+.ps .detail{font-size:11px;color:#555;margin-top:2px;}
+.ps .time{font-size:10px;color:#5a8ade;margin-top:4px;font-weight:600;}
+.arrow{color:#2a3a5a;font-size:20px;padding:0 6px;flex-shrink:0;}
+
+/* CARDS */
+.card{background:#0f1628;border:1px solid #1a2545;border-radius:12px;padding:22px 26px;margin-bottom:16px;position:relative;overflow:hidden;}
+.card::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;}
+.card.r::before{background:#ff6b6b;}.card.g::before{background:#4ecdc4;}.card.b::before{background:#5a8ade;}.card.y::before{background:#ffd93d;}.card.p::before{background:#c77dff;}.card.o::before{background:#ff9f43;}
+.card h3{margin-top:0;font-size:15px;}
+.card p{font-size:13px;margin-bottom:6px;}
+.card p:last-child{margin-bottom:0;}
+
+/* GRID */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
+@media(max-width:768px){.g2,.g3{grid-template-columns:1fr;}}
+
+/* TIMELINE */
+.tl-item{display:flex;gap:16px;padding:16px 0;border-bottom:1px solid #0f1628;}
+.tl-item:last-child{border-bottom:none;}
+.tl-time{min-width:80px;font-size:12px;color:#5a8ade;font-weight:600;font-variant-numeric:tabular-nums;}
+.tl-content{flex:1;}
+.tl-content .tl-action{font-size:14px;color:#ddd;font-weight:600;margin-bottom:4px;}
+.tl-content .tl-detail{font-size:12px;color:#777;}
+
+/* FEEDBACK ITEMS */
+.fb{background:#0a0f1e;border-left:3px solid #ffd93d;padding:14px 18px;margin:12px 0;border-radius:0 8px 8px 0;}
+.fb .quote{font-size:13px;color:#ccc;font-style:italic;margin-bottom:6px;}
+.fb .response{font-size:12px;color:#777;}
+
+/* STATS */
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:20px 0;}
+.stat-card{background:#0f1628;border:1px solid #1a2545;border-radius:10px;padding:16px;text-align:center;}
+.stat-card .num{font-size:28px;font-weight:800;color:#5a8ade;}
+.stat-card .lbl{font-size:10px;color:#666;text-transform:uppercase;letter-spacing:0.5px;margin-top:4px;}
+
+/* TABLE */
+.tbl{width:100%;border-collapse:collapse;font-size:13px;margin:16px 0;}
+.tbl th{text-align:left;padding:8px 12px;background:#0a0f1e;color:#555;font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid #141a30;}
+.tbl td{padding:8px 12px;border-bottom:1px solid #0f1628;color:#bbb;}
+.tbl tr:hover td{background:#0a0f1e;}
+.bad{color:#ff6b6b;font-weight:600;}.ok{color:#4ecdc4;font-weight:600;}.gold{color:#ffd93d;font-weight:600;}
+
+/* SIGNAL */
+.sig{background:linear-gradient(135deg,#0f1a35,#0a0f1e);border:1px solid #1a3060;border-radius:12px;padding:20px 24px;margin:20px 0;}
+.sig h4{margin-bottom:6px;}
+.sig p{color:#bbb;font-size:13px;margin-bottom:0;}
+
+/* GRAPH */
+#session-graph svg{border-radius:12px;border:1px solid #141a30;background:#060a14;width:100%;height:500px;}
+.node circle{stroke-width:1.5;cursor:pointer;}.node circle:hover{filter:brightness(1.4);}
+.node text{fill:#aaa;font-size:9px;pointer-events:none;text-anchor:middle;}
+.ll{fill:#444;font-size:7px;text-anchor:middle;pointer-events:none;}
+.gtt{position:fixed;background:#111827;border:1px solid #2a3a5a;border-radius:8px;padding:10px 14px;font-size:12px;max-width:280px;pointer-events:none;display:none;z-index:300;box-shadow:0 4px 16px rgba(0,0,0,0.6);}
+.gtt h3{color:#fff;font-size:13px;margin-bottom:2px;}.gtt small{color:#666;font-size:9px;text-transform:uppercase;}.gtt p{color:#aaa;font-size:11px;margin-top:3px;margin-bottom:0;}
+
+/* FOOTER */
+.footer{text-align:center;padding:40px 0;color:#333;font-size:12px;border-top:1px solid #141a30;margin-top:48px;}
+.footer a{color:#5a8ade;text-decoration:none;}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<!-- ══════════════════════════════════════ -->
+<!-- HEADER -->
+<!-- ══════════════════════════════════════ -->
+<div class="header">
+  <div class="badge">Live Session Analysis</div>
+  <h1>VNS Health <em>Intelligence Build</em></h1>
+  <div class="meta">Session: <strong>March 14-15, 2026</strong> &middot; Duration: <strong>Single session, real-time</strong></div>
+  <div class="meta">Target: <strong>VNS Health</strong> (vnshealth.org) &middot; 73K+ daily patients &middot; 5 health plans &middot; New York</div>
+  <div class="meta">Method: <strong>Public data → Entity extraction → Relationship mapping → Pattern analysis → Actionable intelligence</strong></div>
+</div>
+
+<!-- ══════════════════════════════════════ -->
+<!-- THE PROCESS -->
+<!-- ══════════════════════════════════════ -->
+<h2>The <em>Process</em></h2>
+<p>This entire analysis — from first web scrape to final 12-slide interactive presentation — was built in a single working session using only publicly available data. No proprietary access. No inside information. No assumptions about internal systems or technology stack.</p>
+
+<div class="process-box">
+  <h4>How It Was Built</h4>
+  <div class="process-steps">
+    <div class="ps"><div class="icon">🌐</div><div class="label">Web Scrape</div><div class="detail">6 public source types</div><div class="time">~5 min</div></div>
+    <div class="arrow">&rarr;</div>
+    <div class="ps"><div class="icon">🔍</div><div class="label">Entity Extraction</div><div class="detail">36 entities identified</div><div class="time">~3 min</div></div>
+    <div class="arrow">&rarr;</div>
+    <div class="ps"><div class="icon">🔗</div><div class="label">Relationship Mapping</div><div class="detail">32 connections mapped</div><div class="time">~5 min</div></div>
+    <div class="arrow">&rarr;</div>
+    <div class="ps"><div class="icon">⚡</div><div class="label">Pattern Analysis</div><div class="detail">5 friction points + 6 value streams</div><div class="time">~5 min</div></div>
+    <div class="arrow">&rarr;</div>
+    <div class="ps"><div class="icon">📊</div><div class="label">Presentation Build</div><div class="detail">12-slide interactive deck</div><div class="time">~10 min</div></div>
+    <div class="arrow">&rarr;</div>
+    <div class="ps"><div class="icon">🚀</div><div class="label">Deploy</div><div class="detail">GitHub Pages, live URL</div><div class="time">~1 min</div></div>
+  </div>
+  <p style="color:#888;font-size:13px;margin-top:16px;margin-bottom:0;"><strong>Total time from "go" to live presentation:</strong> ~30 minutes. Six iterations based on real-time feedback.</p>
+</div>
+
+<h3>Data Sources Used</h3>
+<table class="tbl">
+  <thead><tr><th>Source</th><th>What We Extracted</th><th>Entity Count</th></tr></thead>
+  <tbody>
+    <tr><td><strong>vnshealth.org</strong></td><td>Organization structure, services, divisions, mission, daily volume, language capability, accreditations, leadership</td><td>8 entities</td></tr>
+    <tr><td><strong>vnshealthplans.org</strong></td><td>5 health plans, provider portal, claims processes, dispute timelines, credentialing, billing rules, provider education</td><td>12 entities</td></tr>
+    <tr><td><strong>CMS Plan Finder / Medicare.org</strong></td><td>Star ratings, plan IDs, enrollment counts, premium data, quality scores, growth metrics</td><td>5 entities</td></tr>
+    <tr><td><strong>Provider manuals (public PDFs)</strong></td><td>Claims submission rules, timely filing, corrected claims codes, dispute windows, Varis audit process, eviCore programs</td><td>7 entities</td></tr>
+    <tr><td><strong>VNS Health Newsroom</strong></td><td>Enrollment growth numbers, quality achievements, geographic expansion plans, data-driven quality culture, leadership quotes</td><td>4 entities</td></tr>
+    <tr><td><strong>CMS regulatory requirements</strong></td><td>Provider directory 90-day verification, 30-day update SLA, annual attestation, directory suppression rules, CAP triggers</td><td>—</td></tr>
+  </tbody>
+</table>
+
+<!-- ══════════════════════════════════════ -->
+<!-- SESSION TIMELINE -->
+<!-- ══════════════════════════════════════ -->
+<h2>Session <em>Timeline</em></h2>
+<p>Six iterations driven by real-time feedback. Each comment sharpened the output. Here's the full progression.</p>
+
+<div class="tl-item">
+  <div class="tl-time">Iteration 1</div>
+  <div class="tl-content">
+    <div class="tl-action">Initial Knowledge Graph Build</div>
+    <div class="tl-detail">Web scrape of 6 sources → 36 entities, 32 relationships extracted → JSON node/edge files, 6 domain analysis docs, Neo4j Cypher schema, D3.js interactive visualization → GitHub repo created, GitHub Pages deployed. Full graph with domain filtering (Growth, Data Quality, Provider, Member, Employee, Claims/Auth).</div>
+  </div>
+</div>
+
+<div class="tl-item">
+  <div class="tl-time">Iteration 2</div>
+  <div class="tl-content">
+    <div class="tl-action">Friction-to-Fix Playbook</div>
+    <div class="tl-detail">Feedback: "spell out why you think that way... show the signal and take action." Built detailed technical playbook with 5 friction points, cascade diagrams, specific graph schemas for each fix, and revenue math. Moved from observation to prescription.</div>
+  </div>
+</div>
+
+<div class="tl-item">
+  <div class="tl-time">Iteration 3</div>
+  <div class="tl-content">
+    <div class="tl-action">Integrated Presentation for Shajey Rumi</div>
+    <div class="tl-detail">Feedback: "put it as an integrated presentation... look him up on LinkedIn and decipher what he needs." Researched Shajey's background (TPM, Salesforce Health Cloud, AI PM cert, Deloitte data warehousing). Built scroll-based presentation tailored to his product context.</div>
+  </div>
+</div>
+
+<div class="tl-item">
+  <div class="tl-time">Iteration 4</div>
+  <div class="tl-content">
+    <div class="tl-action">Slide Deck Rebuild</div>
+    <div class="tl-detail">Feedback: "make this a ppt presentation but better, there is no red box at top, it's not flowing clear." Rebuilt as proper 12-slide deck with arrow key navigation, visible red box, split layouts with problem + fix side by side, and interactive graph.</div>
+  </div>
+</div>
+
+<div class="tl-item">
+  <div class="tl-time">Iteration 5</div>
+  <div class="tl-content">
+    <div class="tl-action">Problem-First, No Branding, Actionable</div>
+    <div class="tl-detail">Feedback: "don't mention graphify, spell out the problems, emphasize the problem first." Removed all branding. Reframed solutions as technology-agnostic actions. Led with problems. Soft CTA.</div>
+  </div>
+</div>
+
+<div class="tl-item">
+  <div class="tl-time">Iteration 6</div>
+  <div class="tl-content">
+    <div class="tl-action">Strip Assumptions, Focus on VNS</div>
+    <div class="tl-detail">Feedback: "focus on VNS, independent of who Shajey is, why are you making assumptions that Salesforce is the main platform." Removed all Salesforce assumptions and personal targeting. Pure VNS operational analysis. Added value streams slide showing KG use cases across 6 health plan functions.</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ -->
+<!-- ALL FEEDBACK — COMMENTS -->
+<!-- ══════════════════════════════════════ -->
+<h2>All <em>Comments & Feedback</em></h2>
+<p>Every piece of direction given during the session, and how it changed the output.</p>
+
+<div class="fb">
+  <div class="quote">"why are you saying to prove when and the reasoning so technically we could solve the friction you are mentioning. spell it out for us to see the signal and take action."</div>
+  <div class="response"><strong>Impact:</strong> Shifted from observational ("here are the patterns") to prescriptive ("here's exactly what's broken, here's the cascade, here's the revenue math, here's the technical schema to fix it"). Created the full friction-to-solution playbook with 5 detailed technical solutions.</div>
+</div>
+
+<div class="fb">
+  <div class="quote">"and update the presentation"</div>
+  <div class="response"><strong>Impact:</strong> Integrated the friction-to-fix analysis into the interactive presentation with four navigable tabs: Overview, Knowledge Graph, Friction→Fix walkthrough, Take Action.</div>
+</div>
+
+<div class="fb">
+  <div class="quote">"put it as an integrated presentation that has a good flow for shajey rumi, you can look him up on linkedin and decipher what you believe he needs"</div>
+  <div class="response"><strong>Impact:</strong> Researched Shajey Rumi's full professional background. Tailored the presentation to his role as TPM on Salesforce Health Cloud, his AI PM certification, and his Deloitte data warehousing background. Framed solutions as Salesforce-additive capabilities.</div>
+</div>
+
+<div class="fb">
+  <div class="quote">"create it fast please"</div>
+  <div class="response"><strong>Impact:</strong> Prioritized speed. Rebuilt as proper slide deck with arrow-key navigation in one pass.</div>
+</div>
+
+<div class="fb">
+  <div class="quote">"don't mention graphify, just spell out the problems and what you think he can action, not necessarily double clicking on graph databases, emphasize the problem first"</div>
+  <div class="response"><strong>Impact:</strong> Major reframe. Removed all Graphify branding. Stopped leading with "knowledge graph" as the answer. Led with problems, made solutions technology-agnostic. Reframed fixes as operational actions (audit trails, validators, engagement segmentation, deadline trackers) rather than "build a graph database." Added concrete quick wins like the 2-week cross-year billing validator.</div>
+</div>
+
+<div class="fb">
+  <div class="quote">"focus on vns, independent of shajey is, why are you making assumptions that salesforce is the main platform or core platform of company"</div>
+  <div class="response"><strong>Impact:</strong> Critical correction. Shajey's title (TPM on Salesforce Health Cloud) was projected onto VNS's architecture — an unwarranted assumption. Stripped all Salesforce references, all Shajey personalizations. Focused purely on VNS Health's operational problems derived from public data. Technology-agnostic throughout.</div>
+</div>
+
+<div class="fb">
+  <div class="quote">"have you thought about within healthplan different use cases of using knowledge graphs in different value streams"</div>
+  <div class="response"><strong>Impact:</strong> Added new slide showing 6 value streams where connected data intelligence applies: Claims Operations, Provider Network, Member Experience, Quality & Compliance, Workforce & Operations, Population Health. Each with VNS-specific applications.</div>
+</div>
+
+<!-- ══════════════════════════════════════ -->
+<!-- THE POSITIVES -->
+<!-- ══════════════════════════════════════ -->
+<h2>VNS Health — <em>The Positives</em></h2>
+<p>This isn't just a problems list. VNS Health has genuine, defensible strengths that most competitors can't replicate.</p>
+
+<div class="g2">
+  <div class="card g">
+    <h3>5-Star Quality Culture</h3>
+    <p>VNS Health Total earned the highest possible 5-star rating from NYSDOH for <strong>two consecutive years</strong> — ranked as New York's top Medicaid Advantage Plus plan. The 4.5-star Medicare Advantage rating is the <strong>highest in NYC and Long Island.</strong></p>
+    <p>This isn't luck. SVP Mihriban Gursoy Brickner has built a data-driven quality culture where "every business lead knows what their metrics are" and the organization tracks <strong>100 quality measures monthly</strong> across three categories.</p>
+  </div>
+  <div class="card g">
+    <h3>Explosive, Intentional Growth</h3>
+    <p>EasyCare Plus (D-SNP) grew <strong>60%</strong> in 2024. EasyCare grew <strong>34%</strong>. VNS Health Total grew <strong>25%</strong>. 15,000 new enrollees added. Recognized among the <strong>country's fastest-growing Medicare Advantage plans</strong> for 2025.</p>
+    <p>This growth is strategic — expanding VNS Health Total into 25 additional counties where MLTC is already established, leveraging existing network presence.</p>
+  </div>
+  <div class="card g">
+    <h3>The 50+ Language Moat</h3>
+    <p>Care teams speak <strong>50+ languages</strong> across New York — a genuine competitive advantage in the most linguistically diverse healthcare market in the country. This is not replicable with technology alone. It's built on decades of community-embedded hiring.</p>
+  </div>
+  <div class="card g">
+    <h3>130 Years of Institutional Depth</h3>
+    <p>Founded in 1893 as the Visiting Nurse Service of New York. <strong>$69 million invested in charitable care and community programs</strong> in 2024 alone. CHAP accredited. Age-Friendly Care certified. Named among NYC's best places to work.</p>
+    <p>This heritage means deep community relationships, institutional trust, and operational knowledge that new entrants simply cannot replicate.</p>
+  </div>
+  <div class="card g">
+    <h3>Integrated Care Model</h3>
+    <p>Home care, hospice, behavioral health, and health plans <strong>under one roof</strong>. Most competitors operate in one lane. VNS can follow a member across their entire care journey — from home nursing to hospice to behavioral health support — without handoff gaps.</p>
+  </div>
+  <div class="card g">
+    <h3>SelectHealth — Serving the Hardest Populations</h3>
+    <p>SelectHealth serves HIV-positive and homeless populations with a viral load suppression rate that <strong>significantly exceeds statewide averages.</strong> This is the hardest population to serve well, and VNS is doing it measurably better than peers. That's not marketing — that's outcomes data.</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ -->
+<!-- THE CHALLENGES -->
+<!-- ══════════════════════════════════════ -->
+<h2>VNS Health — <em>The Challenges</em></h2>
+<p>Five specific operational friction points surfaced from the analysis. Each one is connected to the others. Here's the summary with the cascade logic.</p>
+
+<div class="card r">
+  <h3>Challenge #1: The CMS Awareness Gap — "When Did You Know?"</h3>
+  <p>CMS Corrective Action Plans are issued not because directory data is wrong, but because the plan <strong>cannot demonstrate when it became aware of an inaccuracy and what it did in response.</strong> VNS can show current state. It cannot prove awareness timeline. This is a <strong>process documentation problem</strong> masquerading as a data accuracy problem.</p>
+  <p><strong>Cascade:</strong> Provider changes → not captured with source/timestamp → CMS audit → can't prove awareness → CAP → directory suppressed on Medicare Plan Finder → enrollment growth blocked → 25-county expansion at risk.</p>
+  <p><strong>At stake:</strong> Entire geographic expansion strategy.</p>
+</div>
+
+<div class="card y">
+  <h3>Challenge #2: Four-Vendor Fragmentation</h3>
+  <p>Providers navigate Availity (claims), eviCore (auth), Varis (audits), and VNS's own portal — <strong>four separate systems with four logins, four status vocabularies, four SLAs, and four support channels.</strong> No unified view of the claim lifecycle exists for providers or for VNS internally.</p>
+  <p>Additionally, the cross-year billing rule (2025/2026 services on separate claims) is generating <strong>predictable, preventable denials</strong> right now.</p>
+  <p><strong>Cascade:</strong> Vendor fragmentation → provider admin burden → filing errors → denials → disputes → provider fatigue → network attrition.</p>
+  <p><strong>At stake:</strong> $300K+/yr in avoidable admin cost. Provider satisfaction and retention.</p>
+</div>
+
+<div class="card r">
+  <h3>Challenge #3: One-Size-Fits-All Engagement</h3>
+  <p>15,000 new members (D-SNP at 60% growth, EasyCare at 34%) are receiving engagement designed for legacy MLTC members. A 45-year-old Medicare HMO member choosing a $25/month plan does not want the same outreach as an 80-year-old with a home health aide.</p>
+  <p>The blended star rating masks this. Segment-specific satisfaction problems won't surface in annual ratings for <strong>12-18 months</strong> — by which time churn has already occurred.</p>
+  <p><strong>Cascade:</strong> Same playbook → unmet expectations by segment → satisfaction divergence → CAHPS impact → star rating erosion → enrollment slowdown.</p>
+  <p><strong>At stake:</strong> $7.5M-$11.25M/yr in churn-driven revenue loss.</p>
+</div>
+
+<div class="card y">
+  <h3>Challenge #4: The Varis Recoupment → Network Attrition Link</h3>
+  <p>Varis post-payment reviews give providers 30 days to produce records. Non-response = full claim reclamation. The power dynamic is asymmetric: provider did the work, patient got care, but a missed admin deadline = zero pay. After 1-2 recoupments, providers leave the network. <strong>Nobody at VNS connects "network attrition" to the Varis trigger.</strong></p>
+  <p><strong>Cascade:</strong> Varis recoupment → provider revenue loss → provider leaves network → member disrupted → CAHPS impact → star rating impact.</p>
+  <p><strong>At stake:</strong> Network adequacy, especially in expansion counties.</p>
+</div>
+
+<div class="card p">
+  <h3>Challenge #5: Institutional Knowledge Drain</h3>
+  <p>130 years of operational intelligence lives in people, not systems. Which providers return calls, which agencies are reliable in which neighborhoods, which members need family contacted first. <strong>When veteran staff retire — especially multilingual staff — entire relationship networks vanish.</strong></p>
+  <p>The 50+ language capability, VNS's most defensible moat, is maintained by people. A Mandarin-speaking care manager who retires takes the entire Mandarin-speaking member-provider network in their territory.</p>
+  <p><strong>Cascade:</strong> Retirements → knowledge loss → worse outcomes → staff overload on remaining → more burnout → more departures → accelerating drain.</p>
+  <p><strong>At stake:</strong> Irreversible competitive advantage loss.</p>
+</div>
+
+<!-- ══════════════════════════════════════ -->
+<!-- THE CONVERGENCE -->
+<!-- ══════════════════════════════════════ -->
+<h2><em>Convergence</em> — How Everything Connects</h2>
+
+<div class="sig">
+  <h4>The One Pattern</h4>
+  <p>Every challenge traces back to the same structural gap: <strong>VNS Health has the data, but it's not connected.</strong> Provider data lives in one system. Claims data lives in vendor systems. Member engagement data lives in another. Quality measures are tracked monthly but not linked to the provider and member data that drives them. Workforce data (language capability, caseloads, tenure) isn't mapped against member needs by geography.</p>
+  <p style="margin-top:10px;">The data exists. The relationships between the data don't. That's the gap. And it's the same gap causing every friction point — from CMS compliance to member churn to provider attrition to knowledge loss.</p>
+</div>
+
+<div id="session-graph" style="margin:24px 0;"></div>
+<p style="font-size:11px;color:#444;text-align:center;">Interactive: drag nodes to rearrange. Hover for detail. Scroll to zoom.</p>
+
+<!-- ══════════════════════════════════════ -->
+<!-- VALUE STREAMS -->
+<!-- ══════════════════════════════════════ -->
+<h2>Where Connected Intelligence <em>Applies</em></h2>
+<p>Beyond the five friction points — here's where connecting VNS's existing data unlocks value across every health plan function.</p>
+
+<div class="g3" style="margin-bottom:14px;">
+  <div class="card b">
+    <h3>Claims Operations</h3>
+    <p>Cross-vendor claim lifecycle tracing. Denial pattern detection by root cause. Cross-year billing prevention. Pre-submission validation.</p>
+    <p style="color:#5a8ade;font-weight:600;">Denial rate reduction, $300K+/yr admin savings</p>
+  </div>
+  <div class="card g">
+    <h3>Provider Network</h3>
+    <p>County-by-county adequacy modeling against member needs. Provider data provenance for CMS. Departure prediction from engagement + recoupment signals.</p>
+    <p style="color:#4ecdc4;font-weight:600;">Expansion readiness, network retention</p>
+  </div>
+  <div class="card y">
+    <h3>Member Experience</h3>
+    <p>Care team coordination mapping. Segment-specific engagement by plan type and tenure. Early churn detection from interaction patterns.</p>
+    <p style="color:#ffd93d;font-weight:600;">CAHPS, star ratings, $7.5M-$11.25M retention</p>
+  </div>
+</div>
+<div class="g3">
+  <div class="card r">
+    <h3>Quality & Compliance</h3>
+    <p>Quality measure correlation — which of the 100 measures are leading indicators. HEDIS gap closure routing. Audit-ready provenance trails.</p>
+    <p style="color:#ff6b6b;font-weight:600;">Star protection, HEDIS, audit readiness</p>
+  </div>
+  <div class="card p">
+    <h3>Workforce & Operations</h3>
+    <p>Language × geography × member coverage mapping. Institutional knowledge capture. Caseload optimization against growth projections.</p>
+    <p style="color:#c77dff;font-weight:600;">Burnout prevention, succession planning</p>
+  </div>
+  <div class="card b">
+    <h3>Population Health</h3>
+    <p>Social determinant networks. Care transition tracking across divisions. SelectHealth: relationship maps for HIV+/homeless member support.</p>
+    <p style="color:#5a8ade;font-weight:600;">Health equity, high-acuity outcomes</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ -->
+<!-- BY THE NUMBERS -->
+<!-- ══════════════════════════════════════ -->
+<h2>By The <em>Numbers</em></h2>
+
+<div class="stat-grid">
+  <div class="stat-card"><div class="num">36</div><div class="lbl">Entities Extracted</div></div>
+  <div class="stat-card"><div class="num">32</div><div class="lbl">Relationships Mapped</div></div>
+  <div class="stat-card"><div class="num">6</div><div class="lbl">Strategic Domains</div></div>
+  <div class="stat-card"><div class="num">5</div><div class="lbl">Friction Points Found</div></div>
+</div>
+<div class="stat-grid">
+  <div class="stat-card"><div class="num">6</div><div class="lbl">Value Streams Mapped</div></div>
+  <div class="stat-card"><div class="num">6</div><div class="lbl">Iterations (Real-Time)</div></div>
+  <div class="stat-card"><div class="num">7</div><div class="lbl">Feedback Comments</div></div>
+  <div class="stat-card"><div class="num">12</div><div class="lbl">Final Slide Count</div></div>
+</div>
+
+<table class="tbl" style="margin-top:24px;">
+  <thead><tr><th>Revenue Impact Identified</th><th>Amount</th><th>Source</th></tr></thead>
+  <tbody>
+    <tr><td>Member churn risk (new enrollee segments)</td><td class="bad">$7.5M-$11.25M/yr</td><td>MA capitation × 5% churn × 15K new members</td></tr>
+    <tr><td>Claims admin cost (denial rework)</td><td class="gold">$300K+/yr</td><td>1,500 avoidable denials × $200 rework cost</td></tr>
+    <tr><td>Geographic expansion at risk</td><td class="bad">25 new counties</td><td>Blocked by provider directory compliance gap</td></tr>
+    <tr><td>Network adequacy</td><td class="gold">Erosion signal</td><td>Varis recoupment → provider departure link</td></tr>
+    <tr><td>Competitive moat</td><td class="bad">Irreversible if lost</td><td>50+ language capability maintained by people, not systems</td></tr>
+  </tbody>
+</table>
+
+<!-- ══════════════════════════════════════ -->
+<!-- KEY TAKEAWAYS -->
+<!-- ══════════════════════════════════════ -->
+<h2>Key <em>Takeaways</em></h2>
+
+<div class="card g" style="margin-bottom:16px;">
+  <h3>1. VNS Health is a genuinely excellent organization with solvable problems</h3>
+  <p>5-star quality ratings, 60% enrollment growth, 50+ language capability, 130 years of community trust, and a data-driven quality culture. The problems identified are operational friction — not structural failure. Every one of them has a clear path to resolution.</p>
+</div>
+
+<div class="card b" style="margin-bottom:16px;">
+  <h3>2. The data exists — the connections don't</h3>
+  <p>VNS doesn't have a data collection problem. It has a data connection problem. Provider data, claims data, member engagement data, quality metrics, and workforce data all exist in separate systems. The friction points emerge from the gaps between those systems — and they compound into each other.</p>
+</div>
+
+<div class="card y" style="margin-bottom:16px;">
+  <h3>3. Provider data provenance is the single highest-leverage fix</h3>
+  <p>The "when did you know?" problem blocks the 25-county expansion, creates CMS compliance risk, and undermines provider directory accuracy — which is the node where growth, compliance, member experience, and star ratings all intersect. Solve this one problem and you unblock everything downstream.</p>
+</div>
+
+<div class="card r" style="margin-bottom:16px;">
+  <h3>4. The blended star rating is hiding a ticking clock</h3>
+  <p>Overall satisfaction looks strong because legacy MLTC scores are excellent. But new D-SNP and EasyCare populations have fundamentally different needs. The blended metric masks segment-specific deterioration until it shows up in annual ratings — 12-18 months too late. This needs to be measured at the segment level starting now.</p>
+</div>
+
+<div class="card p" style="margin-bottom:16px;">
+  <h3>5. The 50+ language moat is the most fragile competitive advantage</h3>
+  <p>It's real, it's defensible, and it's irreplaceable — but it's maintained entirely by people. Every multilingual staff retirement is an unrecoverable loss unless the relationships and operational knowledge they carry are captured before they leave. This isn't urgent today. It's urgent <em>before</em> it becomes urgent.</p>
+</div>
+
+<div class="card o">
+  <h3>6. This process itself is the proof of concept</h3>
+  <p>In one session, from public data only: 36 entities extracted, 32 relationships mapped, 5 friction points identified with revenue math, 6 value streams defined, and a 12-slide interactive presentation deployed live. Six iterations driven by real-time feedback. The methodology works. The question is what it reveals when applied to actual operational data.</p>
+</div>
+
+<!-- ══════════════════════════════════════ -->
+<!-- FOOTER -->
+<!-- ══════════════════════════════════════ -->
+<div class="footer">
+  <p>VNS Health Intelligence Brief &middot; Built March 14-15, 2026 &middot; Daniel Yarmoluk</p>
+  <p><a href="index.html">View the 12-Slide Presentation</a> &middot; <a href="https://github.com/Yarmoluk/vns-health-graph">GitHub Repository</a></p>
+  <p style="margin-top:8px;">Contact: <a href="mailto:daniel.yarmoluk@gmail.com">daniel.yarmoluk@gmail.com</a> &middot; <a href="https://calendly.com/daniel-yarmoluk/30min">Book 30 Minutes</a></p>
+</div>
+
+</div><!-- /container -->
+
+<div class="gtt" id="gtt2"></div>
+
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script>
+// SESSION KNOWLEDGE GRAPH — maps the convergence of all domains
+const C={positive:'#4ecdc4',challenge:'#ff6b6b',process:'#5a8ade',value_stream:'#ffd93d',stakeholder:'#c77dff',metric:'#95e77e',system:'#ff9f43'};
+const SZ={positive:16,challenge:18,process:12,value_stream:14,stakeholder:16,metric:12,system:11};
+
+const N=[
+  // Positives
+  {id:'p1',l:'5-Star Quality',t:'positive',d:'Consecutive 5★ MLTC, 4.5★ MA — highest NYC'},
+  {id:'p2',l:'60% D-SNP Growth',t:'positive',d:'Fastest-growing MA plans in the country'},
+  {id:'p3',l:'50+ Languages',t:'positive',d:'Irreplaceable competitive moat in NYC'},
+  {id:'p4',l:'130-Year Heritage',t:'positive',d:'$69M charitable care, deep community trust'},
+  {id:'p5',l:'Integrated Model',t:'positive',d:'Home care + hospice + behavioral + plans'},
+  {id:'p6',l:'SelectHealth Impact',t:'positive',d:'Viral load suppression exceeds state avg'},
+  // Challenges
+  {id:'c1',l:'"When Did You Know?"',t:'challenge',d:'CMS awareness gap blocks 25-county expansion'},
+  {id:'c2',l:'4-Vendor Fragmentation',t:'challenge',d:'Availity/eviCore/Varis/MedImpact — no unified view'},
+  {id:'c3',l:'Engagement Mismatch',t:'challenge',d:'15K new members, one MLTC playbook'},
+  {id:'c4',l:'Varis Trap',t:'challenge',d:'30-day audit → reclamation → providers leave'},
+  {id:'c5',l:'Knowledge Drain',t:'challenge',d:'130 years of intel in retiring peoples heads'},
+  // Value Streams
+  {id:'v1',l:'Claims Ops',t:'value_stream',d:'Lifecycle tracing, denial patterns, billing validation'},
+  {id:'v2',l:'Provider Network',t:'value_stream',d:'Adequacy modeling, provenance, retention'},
+  {id:'v3',l:'Member Experience',t:'value_stream',d:'Coordination mapping, segmentation, churn'},
+  {id:'v4',l:'Quality & Compliance',t:'value_stream',d:'Measure correlation, HEDIS, audit trails'},
+  {id:'v5',l:'Workforce & Ops',t:'value_stream',d:'Language mapping, knowledge capture'},
+  {id:'v6',l:'Population Health',t:'value_stream',d:'SDOH networks, care transitions'},
+  // Core
+  {id:'core',l:'PROVIDER DATA',t:'metric',d:'The node where everything connects'},
+  {id:'growth',l:'Growth Strategy',t:'metric',d:'25-county expansion, 15K new enrollees'},
+  {id:'stars',l:'Star Ratings',t:'metric',d:'4.5★ MA, 5★ MLTC — at risk from segment gap'},
+];
+
+const E=[
+  // Positives → Core
+  {s:'p1',t:'stars'},{s:'p2',t:'growth'},{s:'p3',t:'c5',l:'AT RISK'},
+  {s:'p4',t:'c5',l:'AT RISK'},{s:'p5',t:'v3'},{s:'p6',t:'v6'},
+  // Challenges → Core
+  {s:'c1',t:'core',l:'BLOCKS'},{s:'c2',t:'v1'},{s:'c3',t:'stars',l:'ERODES'},
+  {s:'c4',t:'v2',l:'ERODES'},{s:'c5',t:'v5'},
+  // Core → Value Streams
+  {s:'core',t:'v1'},{s:'core',t:'v2'},{s:'core',t:'v3'},
+  {s:'core',t:'v4'},{s:'core',t:'growth',l:'ENABLES'},
+  // Cascades
+  {s:'c1',t:'growth',l:'BLOCKS'},{s:'c2',t:'c4'},{s:'c3',t:'c5'},
+  {s:'c4',t:'c3'},{s:'stars',t:'growth'},
+  // Value streams cross-links
+  {s:'v1',t:'v2'},{s:'v3',t:'v4'},{s:'v5',t:'v6'},
+].map(e=>({source:e.s,target:e.t,label:e.l||''}));
+
+const el=document.getElementById('session-graph'),w=el.clientWidth||900,h=500;
+const svg=d3.select('#session-graph').append('svg').attr('width',w).attr('height',h);
+const g=svg.append('g');
+svg.call(d3.zoom().scaleExtent([0.4,3]).on('zoom',e=>g.attr('transform',e.transform)));
+const nodes=N.map(n=>({...n}));const links=E;
+const sim=d3.forceSimulation(nodes).force('link',d3.forceLink(links).id(d=>d.id).distance(90)).force('charge',d3.forceManyBody().strength(-320)).force('center',d3.forceCenter(w/2,h/2)).force('collision',d3.forceCollide().radius(d=>(SZ[d.t]||12)+10));
+const link=g.append('g').selectAll('line').data(links).join('line').attr('stroke','#141a30').attr('stroke-width',1).attr('stroke-opacity',0.5);
+const ll=g.append('g').selectAll('text').data(links).join('text').attr('class','ll').text(d=>d.label);
+const node=g.append('g').selectAll('g').data(nodes).join('g').call(d3.drag().on('start',(e,d)=>{if(!e.active)sim.alphaTarget(0.3).restart();d.fx=e.x;d.fy=e.y;}).on('drag',(e,d)=>{d.fx=e.x;d.fy=e.y;}).on('end',(e,d)=>{if(!e.active)sim.alphaTarget(0);d.fx=null;d.fy=null;}));
+node.append('circle').attr('r',d=>SZ[d.t]||12).attr('fill',d=>C[d.t]||'#888').attr('stroke',d=>d3.color(C[d.t]||'#888').brighter(0.5)).attr('stroke-width',1.5);
+node.append('text').attr('dy',d=>(SZ[d.t]||12)+12).attr('text-anchor','middle').attr('fill','#aaa').attr('font-size','9px').text(d=>d.l);
+const tt=document.getElementById('gtt2');
+node.on('mouseover',(e,d)=>{tt.style.display='block';tt.innerHTML=`<h3>${d.l}</h3><small>${d.t.replace(/_/g,' ')}</small><p>${d.d}</p>`;}).on('mousemove',e=>{tt.style.left=(e.pageX+12)+'px';tt.style.top=(e.pageY-8)+'px';}).on('mouseout',()=>{tt.style.display='none';});
+sim.on('tick',()=>{link.attr('x1',d=>d.source.x).attr('y1',d=>d.source.y).attr('x2',d=>d.target.x).attr('y2',d=>d.target.y);ll.attr('x',d=>(d.source.x+d.target.x)/2).attr('y',d=>(d.source.y+d.target.y)/2);node.attr('transform',d=>`translate(${d.x},${d.y})`);});
+</script>
+</body>
+</html>
