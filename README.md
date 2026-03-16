@@ -1,47 +1,45 @@
-# VNS Health — Intelligent Knowledge Graph
+# Healthcare AI — Connected Intelligence
 
-**Organization:** VNS Health (formerly Visiting Nurse Service of New York)
+**By:** Graphify.md & Daniel Yarmoluk
 **Domain:** Health Plan / Managed Care — Medicare, Medicaid, MLTC, D-SNP
-**Geography:** New York State (NYC, Long Island, 13+ counties)
-**Members Served:** 73,000+ patients and members daily
-**Heritage:** 130+ years of home-based care
+**Method:** Public data → Entity extraction → Relationship mapping → Cross-report pattern analysis
 
-## What This Graph Does
+## What's Here
 
-Maps VNS Health's operational ecosystem across **six strategic domains** — surfacing the connections between growth levers, data quality gaps, provider friction, member experience, employee experience, and claims/authorization workflows.
+### 1. Healthcare AI 2026 Landscape Report
+**→ [View Live](https://yarmoluk.github.io/vns-health-graph/healthcare-ai-intelligence.html)**
 
-This is not a slide deck. It's a **queryable intelligence layer** that reveals:
-- Where data quality failures cascade into member churn
-- Which provider pain points drive network attrition
-- How claims bottlenecks create authorization backlogs
-- Where growth strategy collides with operational capacity
+10 major consulting reports (Bessemer, NVIDIA, Deloitte, McKinsey, BCG, EY, KPMG, Wolters Kluwer) synthesized into one connected intelligence brief. 80+ data points, 8 convergence themes, 5 nascent signals no single report identifies, 4 win-win-win scenarios, breakdowns by every actor in healthcare.
+
+Prompted by Shajey Rumi. Refined and expanded by Graphify.md.
+
+### 2. Health Plan Operational Analysis
+**→ [View Live](https://yarmoluk.github.io/vns-health-graph/)**
+
+12-slide interactive presentation analyzing health plan operational friction: provider data provenance, vendor fragmentation, member engagement segmentation, post-payment audit cascades, and institutional knowledge preservation.
+
+### 3. Session Analysis
+**→ [View Live](https://yarmoluk.github.io/vns-health-graph/session-analysis.html)**
+
+Full knowledge graph of the session itself: process timeline, all feedback comments, convergence analysis, and methodology documentation.
 
 ## Graph Structure
 
 ```
 graph/
-├── nodes/           # Entity definitions (orgs, systems, processes, people, metrics)
+├── nodes/           # Entity definitions (orgs, systems, processes, metrics)
 ├── edges/           # Relationship mappings between entities
 ├── domains/         # Domain-specific analysis (6 strategic domains)
 ├── patterns/        # Cross-domain failure patterns and opportunity maps
-└── visualizations/  # D3.js interactive graph + static views
+└── cypher/          # Neo4j Cypher schema for graph database import
 ```
 
-## Strategic Domains
+## The Experiment
 
-| Domain | Key Insight |
-|--------|------------|
-| **Growth** | 34-60% enrollment growth (2024) — but geographic expansion into 25 new counties requires provider network adequacy VNS hasn't proven at scale |
-| **Data Quality** | 100 quality measures tracked monthly, but provider directory accuracy (CMS 90-day verification) is the compliance tripwire |
-| **Provider Experience** | Claims disputes, 90-day filing windows, corrected claim complexity, and Varis post-payment reviews create provider fatigue |
-| **Member Experience** | 5-star MLTC rating masks emerging challenge: newer plan populations (EasyCare, D-SNP) have different engagement needs |
-| **Employee Experience** | 50+ language capability is a moat, but care manager burnout across 73K daily touches is the silent risk |
-| **Claims & Authorization** | Availity EDI + eviCore prior auth = two-vendor dependency; cross-year billing rule (2025/2026 split) adds denial risk |
+~600 pages of consulting reports → 80+ data points → 8 convergence themes → 5 nascent signals → 4 win-win-win scenarios → deployed in ~20 minutes from public data only.
 
-## Built With
-
-[Graphify.md](https://graphifymd.com) — Knowledge graphs that make AI actually useful.
+**Want the .md-level knowledge graph for your domain?** [Request yours](https://calendly.com/daniel-yarmoluk/30min)
 
 ---
 
-*Generated: March 14, 2026*
+*Built March 14-15, 2026 · Daniel Yarmoluk · Graphify.md*
